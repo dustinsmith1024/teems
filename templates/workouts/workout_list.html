@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Workouts{% endblock %}
+
+{% block main-content %}
+
+{% if workout_list %}
+    <ul>
+    {% for workout in workout_list %}
+        <li><a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No workouts are available.</p>
+{% endif %}
+
+{% endblock %}
+

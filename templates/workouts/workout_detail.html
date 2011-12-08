@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Homie{% endblock %}
+
+{% block main-content %}
+
+{% if workout %}
+    <h3><a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a></h3>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    
+    Activities: {{ workout.step_set.all.count }}
+    <ol>
+    {% for step in workout.step_set.all %}
+        <li>
+          {{ step.activity }}
+        </li>
+    {% endfor %}
+    </ol>
+{% else %}
+    <p>Issue finding workout details...</p>
+{% endif %}
+
+{% endblock %}
+
+
