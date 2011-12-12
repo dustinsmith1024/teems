@@ -7,21 +7,22 @@
 {% if team %}
     <h2><a href="/teams/{{ team.id }}/">{{ team.name }} {{ team.mascot }}</a></h2>
 
+    <a href="/teams/{{ team.id }}/update">Edit Details</a>
+
     <h3>Roster</h3>
 
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-    <form action="/teams/{{ team.id }}/captain/" method="post">
-    {% csrf_token %}
+    <ul>
     {% for player in team.player_set.all %}
-        <input type="radio" name="player" id="player{{ forloop.counter }}" value="{{ player.id }}" />
-        <label for="player{{ forloop.counter }}">{{ player.full_name }}</label><br />
+        <li>
+          {{ player.number }}. {{ player.position }} - <a href="/player/{{ player.id }}">{{ player.full_name }}</a>
+        </li>
     {% endfor %}
-    <input type="submit" value="Vote" />
-    </form>
+    </ul>
 
 {% else %}
-    <p>Issue find team details...</p>
+    <p>Issue finding team details...</p>
 {% endif %}
 
 {% endblock %}
