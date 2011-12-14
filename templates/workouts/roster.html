@@ -1,0 +1,12 @@
+<scetion id="roster">
+    <h3>Roster</h3>
+
+    <ul>
+        {% for player in roster %}
+            <li>
+              {{ player.number }}. {{ player.position }} - <a href="/player/{{ player.id }}">{{ player.full_name }}</a>
+            </li>
+        {% endfor %}
+
+    </ul>
+</section>

@@ -1,0 +1,14 @@
+
+<h3>Roster</h3>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<ul>
+    {% for player in roster %}
+        <li>
+          {{ player.number }}. {{ player.position }} - <a href="/teams/{{ player.team.id }}/player/{{ player.id }}">{{ player.full_name }}</a>
+        </li>
+    {% endfor %}
+
+</ul>
+

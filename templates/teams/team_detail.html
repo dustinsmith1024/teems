@@ -7,19 +7,17 @@
 {% if team %}
     <h2><a href="/teams/{{ team.id }}/">{{ team.name }} {{ team.mascot }}</a></h2>
 
-    <a href="/teams/{{ team.id }}/update">Edit Details</a>
+    <p>
+        {{ team.location }}
+    </p>
+ 
+    <p>
+        <a href="/teams/{{ team.id }}/update">Edit Details</a>
+    </p>
 
-    <h3>Roster</h3>
+    {% include 'workouts/practices.html' with practices=team.practice_set.all %}
 
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-    <ul>
-    {% for player in team.player_set.all %}
-        <li>
-          {{ player.number }}. {{ player.position }} - <a href="/player/{{ player.id }}">{{ player.full_name }}</a>
-        </li>
-    {% endfor %}
-    </ul>
+    {% include 'teams/roster.html' with roster=team.player_set.all %}
 
 {% else %}
     <p>Issue finding team details...</p>

@@ -11,6 +11,8 @@ class Team(models.Model):
     def __unicode__(self):
         return self.name
 
+    def location(self):
+        return self.city + ", " + self.state
 
 class Player(models.Model):
     user = models.ForeignKey(User, unique=True, null=True)

@@ -29,6 +29,26 @@ def new(request):
     return render_to_response("teams/team_form.html", {'action': 'new', 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
+@login_required
+@csrf_protect
+def new_player(request):
+    # If coach
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST': # If the form has been submitted...
+        form = PlayerForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            player = form.save()
+            messages.add_message(request, messages.INFO, 'Player created!')
+            return HttpResponseRedirect(reverse('view', args=(player.id,)))
+    else:
+        form = PlayerForm() # An unbound form
+
+    return render_to_response("teams/player_form.html", {'action': 'new', 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
+
 
 def captain(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
@@ -78,5 +98,14 @@ def view(request, team_id):
     #formset = RosterForm(instance=team)
     #print formset
     return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
+
+def player(request, team_id, player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    team = get_object_or_404(Team, pk=team_id)
+    #RosterForm = inlineformset_factory(Team, Player)
+    #formset = RosterForm(instance=team)
+    #print formset
+    return render_to_response('teams/player.html', {'team':team, 'player': player}, context_instance=RequestContext(request))
+
 
 
