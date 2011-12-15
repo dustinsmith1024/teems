@@ -41,6 +41,7 @@ class TeamForm(ModelForm):
 
 
 class PlayerForm(ModelForm):
+    #s = forms.ModelMultipleChoiceField(queryset=Team.objects.all())
     class Meta:
         model = Player
 

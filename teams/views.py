@@ -3,10 +3,12 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.forms.models import inlineformset_factory
 from django.template import Context, loader
 from django.template import RequestContext
 from teams.models import Team, Player, TeamForm, PlayerForm
+from teams.forms import TeamPlayerForm
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 
@@ -31,21 +33,37 @@ def new(request):
 
 @login_required
 @csrf_protect
-def new_player(request):
+def new_player(request, team_id):
     # If coach
+    team = get_object_or_404(Team, pk=team_id)
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
-        form = PlayerForm(request.POST) # A form bound to the POST data
+        form = TeamPlayerForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            player = form.save()
+            print form.cleaned_data
+            user = User(first_name = form.cleaned_data['first_name'],
+                        last_name = form.cleaned_data['last_name'],
+                        username = form.cleaned_data['username'],
+                       )
+            print user
+            user.save()
+            player = Player(team=team, user=user, position=form.cleaned_data['position'],
+                            number=form.cleaned_data['number']
+                           )
+            print player
+            player.save()
+            # = form.save()
             messages.add_message(request, messages.INFO, 'Player created!')
-            return HttpResponseRedirect(reverse('view', args=(player.id,)))
+            return HttpResponseRedirect(reverse('view', args=(team.id,)))
     else:
-        form = PlayerForm() # An unbound form
+        #form = PlayerForm(initial={'team':team}) # An unbound form
+        form = TeamPlayerForm()
+        #PlayerSetForm = inlineformset_factory(Team, Player)
+        #formset = PlayerFormSet(instance=team)
 
-    return render_to_response("teams/player_form.html", {'action': 'new', 'form': form, 'c':c},
+    return render_to_response("teams/player_form.html", {'action': 'new', 'team':team, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 

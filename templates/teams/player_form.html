@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Player{% endblock %}
+
+{% block main-content %}
+
+<form action="/teams/{{ team.id }}/player/new" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
+{% endblock %}
+
+
