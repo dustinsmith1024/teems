@@ -4,15 +4,27 @@
 
 {% block main-content %}
 
+{% if practice_list %}
+<h3>Practices</h3>
+    <ul>
+    {% for practice in practice_list %}
+        <li>{{practice.date}} {{practice.time}}: <a href="/workouts/practices/{{ practice.id }}/">{{ practice.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+  <p>No Practices</p>
+{% endif %}
 {% if workout_list %}
+<h3>Individuals</h3>
     <ul>
     {% for workout in workout_list %}
-        <li><a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a></li>
+        <li>{{workout.date_suggested}} {{ workout.time_suggested }}: <a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No workouts are available.</p>
 {% endif %}
 
+<a href="/workouts/new">New Workout</a>
 {% endblock %}
 

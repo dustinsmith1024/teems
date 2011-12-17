@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ activity.name }}{% endblock %}
+
+{% block main-content %}
+
+{% if activity %}
+<ul>
+  <li>
+    {{ activity.name }}
+  </li>
+  <li>
+    Kind: {{ activity.kind }}
+  </li>
+  <li>
+    People: {{ activity.people_needed }}
+  </li>
+  <li>
+    Location: {{ activity.location }}
+  </li>
+  <li>
+    Instructions: {{ activity.instructions }}
+  </li>
+</ul>
+{% else %}
+    <p>No activities are available.</p>
+{% endif %}
+
+{% endblock %}
+

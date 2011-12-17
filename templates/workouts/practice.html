@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ practice.workout }}{% endblock %}
+
+{% block main-content %}
+
+{{ practice.workout }}
+{{ practice.date }} - 
+{{ practice.time }}
+{{ practice.notes }}
+
+{{ practice.workout.plan_set }}
+
+    <ul>
+    {% for activity in practice.workout.plan.all %}
+        <li><a href="/workouts/activities/{{ activity.id }}/">{{ activity.name }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
+

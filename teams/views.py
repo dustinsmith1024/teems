@@ -46,23 +46,17 @@ def new_player(request, team_id):
             user = User(first_name = form.cleaned_data['first_name'],
                         last_name = form.cleaned_data['last_name'],
                         username = form.cleaned_data['username'],
+                        email = form.cleaned_data['email'],
                        )
-            print user
             user.save()
             player = Player(team=team, user=user, position=form.cleaned_data['position'],
                             number=form.cleaned_data['number']
                            )
-            print player
             player.save()
-            # = form.save()
             messages.add_message(request, messages.INFO, 'Player created!')
-            return HttpResponseRedirect(reverse('view', args=(team.id,)))
+            return HttpResponseRedirect(reverse('player', args=(team.id, player.id)))
     else:
-        #form = PlayerForm(initial={'team':team}) # An unbound form
         form = TeamPlayerForm()
-        #PlayerSetForm = inlineformset_factory(Team, Player)
-        #formset = PlayerFormSet(instance=team)
-
     return render_to_response("teams/player_form.html", {'action': 'new', 'team':team, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
@@ -120,10 +114,11 @@ def view(request, team_id):
 def player(request, team_id, player_id):
     player = get_object_or_404(Player, pk=player_id)
     team = get_object_or_404(Team, pk=team_id)
-    #RosterForm = inlineformset_factory(Team, Player)
-    #formset = RosterForm(instance=team)
-    #print formset
     return render_to_response('teams/player.html', {'team':team, 'player': player}, context_instance=RequestContext(request))
 
 
+def players(request, team_id):
+    team = get_object_or_404(Team, pk=team_id)
+    return render_to_response('teams/player.html', {'team':team}, context_instance=RequestContext(request))
+ 
 

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Practices{% endblock %}
+
+{% block main-content %}
+
+{% if practice_list %}
+    <ul>
+    {% for practice in practice_list %}
+        <li><a href="/workouts/practices/{{ practice.id }}/">{{ practice.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No practices are available.</p>
+{% endif %}
+
+{% endblock %}
+

@@ -1,10 +1,12 @@
 from django.db import models
 from teams.models import Team, Player
+from django.forms import ModelForm
 
 class Activity(models.Model):
     """
       Individual piece of a workout like shoot, dribbling, etc...
     """
+    team = models.ForeignKey(Team,null=True)
     name = models.CharField(max_length=50,default='Activity Name')
     kind = models.CharField(max_length=50,default='Kind of Activity')
     people_needed = models.IntegerField(default='1')
@@ -15,6 +17,11 @@ class Activity(models.Model):
 
     def __unicode__(self):
       return self.name
+
+class ActivityForm(ModelForm):
+    class Meta:
+        model = Activity
+
 
 class Workout(models.Model):
     """
@@ -45,7 +52,7 @@ class Step(models.Model):
         ordering = ['workout', 'position']
 
     def __unicode__(self):
-      return self.activity + " - " + self.workout
+      return str(self.activity.name) + " - " + str(self.workout)
 
 class Practice(models.Model):
     """
@@ -56,6 +63,7 @@ class Practice(models.Model):
     workout = models.ForeignKey(Workout)
     team = models.ForeignKey(Team)
     date = models.DateField()
+    time = models.TimeField(null=True)
     notes = models.TextField(null=True)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -75,6 +83,7 @@ class Individual(models.Model):
     player = models.ForeignKey(Player)
     date_complete = models.DateField(null=True, blank=True)
     date_suggested = models.DateField()
+    time_suggested = models.TimeField(null=True)
     notes = models.TextField(null=True)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)

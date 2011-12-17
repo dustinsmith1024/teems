@@ -16,15 +16,15 @@ class WorkoutAdmin(admin.ModelAdmin):
     inlines = (StepAdmin,)
 
 class ActivitiesAdmin(admin.ModelAdmin):
-    fields = ['name','kind','people_needed','location','instructions']
+    fields = ['team','name','kind','people_needed','location','instructions']
     list_filter = ['kind']
 
 class PracticeAdmin(admin.ModelAdmin):
-    fields = ['workout', 'team', 'date', 'notes']
+    fields = ['team', 'workout', 'date', 'time', 'notes']
     list_display = ['date', 'workout']
 
 class IndividualAdmin(admin.ModelAdmin):
-    fields = ['workout', 'player', 'date_suggested', 'date_complete', 'notes']
+    fields = ['workout', 'player', 'date_suggested', 'time_suggested', 'date_complete', 'notes']
     list_display = ['workout', 'player', 'date_suggested', 'date_complete']
 
 """

@@ -1,9 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ player.full_name }} {% endblock %}
+
+{% block main-content %}
+
 <section id="player">
 
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
     <h3>{{ player.number }}. {{ player.full_name }}</h3>
-
-    {{ player.position }}
+    
+    <ul>
+      <li>
+         Position: {{ player.position }}
+      </li>
+      <li>
+         Email: {{ player.user.email }}
+      </li>
+      <li>
+        From: {{ player.location }}
+      </li>
+    </ul>
 
 </section>
+
+{% endblock %}

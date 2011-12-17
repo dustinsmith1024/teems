@@ -6,9 +6,10 @@
 <ul>
     {% for player in roster %}
         <li>
-          {{ player.number }}. {{ player.position }} - <a href="/teams/{{ player.team.id }}/player/{{ player.id }}">{{ player.full_name }}</a>
+          {{ player.number }}. {{ player.position }} - <a href="/teams/{{ player.team.id }}/players/{{ player.id }}">{{ player.full_name }}</a>
         </li>
     {% endfor %}
 
 </ul>
 
+<a href="/teams/{{ team.id }}/players/new">New Player</a>
