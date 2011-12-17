@@ -44,12 +44,22 @@ def new_workout(request):
     w = Workout()
     WorkoutStepForm = inlineformset_factory(Workout, Step)
     if request.method == 'POST': # If the form has been submitted...
-        #form = WorkoutPlanForm(request.POST)
-        if form.is_valid():
-            print form
+        workoutForm = WorkoutPlanForm(request.POST) #for update pass in instance=w
+        if workoutForm.is_valid():
+          print workoutForm
+          w = Workout(name=workoutForm.cleaned_data['name'], 
+                      kind=workoutForm.cleaned_data['kind'],)
+          w.save()
+          #personform      = PersonForm(request.POST, instance=person)
+          form = WorkoutStepForm(request.POST, instance=w)
+          #phoneformset    = PhoneFormSet(request.POST, request.FILES, instance=person)
+          #form = WorkoutPlanForm(request.POST)
+          if form.is_valid():
+              print form
+              form.save()
     else:
-        workout = WorkoutPlanForm(instance=w)
-        form = WorkoutStepForm(instance=workout)
+        workoutForm = WorkoutPlanForm()
+        form = WorkoutStepForm()
     """
     team = Player.objects.get(user=request.user).team
     activities = Activity.objects.filter(team=team).all()
@@ -58,7 +68,7 @@ def new_workout(request):
         'activities_list': activities,
     })
     """
-    return render_to_response("workouts/workout_form.html", {'action': 'new', 'form': form, 'c':c},
+    return render_to_response("workouts/workout_form.html", {'action': 'new', 'workout': workoutForm, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 """
