@@ -12,6 +12,20 @@ class WorkoutPlanForm(forms.Form):
     #step = forms.ModelMultipleChoiceField(queryset=Activity.objects.all())
     #steps = inlineformset_factory(Workout, Step)
 
+class StepsForm(forms.Form):
+    """
+    def __init__(self, *args, **kwargs):
+        super(StepsForm, self).__init__(*args, **kwargs)
+        self.fields["activities"].queryset = Activities.objects.filter(queryset=Activity)
+    """
+    activities = forms.ModelChoiceField(queryset=Activity.objects.all())
+    position = forms.IntegerField()
+    """
+    activity = models.ForeignKey(Activity)
+    workout = models.ForeignKey(Workout)
+    position = models.PositiveSmallIntegerField(null=True)
+    #field1 = forms.ModelChoiceField(queryset=..., empty_label="(Nothing)")
+    """
 
 class TeamPlayerForm(forms.Form):
     first_name = forms.CharField(max_length=100)

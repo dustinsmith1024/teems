@@ -21,6 +21,7 @@ class Activity(models.Model):
 class ActivityForm(ModelForm):
     class Meta:
         model = Activity
+        fields = ('name', 'kind', 'people_needed', 'location', 'instructions',)
 
 
 class Workout(models.Model):
@@ -53,6 +54,11 @@ class Step(models.Model):
 
     def __unicode__(self):
       return str(self.activity.name) + " - " + str(self.workout)
+
+class StepForm(ModelForm):
+    class Meta:
+        model = Step
+
 
 class Practice(models.Model):
     """

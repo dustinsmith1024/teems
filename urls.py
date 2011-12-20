@@ -11,6 +11,6 @@ urlpatterns = patterns('',
     url(r'^workouts/', include('workouts.urls')),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^login/$', 'django.contrib.auth.views.login'),
 )
 
