@@ -34,56 +34,73 @@ def mine(request):
     })
     return HttpResponse(template.render(c))
 
-def make_step_form(team):
-    class StepsForm(forms.Form):
-        activities = forms.ModelChoiceField(
-                 queryset=Activity.objects.filter(team=team))
-        position = forms.IntegerField()
-    return StepsForm
-
 @login_required
 @csrf_protect
 def new_workout(request):
     c = {} 
     c.update(csrf(request))
     w = Workout()
-    #WorkoutStepForm = inlineformset_factory(Workout, Step)
     team = Player.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
         workoutForm = WorkoutPlanForm(request.POST) #for update pass in instance=w
         if workoutForm.is_valid():
-          print workoutForm
           w = Workout(name=workoutForm.cleaned_data['name'], 
                       kind=workoutForm.cleaned_data['kind'],)
-          w.save()
-          #personform      = PersonForm(request.POST, instance=person)
-          form = WorkoutStepForm(request.POST, instance=w)
-          #phoneformset    = PhoneFormSet(request.POST, request.FILES, instance=person)
-          #form = WorkoutPlanForm(request.POST)
+          formset_cls = formset_factory(make_step_form(team))
+          form = formset_cls(request.POST)
           if form.is_valid():
-              print form
-              form.save()
+              w.save()
+              for f in form:
+                  if f.cleaned_data.get('activities'):
+                      print '-----------------------------------------'
+                      step = Step(workout=w, activity=f.cleaned_data['activities'],
+                                  position=f.cleaned_data['position'])
+                      step.save()
+                  
     else:
-        # **** CAN PUT THE STEPS FORM INTO A METHOD AND THEN CREATE IT DYNAMICALLY 
         workoutForm = WorkoutPlanForm()
-        #form = StepsForm()
-        #form.fields['activities'].queryset = Activity.objects.filter(team=team)
         form = formset_factory(make_step_form(team), extra=5)
-        """
-        formset = formset_factory(StepsForm, extra=5)
-        formset = formset(instance=form)
-        form = formset
-        """
-    """
-    team = Player.objects.get(user=request.user).team
-    activities = Activity.objects.filter(team=team).all()
-    template = loader.get_template('workouts/activities_list.html')
-    c = Context({
-        'activities_list': activities,
-    })
-    """
     return render_to_response("workouts/workout_form.html", {'action': 'new', 'workout': workoutForm, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
+
+
+@login_required
+@csrf_protect
+def update_workout(request, workout_id):
+    """
+      This doesnt work...need to find a good way to do this.
+      It look slike setting up my own form and then overiding __init__ if the way to go
+      Could probably just set up my own HTML form and do it quicker...
+    """
+    c = {}
+    c.update(csrf(request))
+    workout = get_object_or_404(Workout, pk=workout_id)
+    team = Player.objects.get(user=request.user).team
+    if request.method == 'POST': # If the form has been submitted...
+        workoutForm = WorkoutPlanForm(request.POST) #for update pass in instance=w
+        if workoutForm.is_valid():
+          w = Workout(name=workoutForm.cleaned_data['name'],
+                      kind=workoutForm.cleaned_data['kind'],)
+          formset_cls = formset_factory(make_step_form(team))
+          form = formset_cls(request.POST)
+          if form.is_valid():
+              w.save()
+              for f in form:
+                  if f.cleaned_data.get('activities'):
+                      print '-----------------------------------------'
+                      step = Step(workout=w, activity=f.cleaned_data['activities'],
+                                  position=f.cleaned_data['position'])
+                      step.save() 
+                      
+    else:
+        print workout.kind 
+        workoutForm = WorkoutForm(instance=workout)
+        form_cls = formset_factory(make_step_form(team), extra=5)
+        form = form_cls(workout.plan.all())
+
+    return render_to_response("workouts/workout_form.html", {'action': 'new', 'workout': workoutForm, 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
 
 
 @login_required

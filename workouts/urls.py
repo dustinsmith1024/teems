@@ -4,6 +4,7 @@ from workouts.models import Workout
 
 urlpatterns = patterns('workouts.views',
     url(r'^new/$', 'new_workout', name='new_workout'),
+    url(r'^update/(?P<workout_id>\d+)/$', 'update_workout', name='update_workout'),
     url(r'^mine/$', 'mine'),
     url(r'^activities/new', 'new_activity', name='new_activity'),
     url(r'^activities/(?P<activity_id>\d+)/$', 'activity', name='activity'),

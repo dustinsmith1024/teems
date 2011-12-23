@@ -38,6 +38,12 @@ class Workout(models.Model):
     def __unicode__(self):
       return self.name
 
+class WorkoutForm(ModelForm):
+    class Meta:
+        model = Workout
+        fields = ('name', 'kind',)
+
+
 class Step(models.Model):
     """
       Just a join model for Workouts and Activities
