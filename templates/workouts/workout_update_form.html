@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}New Workout{% endblock %}
+
+{% block main-content %}
+
+<form action="/workouts/{{ action }}/" method="post">
+{% csrf_token %}
+{{ workout.as_p}}
+<table><tbody>
+  <tr>
+    {% for s in steps %} {{ a }}
+    <th>
+      <label for="id_form-{{ forloop.counter }}-activities">Activities:</label>
+    </th>
+    <td>
+      <select name="form-{{ forloop.counter }}-activities" id="id_form-{{ forloop.counter }}-activities">
+        <option value="">---------</option>
+      {% for a in activities %} {{ a }}
+        <option value="{{ a.id }}">{{ a.name }}</option>
+      {% endfor %}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <th><label for="id_form-{{ forloop.counter }}-position">Position:</label></th>
+    <td><input type="text" name="form-{{ forloop.counter }}-position" value="{{ s.position }}" id="id_form-{{ forloop.counter }}-position" /></td>
+  </tr>
+    {% endfor %}
+</table>
+<input type="submit" value="Submit" />
+</form>
+
+{% endblock %}
+
+

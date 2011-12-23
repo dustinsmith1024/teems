@@ -71,6 +71,7 @@ def update_workout(request, workout_id):
       This doesnt work...need to find a good way to do this.
       It look slike setting up my own form and then overiding __init__ if the way to go
       Could probably just set up my own HTML form and do it quicker...
+     *** SETTING UP PARTIAL FORM -> GO PARTY....
     """
     c = {}
     c.update(csrf(request))
@@ -95,10 +96,9 @@ def update_workout(request, workout_id):
     else:
         print workout.kind 
         workoutForm = WorkoutForm(instance=workout)
-        form_cls = formset_factory(make_step_form(team), extra=5)
-        form = form_cls(workout.plan.all())
-
-    return render_to_response("workouts/workout_form.html", {'action': 'new', 'workout': workoutForm, 'form': form, 'c':c},
+        steps = Step.objects.filter(workout=workout)
+        possible_activities = Activity.objects.filter(team=team)
+    return render_to_response("workouts/workout_update_form.html", {'action': 'new', 'workout': workoutForm, 'activities': possible_activities, 'steps':steps, 'c':c},
                                context_instance=RequestContext(request))
 
 
