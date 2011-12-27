@@ -17,8 +17,22 @@
 {% if workout_list %}
 <h3>Individuals</h3>
     <ul>
+    {% for workout in individuals_list %}
+        <li>{{workout.date_suggested}} {{ workout.time_suggested }}: <a href="/workouts/{{ workout.id }}/">{{ workout.name }}
+        {{ workout.player }}
+        </a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No workouts are available.</p>
+{% endif %}
+
+{% if workout_list %}
+<h3>Workouts</h3>
+    <ul>
     {% for workout in workout_list %}
-        <li>{{workout.date_suggested}} {{ workout.time_suggested }}: <a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a></li>
+        <li><a href="/workouts/{{ workout.id }}/">{{ workout.name }}
+        </a></li>
     {% endfor %}
     </ul>
 {% else %}

@@ -31,6 +31,12 @@ class Player(models.Model):
     def full_name(self):
         return self.first_name() + " " + self.last_name()
 
+    def name(self):
+        return self.full_name()
+
+    def name_and_number(self, seperator="-"):
+        return str(self.number) + " " + seperator + " " + self.name() 
+
     def __unicode__(self):
         return self.full_name()
 

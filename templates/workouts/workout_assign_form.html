@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}New Workout{% endblock %}
+
+{% block main-content %}
+
+<form action="/workouts/{{ workout.id }}/assign/" method="post">
+{% csrf_token %}
+    <p>
+      <label for="players">Players:</label>
+      <select name="player" id="players">
+        <option value="">---------</option>
+      {% for player in team.player_set.all %} {{ s }}
+        <option value="{{ player.id }}" >{{ player.name_and_number }}</option>
+      {% endfor %}
+      </select>
+    </p>
+    <p>
+      <label>Date: 
+        <input name="date_suggested" type="date" />
+      </label>
+    </p>
+    <p>
+      <label>Time: 
+        <input name="time_suggested" type="time" />
+      </label>
+    </p>
+<input type="submit" value="Submit" />
+</form>
+
+{% endblock %}
+
+

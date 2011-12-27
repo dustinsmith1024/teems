@@ -34,6 +34,22 @@ def mine(request):
     })
     return HttpResponse(template.render(c))
 
+def workouts(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+    #team = Player.objects.get(user=request.user).team
+    practices = Practice.objects.all()
+    individuals = Individual.objects.all()
+    workouts = Workout.objects.all()
+    template = loader.get_template('workouts/workout_list.html')
+    c = Context({
+        'workout_list': workouts,
+        'practice_list': practices,
+        'individuals_list': individuals,
+    })
+    return HttpResponse(template.render(c))
+
 @login_required
 @csrf_protect
 def new_workout(request):
@@ -78,28 +94,53 @@ def update_workout(request, workout_id):
     workout = get_object_or_404(Workout, pk=workout_id)
     team = Player.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
-        workoutForm = WorkoutPlanForm(request.POST) #for update pass in instance=w
+        workoutForm = WorkoutForm(request.POST) #for update pass in instance=w
         if workoutForm.is_valid():
-          w = Workout(name=workoutForm.cleaned_data['name'],
-                      kind=workoutForm.cleaned_data['kind'],)
-          formset_cls = formset_factory(make_step_form(team))
-          form = formset_cls(request.POST)
-          if form.is_valid():
-              w.save()
-              for f in form:
-                  if f.cleaned_data.get('activities'):
-                      print '-----------------------------------------'
-                      step = Step(workout=w, activity=f.cleaned_data['activities'],
-                                  position=f.cleaned_data['position'])
-                      step.save() 
-                      
+          workout.name = workoutForm.cleaned_data['name']
+          workout.kind = workoutForm.cleaned_data['kind']
+          workout.save()
+          for k in request.POST:
+              if k.find("step_id") > 0:
+                  num = k.split('-')[0]
+                  step = Step.objects.get(pk=request.POST[k])
+                  step.position = request.POST[num + '-position']
+                  step.activity = Activity.objects.get(pk=request.POST[num + '-activities'])
+                  step.save()
+          return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
     else:
-        print workout.kind 
         workoutForm = WorkoutForm(instance=workout)
         steps = Step.objects.filter(workout=workout)
         possible_activities = Activity.objects.filter(team=team)
-    return render_to_response("workouts/workout_update_form.html", {'action': 'new', 'workout': workoutForm, 'activities': possible_activities, 'steps':steps, 'c':c},
+    return render_to_response("workouts/workout_update_form.html", {'id': workout.id, 'action': 'new', 'workout': workoutForm, 'activities': possible_activities, 'steps':steps, 'c':c},
                                context_instance=RequestContext(request))
+
+
+@login_required
+@csrf_protect
+def assign_workout(request, workout_id):
+    """
+      This doesnt work...need to find a good way to do this.
+      It look slike setting up my own form and then overiding __init__ if the way to go
+      Could probably just set up my own HTML form and do it quicker...
+     *** SETTING UP PARTIAL FORM -> GO PARTY....
+    """
+    c = {}
+    c.update(csrf(request))
+    workout = get_object_or_404(Workout, pk=workout_id)
+    team = Player.objects.get(user=request.user).team
+    if request.method == 'POST': # If the form has been submitted...
+          player = Player.objects.get(pk=request.POST['player'])
+          individual = Individual(workout=workout, player=player, 
+                                  date_suggested=request.POST['date_suggested'],
+                                  time_suggested=request.POST['time_suggested'],
+                                  )
+          individual.save()
+    else:
+        print workout
+
+    return render_to_response("workouts/workout_assign_form.html", {'action': 'assign', 'workout': workout, 'team':team, 'c':c},
+                               context_instance=RequestContext(request))
+
 
 
 

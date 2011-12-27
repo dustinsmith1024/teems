@@ -17,6 +17,11 @@
         </li>
     {% endfor %}
     </ol>
+
+
+  <a href="/workouts/{{ workout.id }}/update">Update Workout</a> |         
+  <a href="/workouts/{{ workout.id }}/assign">Assign Players</a>
+
 {% else %}
     <p>Issue finding workout details...</p>
 {% endif %}
