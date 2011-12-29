@@ -51,9 +51,9 @@
         </ul>
       </nav>
       {% if user.is_authenticated %}
-        <h2>Welcome, {{ user.username }}. Check out your workouts <a href="/workouts">here.</a></h2>
+        <h2>Welcome, {{ user.username }}. Check out your workouts <a href="/workouts/mine">here.</a></h2>
       {% else %}
-        <h2>Welcome! Please log in or sign up here..</h2>
+        <h2>Welcome! Please <a href="/login">Login</a> or <a href="/signup">Signup</a>.</h2>
       {% endif %}
     </header>
     {% endblock header %}

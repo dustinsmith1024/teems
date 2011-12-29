@@ -11,74 +11,30 @@ from teams.models import Team, Player, TeamForm, PlayerForm
 from teams.forms import TeamPlayerForm
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.forms import UserCreationForm
 
-@login_required
+
 @csrf_protect
-def new(request):
+def signup(request):
     # If coach
+    print 'here'
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
-        form = TeamForm(request.POST) # A form bound to the POST data
+        form = UserCreationForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            team = form.save()
-            messages.add_message(request, messages.INFO, 'Team info created!')
-            return HttpResponseRedirect(reverse('view', args=(team.id,)))
+            user = form.save()
+            messages.add_message(request, messages.INFO, 'Welcome ' + user.username + ', thanks for joining!')
+            return HttpResponseRedirect(reverse('mine',))
     else:
-        form = TeamForm() # An unbound form
+        return HttpResponseRedirect(reverse('mine'))
+        form = UserCreationForm() # An unbound form
 
-    return render_to_response("teams/team_form.html", {'action': 'new', 'form': form, 'c':c},
+    return render_to_response("signup.html", {'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
-@login_required
-@csrf_protect
-def new_player(request, team_id):
-    # If coach
-    team = get_object_or_404(Team, pk=team_id)
-    c = {}
-    c.update(csrf(request))
-    if request.method == 'POST': # If the form has been submitted...
-        form = TeamPlayerForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            print form.cleaned_data
-            user = User(first_name = form.cleaned_data['first_name'],
-                        last_name = form.cleaned_data['last_name'],
-                        username = form.cleaned_data['username'],
-                        email = form.cleaned_data['email'],
-                       )
-            user.set_password('password')
-            user.save()
-            player = Player(team=team, user=user, position=form.cleaned_data['position'],
-                            number=form.cleaned_data['number']
-                           )
-            player.save()
-            messages.add_message(request, messages.INFO, 'Player created!')
-            return HttpResponseRedirect(reverse('player', args=(team.id, player.id)))
-    else:
-        form = TeamPlayerForm()
-    return render_to_response("teams/player_form.html", {'action': 'new', 'team':team, 'form': form, 'c':c},
-                               context_instance=RequestContext(request))
-
-
-
-def captain(request, team_id):
-    team = get_object_or_404(Team, pk=team_id)
-    try:
-        chosen_captain = team.player_set.get(pk=request.POST['player'])
-    except (KeyError, Player.DoesNotExist):
-        return render_to_response('teams/details.html', {
-            'team': team,
-            'error_message': 'Chose!!!',
-        }, context_instance=RequestContext(request))
-    else:
-        messages.add_message(request, messages.INFO, 'Hello world.')
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button
-        return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
-
+"""
 @login_required
 @csrf_protect
 def update(request, team_id):
@@ -122,4 +78,4 @@ def players(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     return render_to_response('teams/player.html', {'team':team}, context_instance=RequestContext(request))
  
-
+"""

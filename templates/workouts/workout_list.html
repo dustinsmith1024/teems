@@ -14,7 +14,7 @@
 {% else %}
   <p>No Practices</p>
 {% endif %}
-{% if workout_list %}
+{% if individuals_list %}
 <h3>Individuals</h3>
     <ul>
     {% for workout in individuals_list %}
@@ -24,7 +24,7 @@
     {% endfor %}
     </ul>
 {% else %}
-    <p>No workouts are available.</p>
+    <p>No individuals scheduled.</p>
 {% endif %}
 
 {% if workout_list %}
@@ -35,8 +35,6 @@
         </a></li>
     {% endfor %}
     </ul>
-{% else %}
-    <p>No workouts are available.</p>
 {% endif %}
 
 <a href="/workouts/new">New Workout</a>

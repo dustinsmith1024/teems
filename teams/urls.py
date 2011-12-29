@@ -4,8 +4,6 @@ from teams.models import Team, Player
 
 
 urlpatterns = patterns('teams.views',
-    #url(r'^$', 'index'),
-    #url(r'^(?P<team_id>\d+)/$', 'details'),
     url(r'^mine/$', 'mine'),
     url(r'^new/$', 'new'),
     url(r'^(?P<team_id>\d+)/players/new$', 'new_player'),
