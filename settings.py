@@ -76,7 +76,7 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, "static/css"),
-    os.path.join(PROJECT_DIR, "static/css/"),
+    os.path.join(PROJECT_DIR, "static/js"),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

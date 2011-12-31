@@ -26,6 +26,7 @@
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
   <link rel="stylesheet" href="{{ STATIC_URL }}style.css">
+<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
   <!-- end CSS-->
 
   <!-- Uncomment if you are specifically targeting less enabled mobile browsers
@@ -34,22 +35,33 @@
 </head>
 {% endblock head %}
 {% block body %}
-<body>
+<body id="body" >
 
   <div id="container">
     {% block header %}
-    <header>
-      <h1><a href="/">Teems</a></h1>
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/teams/">Teems</a></li>
-          <li><a href="/teams/mine">My Teem</a></li>
-          <li><a href="/workouts">Workouts</a></li>
-          <li><a href="/workouts/mine">My Workouts</a></li>
-          <li><a href="/workouts/activities">Activities</a></li>
-        </ul>
-      </nav>
+    <div class="topbar" id="topbar" data-dropdown="dropdown" data-scrollspy="scrollspy">
+      <div class="topbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Teems</a>
+            <nav>
+              <ul class="nav">
+                <li><a href="/workouts/mine">My Workouts</a></li>
+                <li class="dropdown" >
+                  <a class="dropdown-toggle" href="#">Other</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/teams/">Teems</a></li>
+                    <li><a href="/teams/mine">My Teem</a></li>
+                    <li><a href="/workouts">Workouts</a></li>
+                    <li><a href="/workouts/mine">My Workouts</a></li>
+                    <li><a href="/workouts/activities">Activities</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+        </div>
+      </div>
+    </div>
       {% if user.is_authenticated %}
         <h2>Welcome, {{ user.username }}. Check out your workouts <a href="/workouts/mine">here.</a></h2>
       {% else %}
@@ -101,8 +113,9 @@
 
   <!-- scripts concatenated and minified via ant build script-->
   {% block my-js %}
-  <script src="{{ STATIC_URL }}js/plugins.js"></script>
-  <script src="{{ STATIC_URL }}js/script.js"></script>
+  <script src="{{ STATIC_URL }}/plugins.js"></script>
+  <script src="{{ STATIC_URL }}/script.js"></script>
+  <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-dropdown.js"></script>
   {% endblock my-js %}
   <!-- end scripts-->
 
