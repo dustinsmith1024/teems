@@ -16,9 +16,9 @@
 {% endif %}
 {% if individuals_list %}
 <h3>Individuals</h3>
-    <ul>
+    <ul>*Need to set these as individuals...the details go to basic
     {% for workout in individuals_list %}
-        <li>{{workout.date_suggested}} {{ workout.time_suggested }}: <a href="/workouts/{{ workout.id }}/">{{ workout.name }}
+        <li>{{workout.date_suggested}} {{ workout.time_suggested }}: <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }}
         {{ workout.player }}
         </a></li>
     {% endfor %}

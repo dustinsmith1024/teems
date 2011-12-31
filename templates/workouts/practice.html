@@ -18,7 +18,15 @@
     </ul>
 
 <p>
-  <a href="/workouts/update/{{ practice.workout.id }}">Update Workout</a> | 
+<nav class="actions">
+<ul>
+<li>
+  <a href="/workouts/{{ practice.workout.id }}/update">Update Workout</a>
+</li>
+<li>
+  <a href="/workouts/{{ practice.workout.id }}/schedule/{{ practice.id }}">Reschedule Workout</a>
+</li>
+
 </p>
 {% endblock %}
 

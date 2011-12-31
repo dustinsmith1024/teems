@@ -86,6 +86,12 @@ class Practice(models.Model):
     def __unicode__(self):
       return "Practice for " + self.name()
 
+class PracticeForm(ModelForm):
+    class Meta:
+        model = Practice
+        fields = ['date', 'time', 'notes']
+
+
 class Individual(models.Model):
     """
       A workout that is assigned to a player. 

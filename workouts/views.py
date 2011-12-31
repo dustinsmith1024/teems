@@ -45,6 +45,14 @@ def workouts(request):
     return render_to_response("workouts/workout_list.html", c,
                                context_instance=RequestContext(request))
 
+@login_required
+def individuals(request):
+    individuals = Individual.objects.all()
+    c = Context({
+        'practice_list': practices,
+    })
+    return render_to_response("workouts/workouts_list.html", c,
+                               context_instance=RequestContext(request))
 
 @login_required
 @csrf_protect
@@ -80,10 +88,6 @@ def new_workout(request):
 @csrf_protect
 def update_workout(request, workout_id):
     """
-      This doesnt work...need to find a good way to do this.
-      It look slike setting up my own form and then overiding __init__ if the way to go
-      Could probably just set up my own HTML form and do it quicker...
-     *** SETTING UP PARTIAL FORM -> GO PARTY....
     """
     c = {}
     c.update(csrf(request))
@@ -115,10 +119,6 @@ def update_workout(request, workout_id):
 @csrf_protect
 def assign_workout(request, workout_id):
     """
-      This doesnt work...need to find a good way to do this.
-      It look slike setting up my own form and then overiding __init__ if the way to go
-      Could probably just set up my own HTML form and do it quicker...
-     *** SETTING UP PARTIAL FORM -> GO PARTY....
     """
     c = {}
     c.update(csrf(request))
@@ -138,26 +138,77 @@ def assign_workout(request, workout_id):
                                context_instance=RequestContext(request))
 
 
+@login_required
+@csrf_protect
+def schedule_practice(request, workout_id):
+    """
+    """
+    c = {}
+    c.update(csrf(request))
+    workout = get_object_or_404(Workout, pk=workout_id)
+    team = Player.objects.get(user=request.user).team
+    if request.method == 'POST': # If the form has been submitted...
+          form = PracticeForm(request.POST)
+          if form.is_valid():
+              practice = Practice(workout=workout, team=team,
+                                  date=form.cleaned_data['date'],
+                                  time=form.cleaned_data['time'],
+                                  notes=form.cleaned_data['notes'],
+                                  )
+              practice.save()
+              return HttpResponseRedirect(reverse('edit_practice', args=(workout.id, practice.id)))
+
+    else:
+        form = PracticeForm()
+
+    return render_to_response("workouts/practice_schedule_form.html", {'form':form, 'action': 'assign', 'workout': workout, 'team':team, 'c':c},
+                               context_instance=RequestContext(request))
+
+
+@login_required
+@csrf_protect
+def edit_practice(request, workout_id, practice_id):
+    """
+    """
+    c = {} 
+    c.update(csrf(request))
+    workout = get_object_or_404(Workout, pk=workout_id)
+    team = Player.objects.get(user=request.user).team
+    practice = Practice.objects.get(pk=practice_id)
+    if request.method == 'POST': # If the form has been submitted...
+          form = PracticeForm(request.POST)
+          if form.is_valid():
+              practice.date=form.cleaned_data['date']
+              practice.time=form.cleaned_data['time']
+              practice.notes=form.cleaned_data['notes']
+              practice.save()
+
+              return HttpResponseRedirect(reverse('edit_practice', args=(workout.id, practice.id)))
+    else:
+        form = PracticeForm(instance=practice)
+
+    return render_to_response("workouts/practice_schedule_form.html", {'form':form, 'action': 'edit', 'practice': practice, 'workout': workout, 'team':team, 'c':c},
+                               context_instance=RequestContext(request))
+
+
 
 
 @login_required
 def activities(request):
     team = Player.objects.get(user=request.user).team
     activities = Activity.objects.filter(team=team).all()
-    template = loader.get_template('workouts/activities_list.html')
-    c = Context({
-        'activities_list': activities,
-    })
-    return HttpResponse(template.render(c))
+    return render_to_response("workouts/activities_list.html", {'activities_list':activities},
+                               context_instance=RequestContext(request))
+    #return HttpResponse(template.render(c))
 
 @login_required
 def activity(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
-    template = loader.get_template('workouts/activity.html')
     c = Context({
         'activity': activity,
     })
-    return HttpResponse(template.render(c))
+    return render_to_response("workouts/activity.html", c,
+                               context_instance=RequestContext(request))
 
 @login_required
 @csrf_protect
@@ -190,19 +241,32 @@ def new_activity(request):
 def practices(request):
     team = Player.objects.get(user=request.user).team
     practices = Practice.objects.filter(team=team).all()
-    template = loader.get_template('workouts/practice_list.html')
     c = Context({
         'practice_list': practices,
     })
+    return render_to_response("workouts/practice_list.html", c,
+                               context_instance=RequestContext(request))
     return HttpResponse(template.render(c))
 
 @login_required
 def practice(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
-    template = loader.get_template('workouts/practice.html')
     c = Context({
         'practice': practice,
     })
-    return HttpResponse(template.render(c))
+    return render_to_response("workouts/practice.html", c,
+                               context_instance=RequestContext(request))
+
+
+@login_required
+def individual(request, individual_id):
+    individual = get_object_or_404(Individual, pk=individual_id)
+    workout = individual.workout
+    c = Context({
+        'individual': individual,
+        'workout': workout,
+    })
+    return render_to_response("workouts/individual_detail.html", c,
+                               context_instance=RequestContext(request))
 
 

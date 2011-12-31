@@ -18,10 +18,17 @@
     {% endfor %}
     </ol>
 
-
-  <a href="/workouts/{{ workout.id }}/update">Update Workout</a> |         
-  <a href="/workouts/{{ workout.id }}/assign">Assign Players</a>
-
+<nav class="action_links">
+  <ul><li>
+  <a href="/workouts/{{ workout.id }}/update">Update Workout</a></li>
+  <li>
+  <a href="/workouts/{{ workout.id }}/schedule">Schedule as Practice</a>
+  </li>
+  <li>
+    <a href="/workouts/{{ workout.id }}/assign">Assign Players for Individuals</a>
+  </li>
+  </ul>
+</nav>
 {% else %}
     <p>Issue finding workout details...</p>
 {% endif %}
