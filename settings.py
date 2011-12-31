@@ -59,6 +59,7 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
+print STATIC_ROOT
 #    os.path.join(PROJECT_DIR, "templates"),
 #    os.path.join(PROJECT_DIR, "teams/templates"),
 
@@ -74,11 +75,13 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.join(PROJECT_DIR, "static/css"),
+    os.path.join(PROJECT_DIR, "static/css/"),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-
+print STATICFILES_DIRS
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
