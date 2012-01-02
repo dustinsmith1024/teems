@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Teems - {% block title %}?{% endblock title %}</title>
+  <title>Teams - {% block title %}?{% endblock title %}</title>
   {% block metadata %}
-  <meta name="description" content="Teems is a team management and competition site. Coaches, managerm and captains, can track players workouts and encourage everyone to participate.">
+  <meta name="description" content="Teams is a team management and competition site. Coaches, managerm and captains, can track players workouts and encourage everyone to participate.">
   <meta name="author" content="Dustin Smith http://smith1024.com">
   {% endblock metadata %}
 
@@ -40,20 +40,31 @@
   <div id="container">
     {% block header %}
     <div class="topbar" id="topbar" data-dropdown="dropdown" data-scrollspy="scrollspy">
-      <div class="topbar-inner">
+      {% if user.is_authenticated %}
+        <div class="topbar-inner {{ user.team.color }}">
+      {% else %}
+        <div class="topbar-inner">
+      {% endif %}
         <div class="container">
-          <a class="brand" href="/">Teems</a>
+          {% if user.is_authenticated %}
+              <a class="brand" href="/workouts/mine">Workouts</a>
+          {% else %}
+              <a class="brand" href="/login">Login</a>
+          {% endif %}
             <nav>
               <ul class="nav">
-                <li><a href="/workouts/mine">My Workouts</a></li>
                 <li class="dropdown" >
-                  <a class="dropdown-toggle" href="#">Other</a>
-                  <ul class="dropdown-menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/teams/">Teems</a></li>
+                  <a class="dropdown-toggle" href="#">{{ user.first_name }}</a>
+                  <ul class="dropdown-menu {{ user.team.color }} ">
                     <li><a href="/teams/mine">My Teem</a></li>
-                    <li><a href="/workouts">Workouts</a></li>
                     <li><a href="/workouts/mine">My Workouts</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown" >
+                  <a class="dropdown-toggle" href="#">Team</a>
+                  <ul class="dropdown-menu {{ user.team.color }} ">
+                    <li><a href="/teams/">Teams</a></li>
+                    <li><a href="/workouts">Workouts</a></li>
                     <li><a href="/workouts/activities">Activities</a></li>
                   </ul>
                 </li>
@@ -62,11 +73,6 @@
         </div>
       </div>
     </div>
-      {% if user.is_authenticated %}
-        <h2>Welcome, {{ user.username }}. Check out your workouts <a href="/workouts/mine">here.</a></h2>
-      {% else %}
-        <h2>Welcome! Please <a href="/login">Login</a> or <a href="/signup">Signup</a>.</h2>
-      {% endif %}
     </header>
     {% endblock header %}
     <div id="main" role"main">
@@ -86,15 +92,14 @@
     </div>
 
     {% block footer %}
-    <footer>
+    <footer id="footer">
       <nav>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/teams/">Teems</a></li>
-          <li><a href="/teams/mine">My Teem</a></li>
-          <li><a href="/workouts">Workouts</a></li>
-          <li><a href="/workouts/mine">My Workouts</a></li>
-          <li><a href="/workouts/activities">Actvities</a></li>
+          <li><a class="btn" href="/teams/">Teams</a></li>
+          <li><a class="btn" href="/teams/mine">My Teem</a></li>
+          <li><a class="btn" href="/workouts">Workouts</a></li>
+          <li><a class="btn" href="/workouts/mine">My Workouts</a></li>
+          <li><a class="btn" href="/workouts/activities">Actvities</a></li>
         </ul>
       </nav>
     </footer>

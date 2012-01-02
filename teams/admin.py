@@ -13,7 +13,7 @@ class PlayerInline(admin.TabularInline):
 
 
 class TeamAdmin(admin.ModelAdmin):
-    fields = ['name','mascot', 'city', 'state']
+    fields = ['name', 'color', 'mascot', 'city', 'state']
     inlines = [PlayerInline]
     list_display = ('name', 'mascot')
     search_fields = ['name', 'mascot', 'city', 'state']

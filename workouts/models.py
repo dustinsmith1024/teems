@@ -112,6 +112,12 @@ class Individual(models.Model):
     def __unicode__(self):
       return self.name()
 
+class IndividualEditForm(ModelForm):
+    class Meta:
+        model = Individual
+        fields = ['date_suggested', 'time_suggested', 'notes', 'date_complete']
+
+
 """
 # Workouts by team members that they do individually
   - completed

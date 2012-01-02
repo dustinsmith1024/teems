@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Practices{% endblock %}
+
+{% block main-content %}
+
+{% include 'workouts/practice_list_fragment.html' with practice_list=practice_list %}
+
+{% endblock %}
+

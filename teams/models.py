@@ -7,6 +7,7 @@ class Team(models.Model):
     mascot = models.CharField(max_length=100,)
     city = models.CharField(max_length=50, null=True)
     state = models.CharField(max_length=2, null=True)
+    color = models.CharField(null=True, max_length=6)
 
     def __unicode__(self):
         return self.name
@@ -17,8 +18,6 @@ class Team(models.Model):
 class Player(models.Model):
     user = models.ForeignKey(User, unique=True, null=True)
     team = models.ForeignKey(Team)
-    #first_name = models.CharField(max_length=100)
-    #last_name = models.CharField(max_length=100)
     number = models.IntegerField()
     position = models.CharField(null=True,max_length=10)
 

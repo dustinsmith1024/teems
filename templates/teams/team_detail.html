@@ -15,7 +15,7 @@
         <a href="/teams/{{ team.id }}/update">Edit Details</a>
     </p>
 
-    {% include 'workouts/practice_list.html' with practices=team.practice_set.all %}
+    {% include 'workouts/practice_list_fragment.html' with practice_list=team.practice_set.all %}
 
     {% include 'teams/roster.html' with roster=team.player_set.all %}
 

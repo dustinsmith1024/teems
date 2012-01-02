@@ -4,39 +4,30 @@
 
 {% block main-content %}
 
-{% if practice_list %}
-<h3>Practices</h3>
-    <ul>
-    {% for practice in practice_list %}
-        <li>{{practice.date}} {{practice.time}}: <a href="/workouts/practices/{{ practice.id }}/">{{ practice.name }}</a></li>
+{% if combined %}
+<h2>Workouts</h2>
+    <ul id="calendar" class="unstyled">
+    {% for workout in combined %}
+        {% if workout.show_date %}
+            {% if forloop.counter != 1 %}</ul>{% endif %}
+            <li class="date">{{workout.date}}</li>
+            <ul>
+        {% endif %}
+        {% if workout.date_suggested %}
+            {{ combined.forloop.counter0 }}
+            <li class="time">{{ workout.time|time:"g:i A" }} <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }} - Individual</a></li>
+        {% else %}
+            <li class="time">{{workout.time|time:"g:i A"}} <a href="/workouts/practices/{{ workout.id }}/">{{ workout.name }} - Team</a></li>
+        {% endif %}
     {% endfor %}
+      </ul>
     </ul>
 {% else %}
-  <p>No Practices</p>
-{% endif %}
-{% if individuals_list %}
-<h3>Individuals</h3>
-    <ul>*Need to set these as individuals...the details go to basic
-    {% for workout in individuals_list %}
-        <li>{{workout.date_suggested}} {{ workout.time_suggested }}: <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }}
-        {{ workout.player }}
-        </a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No individuals scheduled.</p>
+    <p>No workouts scheduled.</p>
 {% endif %}
 
-{% if workout_list %}
-<h3>Workouts</h3>
-    <ul>
-    {% for workout in workout_list %}
-        <li><a href="/workouts/{{ workout.id }}/">{{ workout.name }}
-        </a></li>
-    {% endfor %}
-    </ul>
-{% endif %}
-
-<a href="/workouts/new">New Workout</a>
+<div id="actions" class="actions">
+  <a class="btn primary" href="/workouts/new">New Workout</a>
+</div>
 {% endblock %}
 

@@ -22,12 +22,28 @@ def index(request):
 
 @login_required
 def mine(request):
+    import operator
     team = Player.objects.get(user=request.user).team
     practices = Practice.objects.filter(team=team).all()
     individuals = Player.objects.get(user=request.user).individual_set.all()
+    for index, i in enumerate(individuals):
+        individuals[index].date = i.date_suggested
+        individuals[index].time = i.time_suggested
+    combined = list(practices)
+    combined.extend(list(individuals))
+    combined.sort(key=operator.attrgetter('date', 'time'))
+    show_date = False
+    saved_date = False
+    """ Put in some show_dates to help with formating on frontend """
+    for index, i in enumerate(combined):
+        combined[index].show_date = True
+        if saved_date and saved_date == i.date:
+            combined[index].show_date = False
+        saved_date = i.date
     c = Context({
-        'individuals_list': individuals,
-        'practice_list': practices,
+        #'individuals_list': individuals,
+        #'practice_list': practices,
+        'combined': combined,
     })
     return render_to_response("workouts/workout_list.html", c,
                                context_instance=RequestContext(request))
@@ -42,7 +58,7 @@ def workouts(request):
         'practice_list': practices,
         'individuals_list': individuals,
     })
-    return render_to_response("workouts/workout_list.html", c,
+    return render_to_response("workouts/workout_list_full.html", c,
                                context_instance=RequestContext(request))
 
 @login_required
@@ -161,7 +177,7 @@ def schedule_practice(request, workout_id):
     else:
         form = PracticeForm()
 
-    return render_to_response("workouts/practice_schedule_form.html", {'form':form, 'action': 'assign', 'workout': workout, 'team':team, 'c':c},
+    return render_to_response("workouts/practices/practice_schedule_form.html", {'form':form, 'workout': workout, 'team':team, 'c':c},
                                context_instance=RequestContext(request))
 
 
@@ -187,7 +203,7 @@ def edit_practice(request, workout_id, practice_id):
     else:
         form = PracticeForm(instance=practice)
 
-    return render_to_response("workouts/practice_schedule_form.html", {'form':form, 'action': 'edit', 'practice': practice, 'workout': workout, 'team':team, 'c':c},
+    return render_to_response("workouts/practices/practice_schedule_form.html", {'form':form, 'action': 'edit', 'practice': practice, 'workout': workout, 'team':team, 'c':c},
                                context_instance=RequestContext(request))
 
 
@@ -207,7 +223,7 @@ def activity(request, activity_id):
     c = Context({
         'activity': activity,
     })
-    return render_to_response("workouts/activity.html", c,
+    return render_to_response("workouts/activities/detail.html", c,
                                context_instance=RequestContext(request))
 
 @login_required
@@ -220,9 +236,6 @@ def new_activity(request):
     if request.method == 'POST': # If the form has been submitted...
         form = ActivityForm(request.POST, instance=team) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            #activity = form.save()
-            print form
             a = Activity(team=team, name=form.cleaned_data['name'],
                          kind=form.cleaned_data['kind'],
                          people_needed=form.cleaned_data['people_needed'],
@@ -234,8 +247,35 @@ def new_activity(request):
     else:
         form = ActivityForm() # An unbound form
 
-    return render_to_response("workouts/activity_form.html", {'action': 'new', 'form': form, 'c':c},
+    return render_to_response("workouts/activities/form.html", {'action': 'new', 'form': form, 'c':c},
                                context_instance=RequestContext(request))
+
+
+@login_required
+@csrf_protect
+def edit_activity(request, activity_id):
+    # If coach
+    c = {}
+    c.update(csrf(request))
+    activity = get_object_or_404(Activity, pk=activity_id)
+    if request.method == 'POST': # If the form has been submitted...
+        form = ActivityForm(request.POST, instance=activity) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            activity.name=form.cleaned_data['name']
+            activity.kind=form.cleaned_data['kind']
+            activity.people_needed=form.cleaned_data['people_needed']
+            activity.location=form.cleaned_data['location']
+            activity.instructions=form.cleaned_data['instructions']
+            activity.save()
+            messages.add_message(request, messages.INFO, 'Activity updated!')
+            return HttpResponseRedirect(reverse('activity', args=(activity.id,)))
+    else:
+        form = ActivityForm(instance=activity) # An unbound form
+
+    return render_to_response("workouts/activities/form.html", {'action': 'update', 'activity': activity, 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
+
 
 @login_required
 def practices(request):
@@ -244,7 +284,7 @@ def practices(request):
     c = Context({
         'practice_list': practices,
     })
-    return render_to_response("workouts/practice_list.html", c,
+    return render_to_response("workouts/practices/practice_list.html", c,
                                context_instance=RequestContext(request))
     return HttpResponse(template.render(c))
 
@@ -254,7 +294,7 @@ def practice(request, practice_id):
     c = Context({
         'practice': practice,
     })
-    return render_to_response("workouts/practice.html", c,
+    return render_to_response("workouts/practices/detail.html", c,
                                context_instance=RequestContext(request))
 
 
@@ -266,7 +306,30 @@ def individual(request, individual_id):
         'individual': individual,
         'workout': workout,
     })
-    return render_to_response("workouts/individual_detail.html", c,
+    return render_to_response("workouts/individuals/detail.html", c,
+                               context_instance=RequestContext(request))
+
+@login_required
+@csrf_protect
+def edit_individual(request, individual_id):
+    """
+    """
+    c = {}
+    c.update(csrf(request))
+    individual = get_object_or_404(Individual, pk=individual_id)
+    workout = individual.workout
+    form = IndividualEditForm(instance=individual)
+    if request.method == 'POST':
+        form = IndividualEditForm(request.POST)
+        if form.is_valid():
+            individual.date_complete = form.cleaned_data['date_complete']
+            individual.date_suggested = form.cleaned_data['date_suggested']
+            individual.time_suggested = form.cleaned_data['time_suggested']
+            individual.notes = form.cleaned_data['notes']
+            individual.save()
+            return HttpResponseRedirect(reverse('individual', args=(individual.id,)))
+
+    return render_to_response("workouts/individuals/edit.html", {'form': form, 'individual': individual, 'c':c},
                                context_instance=RequestContext(request))
 
 
