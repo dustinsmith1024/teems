@@ -1,15 +1,8 @@
-
-<h3>Roster</h3>
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<ul>
+<table class="" >
     {% for player in roster %}
-        <li>
-          {{ player.number }}. {{ player.position }} - <a href="/teams/{{ player.team.id }}/players/{{ player.id }}">{{ player.full_name }}</a>
-        </li>
+        <tr>
+          <td>{{ player.number }}</td><td>{{ player.position }}</td>
+          <td><a href="/teams/{{ player.team.id }}/players/{{ player.id }}">{{ player.full_name }}</a></td>
+        </tr>
     {% endfor %}
-
-</ul>
-
-<a href="/teams/{{ team.id }}/players/new">New Player</a>
+</table>

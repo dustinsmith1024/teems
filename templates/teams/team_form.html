@@ -3,11 +3,15 @@
 {% block title %}Homie{% endblock %}
 
 {% block main-content %}
-
-<form action="/teams/{{ action }}/" method="post">
+<h2>Team Update</h2>
+<form action="/teams/{{ action }}/" class="form-stacked" method="post">
 {% csrf_token %}
 {{ form.as_p }}
-<input type="submit" value="Submit" />
+
+    <div id="actions" class="actions">
+    <button class="btn primary" type="submit" >Save</button>
+    <a href="#" class="btn " >Cancel</a>
+    </div>
 </form>
 
 {% endblock %}

@@ -62,6 +62,37 @@ def new_player(request, team_id):
                                context_instance=RequestContext(request))
 
 
+@login_required
+@csrf_protect
+def edit_player(request, team_id, player_id):
+    # If coach
+    team = get_object_or_404(Team, pk=team_id)
+    player = get_object_or_404(Player, pk=player_id)
+    user = player.user
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST': # If the form has been submitted...
+        form = TeamPlayerForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.username = form.cleaned_data['username']
+            user.email = form.cleaned_data['email']
+            user.save()
+            player.position = form.cleaned_data['position']
+            player.number=form.cleaned_data['number']
+            player.save()
+            messages.add_message(request, messages.SUCCESS, 'Player updated!')
+            return HttpResponseRedirect(reverse('player', args=(team.id, player.id)))
+    else:
+        form = TeamPlayerForm({'first_name':user.first_name, 
+                               'last_name': user.last_name, 
+                               'number': player.number, 'position': player.position,
+                               'email': user.email, 'username': user.username})
+    return render_to_response("teams/player_form.html", {'action': 'update', 'player': player, 'team':team, 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
+
 
 def captain(request, team_id):
     team = get_object_or_404(Team, pk=team_id)

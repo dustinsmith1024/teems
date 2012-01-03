@@ -77,9 +77,10 @@
     {% endblock header %}
     <div id="main" role"main">
       {% if messages %}
-        <ul class="messages">
+        <ul id="messages">
           {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            <div class="alert-message {{ message.tags }}">
+            <p>{{ message }}</p>
           {% endfor %}
         </ul>
       {% endif %}

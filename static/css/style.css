@@ -12,13 +12,18 @@
   padding: 5px;
 }
 
+#messages {
+  list-style: none;
+  margin: 0;
+}
+
 #topbar a {
   color: white;
 }
 
 ul.blue, div.blue {
     background-color: blue;
-    background-image: -moz-linear-gradient(center top , blue, navy);
+    background-image: -moz-linear-gradient(center top , #0064CD, navy);
 }
 
 #calendar .date {

@@ -213,7 +213,7 @@ def edit_practice(request, workout_id, practice_id):
 def activities(request):
     team = Player.objects.get(user=request.user).team
     activities = Activity.objects.filter(team=team).all()
-    return render_to_response("workouts/activities_list.html", {'activities_list':activities},
+    return render_to_response("workouts/activities/activities_list.html", {'activities_list':activities},
                                context_instance=RequestContext(request))
     #return HttpResponse(template.render(c))
 
@@ -242,7 +242,7 @@ def new_activity(request):
                          location=form.cleaned_data['location'],
                          instructions=form.cleaned_data['instructions'])
             a.save()
-            messages.add_message(request, messages.INFO, 'Activity created!')
+            messages.add_message(request, messages.SUCCESS, 'Activity created!')
             return HttpResponseRedirect(reverse('activity', args=(a.id,)))
     else:
         form = ActivityForm() # An unbound form
@@ -267,7 +267,7 @@ def edit_activity(request, activity_id):
             activity.location=form.cleaned_data['location']
             activity.instructions=form.cleaned_data['instructions']
             activity.save()
-            messages.add_message(request, messages.INFO, 'Activity updated!')
+            messages.add_message(request, messages.SUCCESS, 'Activity updated!')
             return HttpResponseRedirect(reverse('activity', args=(activity.id,)))
     else:
         form = ActivityForm(instance=activity) # An unbound form
