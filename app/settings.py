@@ -108,7 +108,7 @@ MIDDLEWARE_CLASSES = (
     'middleware.UserPlayerMiddleware',
 )
 
-ROOT_URLCONF = 'teems.urls'
+ROOT_URLCONF = 'app.urls'
 
 #STATIC_DOC_ROOT = os.path.join(PROJECT_DIR, "static")
 
