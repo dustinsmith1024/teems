@@ -21,9 +21,14 @@
   color: white;
 }
 
-ul.blue, div.blue {
+.blue-bg {
     background-color: blue;
     background-image: -moz-linear-gradient(center top , #0064CD, navy);
+}
+
+.red-bg {
+    background-color: red;
+    background-image: -moz-linear-gradient(center top , red, darkRed);
 }
 
 #calendar .date {

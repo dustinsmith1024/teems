@@ -104,6 +104,7 @@ def new_workout(request):
 @csrf_protect
 def update_workout(request, workout_id):
     """
+      Allows updating a workout and adding new activities on the fly
     """
     c = {}
     c.update(csrf(request))
@@ -117,17 +118,31 @@ def update_workout(request, workout_id):
           workout.save()
           for k in request.POST:
               if k.find("step_id") > 0:
-                  num = k.split('-')[0]
-                  step = Step.objects.get(pk=request.POST[k])
-                  step.position = request.POST[num + '-position']
-                  step.activity = Activity.objects.get(pk=request.POST[num + '-activities'])
-                  step.save()
-          return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
+                  if request.POST[k] != 'new': # just searching for step_id in the name - if not found then -1
+                      num = k.split('-')[0]
+                      step = Step.objects.get(pk=request.POST[k])
+                      step.position = request.POST[num + '-position']
+                      step.activity = Activity.objects.get(pk=request.POST[num + '-activities'])
+                      step.save()
+                  else:
+                      num = k.split('-')[0]
+                      if request.POST[num + '-activities']:
+                          step = Step(workout=workout, activity=Activity.objects.get(pk=request.POST[num + '-activities']),
+                                      position=request.POST[num + '-position'])
+                          step.save()
+          messages.add_message(request, messages.SUCCESS, 'Workout Updated!')
+          if request.POST['save'] == 'add_another':
+              return HttpResponseRedirect(reverse('update_workout', args=(workout.id,)))
+          else:
+              return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
     else:
         workoutForm = WorkoutForm(instance=workout)
         steps = Step.objects.filter(workout=workout)
         possible_activities = Activity.objects.filter(team=team)
-    return render_to_response("workouts/workout_update_form.html", {'id': workout.id, 'action': 'new', 'workout': workoutForm, 'activities': possible_activities, 'steps':steps, 'c':c},
+    return render_to_response("workouts/workout_update_form.html", 
+                              {'id': workout.id, 
+                               'action': 'new', 'workout': workoutForm, 'activities': possible_activities, 
+                               'steps':steps, 'c':c, 'current_step': len(steps), 'next_step': len(steps) + 1},
                                context_instance=RequestContext(request))
 
 
@@ -172,6 +187,7 @@ def schedule_practice(request, workout_id):
                                   notes=form.cleaned_data['notes'],
                                   )
               practice.save()
+              messages.add_message(request, messages.SUCCESS, 'Practice scheduled!')
               return HttpResponseRedirect(reverse('edit_practice', args=(workout.id, practice.id)))
 
     else:
@@ -198,8 +214,8 @@ def edit_practice(request, workout_id, practice_id):
               practice.time=form.cleaned_data['time']
               practice.notes=form.cleaned_data['notes']
               practice.save()
-
-              return HttpResponseRedirect(reverse('edit_practice', args=(workout.id, practice.id)))
+              messages.add_message(request, messages.SUCCESS, 'Practice Updated!')
+              return HttpResponseRedirect(reverse('practice', args=(practice.id,)))
     else:
         form = PracticeForm(instance=practice)
 
@@ -327,6 +343,7 @@ def edit_individual(request, individual_id):
             individual.time_suggested = form.cleaned_data['time_suggested']
             individual.notes = form.cleaned_data['notes']
             individual.save()
+            messages.add_message(request, messages.SUCCESS, 'Individual Updated!')
             return HttpResponseRedirect(reverse('individual', args=(individual.id,)))
 
     return render_to_response("workouts/individuals/edit.html", {'form': form, 'individual': individual, 'c':c},
