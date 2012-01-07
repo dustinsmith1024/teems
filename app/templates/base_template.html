@@ -1,0 +1,104 @@
+<!doctype html>
+{% block head %}
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block title %}Teems - {% endblock title %}</title>
+  {% block metadata %}
+  <meta name="description" content="Teems is a team management and competition site. Coaches, managerm and captains, can track players workouts and encourage everyone to participate.">
+  <meta name="author" content="Dustin Smith http://smith1024.com">
+  {% endblock metadata %}
+
+  <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+  {% block mobile-viewport-optimization %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% endblock mobile-viewport-optimization %}
+
+  <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  {% block favicons %}
+  <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico">
+  <link rel="apple-touch-icon" href="{{ STATIC_URL }}apple-touch-icon.png">
+  {% endblock favicons %}
+
+
+  <!-- CSS: implied media="all" -->
+  {% block base-styles %}
+  <!-- CSS: implied media=all -->
+  <!-- CSS concatenated and minified via ant build script-->
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css">
+  <!-- end CSS-->
+
+  <!-- Uncomment if you are specifically targeting less enabled mobile browsers
+  <link rel="stylesheet" media="handheld" href="css/handheld.css">  -->
+  {% endblock base-styles %}
+</head>
+{% endblock head %}
+{% block body %}
+<body>
+
+  <div id="container">
+    {% block header %}
+    <header>
+
+    </header>
+    {% endblock header %}
+    <div id="main" role"main">
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% block main-content %}
+        <div id="main-content">
+
+        </div>
+      {% endblock main-content %}
+    </div>
+
+    {% block footer %}
+    <footer>
+
+    </footer>
+    {% endblock footer %}
+  </div> <!--! end of #container -->
+
+
+  <!-- JavaScript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
+  {% block js-libs %}
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-1.7.0.min.js">\x3C/script>')</script>
+  {% endblock js-libs %}
+
+
+  <!-- scripts concatenated and minified via ant build script-->
+  {% block my-js %}
+  <script src="{{ STATIC_URL }}js/plugins.js"></script>
+  <script src="{{ STATIC_URL }}js/script.js"></script>
+  {% endblock my-js %}
+  <!-- end scripts-->
+
+  <!-- Change UA-XXXXX-X to be your site's ID -->
+  {% block google-analytics %}
+  <script>
+    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+  </script>
+  {% endblock google-analytics %}
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+
+</body>
+{% endblock body %}
+</html>

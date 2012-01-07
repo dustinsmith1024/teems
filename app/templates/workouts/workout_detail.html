@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Homie{% endblock %}
+
+{% block main-content %}
+
+{% if workout %}
+    <h3><a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a></h3>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    
+    <h3>Activities</h3>
+    {% include 'workouts/activities/list.html' with activities=workout.step_set.all %}
+
+<div id="actions" class="actions">
+    <a class="btn primary" href="/workouts/{{ workout.id }}/update">Update Workout</a></li>
+    <a class="btn primary" href="/workouts/{{ workout.id }}/schedule">Schedule as Practice</a>
+    <a class="btn primary" href="/workouts/{{ workout.id }}/assign">Schedule as Individual</a>
+</div>
+{% else %}
+    <p>Issue finding workout details...</p>
+{% endif %}
+
+{% endblock %}
+
+

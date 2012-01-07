@@ -1,0 +1,64 @@
+#body, body {
+  padding-top: 40px;
+  font-size: 16px;
+}
+
+#body form {
+  margin-bottom: 0;
+}
+
+#notes {
+  font-size: 15px;
+  padding: 5px;
+}
+
+#messages {
+  list-style: none;
+  margin: 0;
+}
+
+#topbar a {
+  color: white;
+}
+
+.blue-bg {
+    background-color: blue;
+    background-image: -moz-linear-gradient(center top , #0064CD, navy);
+}
+
+.red-bg {
+    background-color: red;
+    background-image: -moz-linear-gradient(center top , red, darkRed);
+}
+
+#calendar .date {
+  border-top: 1px dotted #CCC;
+  padding: 5px 0 0 2px;
+}
+#calendar .time {
+  list-style: circle;
+  padding: 5px;
+}
+
+#footer {
+  background: none repeat scroll 0 0 #F5F5F5;
+  border-top: 1px solid #DDDDDD;
+  margin: 0;
+}
+
+#footer ul {
+  text-align: center;
+  margin: 0;
+  list-style: none;
+}
+
+#footer a {
+  font-size: 16px;
+  margin-bottom: 7px;
+  text-align: left;
+  width: 96%;
+}
+#actions {
+    padding-left: 20px;
+    margin-bottom: 0;
+}

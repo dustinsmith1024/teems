@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Homie{% endblock %}
+
+{% block main-content %}
+<h2>Teams</h2>
+{% if team_list %}
+    <ul>
+    {% for team in team_list %}
+        <li><a href="/teams/{{ team.id }}/">{{ team.name }} {{ team.mascot }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No teams are available.</p>
+{% endif %}
+
+<div id="actions" class="actions">
+    <a href="/teams/new/" class="btn primary" >New Team</a>
+</div>
+
+{% endblock %}
+

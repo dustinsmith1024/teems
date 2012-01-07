@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Workouts{% endblock %}
+
+{% block main-content %}
+
+{% if combined %}
+<h2>Workouts</h2>
+    <ul id="calendar" class="unstyled">
+    {% for workout in combined %}
+        {% if workout.show_date %}
+            {% if forloop.counter != 1 %}</ul>{% endif %}
+            <li class="date">{{workout.date}}</li>
+            <ul>
+        {% endif %}
+        {% if workout.date_suggested %}
+            {{ combined.forloop.counter0 }}
+            <li class="time">{{ workout.time|time:"g:i A" }} <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }} - Individual</a></li>
+        {% else %}
+            <li class="time">{{workout.time|time:"g:i A"}} <a href="/workouts/practices/{{ workout.id }}/">{{ workout.name }} - Team</a></li>
+        {% endif %}
+    {% endfor %}
+      </ul>
+    </ul>
+{% else %}
+    <p>No workouts scheduled.</p>
+{% endif %}
+
+<div id="actions" class="actions">
+  <a class="btn primary" href="/workouts/new">New Workout</a>
+</div>
+{% endblock %}
+

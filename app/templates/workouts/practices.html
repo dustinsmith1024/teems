@@ -1,0 +1,14 @@
+<section id="practices">
+    <h3>Practices</h3>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <ul>
+        {% for practice in practices %}
+            <li>
+                <a href="/workouts/{{ practice.id }}">{{ practice.workout }}. {{ practice.date }}</a>
+            </li>
+        {% endfor %}
+
+    </ul>
+</section>

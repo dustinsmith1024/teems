@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Individuals{% endblock %}
+
+{% block main-content %}
+<h3><a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a></h3>
+
+<ul>
+<li>Date:
+{% if individual.date_complete %}
+Completed on: {{ individual.date_complete }
+{% else %}*CHANGE TO IND NOT WORKOUT
+Scheduled: <a href="/workouts/{{ workout.id }}/schedule/{{ individual.id }}">
+    {{ individual.date_suggested }} at {{ individual.time_suggested }}
+</a>
+</li>
+<li>
+  <a href="#">Mark as Complete</a>
+</li>
+{% endif %}
+
+</li>
+</ul>
+<p>Notes: 
+  {{ individual.notes }}
+</p>
+    
+Activities: {{ workout.step_set.all.count }}
+<ol>
+{% for step in workout.step_set.all %}
+    <li>
+      {{ step.activity }}
+    </li>
+{% endfor %}
+</ol>
+
+<nav class="action_links">
+  <ul>
+  <li>
+  <a href="/workouts/{{ workout.id }}/update">Edit Workout</a></li>
+  <li>
+  <a href="/workouts/{{ workout.id }}/schedule/{{ individual.id }}">Reschedule**NEEDS TO CHANGE TO IND NOT WORKOUT</a>
+  </li>
+  </ul>
+</nav>
+
+{% endblock %}
+
+

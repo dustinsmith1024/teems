@@ -1,0 +1,11 @@
+{% if workouts %}
+    <ul>
+    {% for workout in workouts %}
+        <li><a href="/workouts/{{ workout.id }}/">{{ workout.name }}</a>{{ workout.mascot }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No workoutss are available.</p>
+{% endif %}
+
+

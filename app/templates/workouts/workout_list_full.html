@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Workouts{% endblock %}
+
+{% block main-content %}
+<h2>{{ user.team.name }} Workouts</h2>
+{% if practice_list %}
+<h3>Scheduled Practices</h3>
+    <ul>
+    {% for practice in practice_list %}
+        <li>{{practice.date}} {{practice.time}}: <a href="/workouts/practices/{{ practice.id }}/">{{ practice.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+  <p>No Scheduled Practices</p>
+{% endif %}
+{% if individuals_list %}
+<h3>Scheduled Individuals</h3>
+    <ul>
+    {% for workout in individuals_list %}
+        <li>{{workout.date_suggested}} {{ workout.time_suggested }}: <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }}
+        {{ workout.player }}
+        </a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No individuals scheduled.</p>
+{% endif %}
+
+{% if workout_list %}
+<h3>Workouts</h3>
+    <ul>
+    {% for workout in workout_list %}
+        <li><a href="/workouts/{{ workout.id }}/">{{ workout.name }}
+        </a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+<div id="actions" class="actions">
+    <a class="btn primary" href="/workouts/new">New Workout</a>
+</div>
+{% endblock %}
+
