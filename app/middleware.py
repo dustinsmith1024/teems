@@ -7,7 +7,7 @@ import sys
 """
 class UserPlayerMiddleware(object):
     def process_request(self, request):
-        if request.user:
+        if request.user.is_authenticated():
             player = request.user.player_set.get()
             request.user.player = player
             request.user.team = player.team
