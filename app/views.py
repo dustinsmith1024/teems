@@ -7,31 +7,53 @@ from django.contrib.auth.models import User
 from django.forms.models import inlineformset_factory
 from django.template import Context, loader
 from django.template import RequestContext
-from teams.models import Team, Player, TeamForm, PlayerForm
-from teams.forms import TeamPlayerForm
+from teams.models import Team, Player, TeamForm, PlayerForm, Coach
+from teams.forms import SignUpExtension, TeamPlayerForm
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.forms import UserCreationForm
-from forms import UserCreationFormExtended
+from forms import SignUpForm, UserCreationFormExtended
 
 @csrf_protect
 def signup(request):
     # If coach
-    print 'here'
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
-        form = UserCreationForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
+        form = UserCreationFormExtended(request.POST) # A form bound to the POST data
+        extension = SignUpExtension(request.POST)
+        if form.is_valid() and extension.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             user = form.save()
-            messages.add_message(request, messages.INFO, 'Welcome ' + user.username + ', thanks for joining!')
-            return HttpResponseRedirect(reverse('mine',))
+            #print form.cleaned_data
+            user_type = request.POST['user_type']
+            #messages.add_message(request, messages.INFO, 'Welcome ' + user.username + ', thanks for joining!')
+            #return HttpResponseRedirect(reverse('mine',))
+            #user = User(first_name = form.cleaned_data['first_name'],
+            #            last_name = form.cleaned_data['last_name'],
+            #            username = form.cleaned_data['username'],
+            #            email = form.cleaned_data['email'],
+            #           )
+            #user.set_password('password')
+            #user.save()
+            if user_type == 'player':
+                player = Player(user=user, position=extension.cleaned_data['position'],
+                                number=extension.cleaned_data['number']
+                               )
+                player.save()
+                messages.add_message(request, messages.INFO, 'Thanks for joining ' + user.first_name + '!')
+                return HttpResponseRedirect(reverse('player', args=(player.id)))
+            elif user_type == 'coach':
+                coach = Coach(user=user, position=extension.cleaned_data['position'])
+                coach.save()
+                messages.add_message(request, messages.INFO, 'Thanks for joining ' + user.first_name + '!')
+                return HttpResponseRedirect(reverse('coach', args=(coach.id)))
+            messages.add_message(request, messages.INFO, 'Sorry, something bad happend creating a new user!')
     else:
         #return HttpResponseRedirect(reverse('mine'))
-        form = UserCreationFormExtended() # An unbound form
-
-    return render_to_response("signup.html", {'form': form, 'c':c},
+        form = SignUpForm() # An unbound form
+        extension = SignUpExtension()
+    return render_to_response("signup.html", {'extension': extension, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 """

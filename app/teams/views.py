@@ -143,14 +143,17 @@ def view(request, team_id):
     #print formset
     return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
 
-def player(request, team_id, player_id):
+def player(request, player_id):
     player = get_object_or_404(Player, pk=player_id)
-    team = get_object_or_404(Team, pk=team_id)
-    return render_to_response('teams/player.html', {'team':team, 'player': player}, context_instance=RequestContext(request))
+    return render_to_response('teams/player.html', {'player': player}, context_instance=RequestContext(request))
 
 
 def players(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     return render_to_response('teams/player.html', {'team':team}, context_instance=RequestContext(request))
  
+def coach(request, coach_id):
+    coach = get_object_or_404(Coach, pk=coach_id)
+    return render_to_response('teams/coach.html', {'coach': coach}, context_instance=RequestContext(request))
+
 

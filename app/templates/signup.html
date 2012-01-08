@@ -9,9 +9,12 @@
     {% csrf_token %}
 
     {{ form.as_p }}
-
-    <input type="submit" value="login" />
+    {{ extension.as_p }}
+ 
+<div id="actions" class="actions">
+    <input class="btn primary" type="submit" value="Sign Up" />
     <input type="hidden" name="next" value="{{ next }}" />
+</div>
     </form>
 
 {% endblock main-content %}

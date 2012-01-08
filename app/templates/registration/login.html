@@ -6,7 +6,7 @@
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<form class="form-stacked" method="post" action="{% url 'django.contrib.auth.views.login' %}">
 {% csrf_token %}
 <table>
 <tr>
@@ -18,9 +18,9 @@
     <td>{{ form.password }}</td>
 </tr>
 </table>
-
-<input type="submit" value="login" />
+<div id="actions" class="actions">
+<input class="btn primary" type="submit" value="Login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
+</div>
 {% endblock %}

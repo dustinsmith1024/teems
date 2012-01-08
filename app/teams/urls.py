@@ -6,6 +6,8 @@ from teams.models import Team, Player
 urlpatterns = patterns('teams.views',
     url(r'^mine/$', 'mine'),
     url(r'^new/$', 'new'),
+    url(r'^players/(?P<player_id>\d+)$', 'player', name='player'),
+    url(r'^coaches/(?P<coach_id>\d+)$', 'coach', name='coach'),
     url(r'^(?P<team_id>\d+)/players/new$', 'new_player'),
     url(r'^(?P<team_id>\d+)/players/(?P<player_id>\d+)/update/$', 'edit_player', name='edit_player'),
     url(r'^(?P<team_id>\d+)/players/(?P<player_id>\d+)$', 'player', name='player'),
