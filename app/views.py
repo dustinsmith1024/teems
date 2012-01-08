@@ -12,7 +12,7 @@ from teams.forms import TeamPlayerForm
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.forms import UserCreationForm
-
+from forms import UserCreationFormExtended
 
 @csrf_protect
 def signup(request):
@@ -28,8 +28,8 @@ def signup(request):
             messages.add_message(request, messages.INFO, 'Welcome ' + user.username + ', thanks for joining!')
             return HttpResponseRedirect(reverse('mine',))
     else:
-        return HttpResponseRedirect(reverse('mine'))
-        form = UserCreationForm() # An unbound form
+        #return HttpResponseRedirect(reverse('mine'))
+        form = UserCreationFormExtended() # An unbound form
 
     return render_to_response("signup.html", {'form': form, 'c':c},
                                context_instance=RequestContext(request))

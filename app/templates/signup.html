@@ -5,7 +5,7 @@
 {% block main-content %}
 * Create players by players/new*
 * Need to extend this form to create coaches *
-    <form method="post" action="{% url views.signup %}">
+    <form class="form-stacked" method="post" action="{% url views.signup %}">
     {% csrf_token %}
 
     {{ form.as_p }}
