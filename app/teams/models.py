@@ -43,7 +43,7 @@ class Coach(models.Model):
 class Player(models.Model):
     user = models.ForeignKey(User, unique=True, null=True)
     team = models.ForeignKey(Team, null=True)
-    number = models.IntegerField()
+    number = models.IntegerField(null=True)
     position = models.CharField(null=True,max_length=10)
 
     def first_name(self):

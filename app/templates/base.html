@@ -50,7 +50,9 @@
               <a class="brand" href="/workouts/mine">Workouts</a>
           {% else %}
               <a class="brand" href="/login">Login</a>
+              <a class="brand" href="/signup">Signup</a>
           {% endif %}
+          {% if user.is_authenticated %}
             <nav>
               <ul class="nav">
                 <li class="dropdown" >
@@ -70,6 +72,7 @@
                 </li>
               </ul>
             </nav>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -93,6 +96,7 @@
     </div>
 
     {% block footer %}
+    {% if user.is_authenticated %}
     <footer id="footer">
       <nav>
         <ul>
@@ -104,6 +108,7 @@
         </ul>
       </nav>
     </footer>
+    {% endif %}
     {% endblock footer %}
   </div> <!--! end of #container -->
 

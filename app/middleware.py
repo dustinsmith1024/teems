@@ -1,5 +1,6 @@
 import sys
 from teams.models import *
+
 """
   Puts the .player and .team onto every request
   Make it easier to use them in the templates 
@@ -19,4 +20,5 @@ class UserPlayerMiddleware(object):
                 request.user.coach = coach[0]
                 if coach[0].team: 
                     request.user.team = coach.team 
+
 

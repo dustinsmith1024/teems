@@ -25,17 +25,8 @@ def signup(request):
         if form.is_valid() and extension.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             user = form.save()
-            #print form.cleaned_data
+            # print form.cleaned_data
             user_type = request.POST['user_type']
-            #messages.add_message(request, messages.INFO, 'Welcome ' + user.username + ', thanks for joining!')
-            #return HttpResponseRedirect(reverse('mine',))
-            #user = User(first_name = form.cleaned_data['first_name'],
-            #            last_name = form.cleaned_data['last_name'],
-            #            username = form.cleaned_data['username'],
-            #            email = form.cleaned_data['email'],
-            #           )
-            #user.set_password('password')
-            #user.save()
             if user_type == 'player':
                 player = Player(user=user, position=extension.cleaned_data['position'],
                                 number=extension.cleaned_data['number']
