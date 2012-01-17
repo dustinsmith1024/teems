@@ -1,9 +1,0 @@
-<ol>
-    {% for activity in activities %}
-        {% if activity.name %}
-        <li><a href="/workouts/activities/{{ activity.id }}/">{{ activity.name }}</a></li>
-        {% else %}
-        <li><a href="/workouts/activities/{{ activity.activity.id }}/">{{ activity.activity.name }}</a></li>
-        {% endif %}
-    {% endfor %}
-</ol>
