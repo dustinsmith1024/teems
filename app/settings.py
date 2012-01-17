@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'workouts',
 )
 
+LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/workouts/mine'
 AUTH_PROFILE_MODULE = 'teams.Player'
 # A sample logging configuration. The only tangible logging

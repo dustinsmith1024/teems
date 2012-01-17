@@ -14,11 +14,11 @@ class UserPlayerMiddleware(object):
             if player:
                 request.user.player = player[0]
                 if player[0].team:
-                    request.user.team = player.team 
+                    request.user.team = player[0].team 
 
             if coach:
                 request.user.coach = coach[0]
                 if coach[0].team: 
-                    request.user.team = coach.team 
+                    request.user.team = coach[0].team 
 
 

@@ -28,17 +28,15 @@ def signup(request):
             # print form.cleaned_data
             user_type = request.POST['user_type']
             if user_type == 'player':
-                player = Player(user=user, position=extension.cleaned_data['position'],
-                                number=extension.cleaned_data['number']
-                               )
+                player = Player(user=user)
                 player.save()
                 messages.add_message(request, messages.INFO, 'Thanks for joining ' + user.first_name + '!')
-                return HttpResponseRedirect(reverse('player', args=(player.id)))
+                return HttpResponseRedirect(reverse('player', args=(player.id,)))
             elif user_type == 'coach':
-                coach = Coach(user=user, position=extension.cleaned_data['position'])
+                coach = Coach(user=user)
                 coach.save()
                 messages.add_message(request, messages.INFO, 'Thanks for joining ' + user.first_name + '!')
-                return HttpResponseRedirect(reverse('coach', args=(coach.id)))
+                return HttpResponseRedirect(reverse('coach', args=(coach.id,)))
             messages.add_message(request, messages.INFO, 'Sorry, something bad happend creating a new user!')
     else:
         #return HttpResponseRedirect(reverse('mine'))

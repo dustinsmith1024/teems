@@ -44,7 +44,7 @@ class Player(models.Model):
     user = models.ForeignKey(User, unique=True, null=True)
     team = models.ForeignKey(Team, null=True)
     number = models.IntegerField(null=True)
-    position = models.CharField(null=True,max_length=10)
+    position = models.CharField(null=True, max_length=10)
 
     def first_name(self):
         return self.user.first_name

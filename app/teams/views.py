@@ -31,6 +31,33 @@ def new(request):
     return render_to_response("teams/team_form.html", {'action': 'new', 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
+
+@login_required
+@csrf_protect
+def join(request):
+    # If coach
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST': # If the form has been submitted...
+        form = TeamForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            #team = form.save()
+            player = request.user.player
+            print player
+            player.team = team
+            print player
+            player.save()
+            messages.add_message(request, messages.INFO, 'Team created and joined!')
+            return HttpResponseRedirect(reverse('view', args=(team.id,)))
+    else: 
+        form = TeamForm() # An unbound form
+        
+    return render_to_response("teams/join_team.html", {'action': 'join', 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
+
+
 @login_required
 @csrf_protect
 def new_player(request, team_id):
