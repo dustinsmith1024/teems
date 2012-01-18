@@ -8,7 +8,7 @@ from django.forms.models import inlineformset_factory
 from django.template import Context, loader
 from django.template import RequestContext
 from teams.models import Team, Player, TeamForm, PlayerForm
-from teams.forms import TeamPlayerForm
+from teams.forms import TeamJoinForm, TeamPlayerForm
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 
@@ -39,23 +39,27 @@ def join(request):
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
-        form = TeamForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
+        team_join_form = TeamJoinForm(request.POST)
+        if team_join_form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            #team = form.save()
-            player = request.user.player
-            print player
-            player.team = team
-            print player
-            player.save()
-            messages.add_message(request, messages.INFO, 'Team created and joined!')
-            return HttpResponseRedirect(reverse('view', args=(team.id,)))
+            team = Team.objects.get(pk=team_join_form.cleaned_data['team'])
+            if team.secret == team_join_form.cleaned_data['secret']:
+                player = request.user.player
+                player.team = team
+                player.save()
+                messages.add_message(request, messages.INFO, 'Team joined!')
+                return HttpResponseRedirect(reverse('view', args=(team.id,)))
+            else:
+                print 'secret does not match'
+        else:
+            print 'form not valid'
+        form = TeamForm()
     else: 
-        form = TeamForm() # An unbound form
-        
-    return render_to_response("teams/join_team.html", {'action': 'join', 'form': form, 'c':c},
-                               context_instance=RequestContext(request))
+        form = TeamForm() 
+        team_join_form = TeamJoinForm()
 
+    return render_to_response("teams/join_team.html", {'action': 'join', 'team_join_form': team_join_form, 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
 
 
 @login_required
@@ -170,7 +174,7 @@ def view(request, team_id):
     #print formset
     return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
 
-def player(request, player_id):
+def player(request, team_id, player_id):
     player = get_object_or_404(Player, pk=player_id)
     return render_to_response('teams/player.html', {'player': player}, context_instance=RequestContext(request))
 

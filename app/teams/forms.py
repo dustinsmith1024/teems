@@ -1,6 +1,6 @@
 from teams.models import Team, Player
 from django import forms
-from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
+from django.forms.widgets import Select, RadioSelect, CheckboxSelectMultiple
 
 class TeamPlayerForm(forms.Form):
     first_name = forms.CharField(max_length=100)
@@ -16,5 +16,12 @@ class SignUpExtension(forms.Form):
     #number = forms.IntegerField()
     user_type = forms.ChoiceField(widget=RadioSelect(),
                     choices=[['player','Player'],['coach','Coach, Manager, Other']])
+
+
+class TeamJoinForm(forms.Form):
+    secret = forms.CharField(max_length=30)
+    choice = [(t.id, t.name) for t in Team.objects.all()]
+    team = forms.ChoiceField(widget=Select(),
+                             choices=choice)
 
 

@@ -2,7 +2,7 @@
     {% for player in roster %}
         <tr>
           <td>{{ player.number }}</td><td>{{ player.position }}</td>
-          <td><a href="/teams/{{ player.team.id }}/players/{{ player.id }}">{{ player.full_name }}</a></td>
+          <td><a href="/teams/{{ team.id }}/players/{{ player.id }}">{{ player.full_name }}</a></td>
         </tr>
     {% endfor %}
 </table>

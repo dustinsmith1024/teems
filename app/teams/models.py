@@ -8,6 +8,8 @@ class Team(models.Model):
     city = models.CharField(max_length=50, null=True)
     state = models.CharField(max_length=2, null=True)
     color = models.CharField(null=True, max_length=6)
+    public = models.BooleanField()
+    secret = models.CharField(null=True, max_length=30)
 
     def __unicode__(self):
         return self.name

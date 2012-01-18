@@ -25,10 +25,11 @@
 </section>
 
 <div id="actions" class="actions">
-  {% if team.id %}
-  <a class="btn primary" href="/teams/{{ team.id }}/players/{{ player.id }}/update/">Update Player</a>
+  {{ request.team.name }}
+  {% if request.user.team %}
+      <a class="btn primary" href="/teams/{{ request.user.team.id }}/players/{{ player.id }}/update/">Update Player</a>
   {% else %}
-  <a class="btn primary" href="/teams/new/?join=">Join Team</a>
+      <a class="btn primary" href="/teams/join/">Join Team</a>
   {% endif %}
 </div>
 {% endblock %}
