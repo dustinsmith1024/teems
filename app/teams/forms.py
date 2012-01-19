@@ -15,7 +15,8 @@ class SignUpExtension(forms.Form):
     #position = forms.CharField(max_length=10)
     #number = forms.IntegerField()
     user_type = forms.ChoiceField(widget=RadioSelect(),
-                    choices=[['player','Player'],['coach','Coach, Manager, Other']])
+                    choices=[['player','I am a Player'],['coach','I am a Coach, Manager, Other']]
+                    , label='What type of user are you?')
 
 
 class TeamJoinForm(forms.Form):

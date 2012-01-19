@@ -3,13 +3,11 @@
 {% block title %}Sign Up{% endblock title %}
 
 {% block main-content %}
-* Create players by players/new*
-* Need to extend this form to create coaches *
+<h2>Sign Up</h2>
     <form class="form-stacked" method="post" action="{% url views.signup %}">
-    {% csrf_token %}
-
-    {{ form.as_p }}
     {{ extension.as_p }}
+    {% csrf_token %}
+    {{ form.as_p }}
  
 <div id="actions" class="actions">
     <input class="btn primary" type="submit" value="Sign Up" />
