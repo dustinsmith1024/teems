@@ -3,18 +3,17 @@
 {% block title %}Join{% endblock %}
 
 {% block main-content %}
-<h2>Join your team</h2>
-<form action="/teams/join/" class="form-stacked" method="post">
+<h2>Create a new team</h2>
+<form action="{% url create_and_join_team %}" class="form-stacked" method="post">
 {% csrf_token %}
-{{ team_join_form.as_p }}
-<em>Dont' see your team?</em>
-<a href="{% url create_and_join_team %}">Add a new team</a>
-
+{{ form.as_p }}
+    <input type="hidden" name="join" value="true" />
     <div id="actions" class="actions">
     <button class="btn primary" type="submit" >Save</button>
     <a href="#" class="btn " >Cancel</a>
     </div>
 </form>
+
 {% endblock %}
 
 

@@ -42,6 +42,16 @@ class Coach(models.Model):
         return self.full_name()
 
 
+class Member(models.Model):
+    user = models.ForeignKey(User, unique=True, null=True)
+    team = models.ForeignKey(Team, null=True)
+    # Is the position on the court or position in the office
+    position = models.CharField(null=True, max_length=10)
+    # Only needed for players, but could be used for coaches in baseball, etc
+    number = models.IntegerField(null=True)
+    # Player vs Coach vs Whatever
+    kind = models.CharField(null=False, max_length=50)
+
 class Player(models.Model):
     user = models.ForeignKey(User, unique=True, null=True)
     team = models.ForeignKey(Team, null=True)

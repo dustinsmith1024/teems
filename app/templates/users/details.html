@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.full_name }} {% endblock %}
+
+{% block main-content %}
+
+<section id="user">
+    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+    <ul>
+      <li>
+         Username: {{ user.username }}
+      </li>
+      <li>
+         Email: {{ user.email }}
+      </li>
+      <li>
+         Team: {% if request.user.team %}{{ request.user.team }}{% else %}None{% endif %}
+      </li>
+      <li>
+         Kind: {% if request.user.member %}{{ request.user.member.kind }}{% else %}None{% endif %}
+      </li>
+    </ul>
+
+</section>
+
+<div id="actions" class="actions">
+  {% if request.user.team %}
+      <a class="btn primary" href="/teams/{{ request.user.team.id }}/">{{ request.user.team }}</a>
+  {% else %}
+      <a class="btn primary" href="{% url teams.join %}">Join Team</a>
+      <a class="btn primary" href="{% url teams.new %}">Create Team</a>
+  {% endif %}
+</div>
+{% endblock %}

@@ -34,6 +34,31 @@ def new(request):
 
 @login_required
 @csrf_protect
+def create_and_join(request):
+    # If coach
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST': # If the form has been submitted...
+        form = TeamForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            team = form.save()
+            user = request.user
+            user.team = team
+            user.save()
+            messages.add_message(request, messages.INFO, 'Team info created!')
+            return HttpResponseRedirect(reverse('view', args=(team.id,)))
+    else:
+        form = TeamForm() # An unbound form
+
+    return render_to_response("teams/create.html", {'action': 'new', 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
+
+
+
+@login_required
+@csrf_protect
 def join(request):
     # If coach
     c = {}
@@ -44,11 +69,11 @@ def join(request):
             # Process the data in form.cleaned_data
             team = Team.objects.get(pk=team_join_form.cleaned_data['team'])
             if team.secret == team_join_form.cleaned_data['secret']:
-                player = request.user.player
-                player.team = team
-                player.save()
+                member = request.user.member
+                member.team = team
+                member.save()
                 messages.add_message(request, messages.INFO, 'Team joined!')
-                return HttpResponseRedirect(reverse('view', args=(team.id,)))
+                return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
             else:
                 print 'secret does not match'
         else:
@@ -125,22 +150,6 @@ def edit_player(request, team_id, player_id):
 
 
 
-def captain(request, team_id):
-    team = get_object_or_404(Team, pk=team_id)
-    try:
-        chosen_captain = team.player_set.get(pk=request.POST['player'])
-    except (KeyError, Player.DoesNotExist):
-        return render_to_response('teams/details.html', {
-            'team': team,
-            'error_message': 'Chose!!!',
-        }, context_instance=RequestContext(request))
-    else:
-        messages.add_message(request, messages.INFO, 'Hello world.')
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button
-        return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
-
 @login_required
 @csrf_protect
 def update(request, team_id):
@@ -167,7 +176,7 @@ def mine(request):
     team = Player.objects.get(user=request.user).team
     return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
 
-def view(request, team_id):
+def team_details(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     #RosterForm = inlineformset_factory(Team, Player)
     #formset = RosterForm(instance=team)
@@ -183,8 +192,4 @@ def players(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     return render_to_response('teams/player.html', {'team':team}, context_instance=RequestContext(request))
  
-def coach(request, coach_id):
-    coach = get_object_or_404(Coach, pk=coach_id)
-    return render_to_response('teams/coach.html', {'coach': coach}, context_instance=RequestContext(request))
-
 

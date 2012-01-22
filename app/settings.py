@@ -59,7 +59,6 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
-print STATIC_ROOT
 #    os.path.join(PROJECT_DIR, "templates"),
 #    os.path.join(PROJECT_DIR, "teams/templates"),
 
@@ -80,7 +79,6 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-print STATICFILES_DIRS
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -138,11 +136,12 @@ INSTALLED_APPS = (
     'teams',
     'south',
     'workouts',
+    'users',
 )
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/workouts/mine'
-AUTH_PROFILE_MODULE = 'teams.Player'
+AUTH_PROFILE_MODULE = 'teams.Member'
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.
