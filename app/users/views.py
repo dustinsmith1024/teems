@@ -9,6 +9,7 @@ from django.template import Context, loader
 from django.template import RequestContext
 from teams.models import Team, Player, TeamForm, PlayerForm
 from teams.forms import TeamJoinForm, TeamPlayerForm
+from users.forms import EditUserForm
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 
@@ -32,37 +33,38 @@ def new(request):
                                context_instance=RequestContext(request))
 
 
-@login_required
 @csrf_protect
-def edit_user(request, username):
-    # If coach
+def update_user(request, username):
     user = get_object_or_404(User, username=username)
+    member = user.member_set.get()
+    print member
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
-        form = TeamPlayerForm(request.POST) # A form bound to the POST data
+        form = EditUserForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
             user.username = form.cleaned_data['username']
             user.email = form.cleaned_data['email']
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            member.number = form.cleaned_data['number']
+            member.position = form.cleaned_data['position']
+            member.kind = form.cleaned_data['user_type']
             user.save()
-            # IF COACHE
-            player.position = form.cleaned_data['position']
-            player.number=form.cleaned_data['number']
-            player.save()
-            messages.add_message(request, messages.SUCCESS, 'Player updated!')
-            return HttpResponseRedirect(reverse('player', args=(team.id, player.id)))
+            member.save()
+            messages.add_message(request, messages.INFO, 'User details updated!')
+            return HttpResponseRedirect(reverse('user_details', args=(user.username,)))
+        messages.add_message(request, messages.INFO, 'Sorry, something bad happend updatting a new user!')
     else:
-        form = TeamPlayerForm({'first_name':user.first_name, 
-                               'last_name': user.last_name, 
-                               'number': player.number, 'position': player.position,
-                               'email': user.email, 'username': user.username})
-    #IF COACH
-    return render_to_response("teams/coach_form.html", {'action': 'update', 'coach': coach, 'form': form, 'c':c},
-                               context_instance=RequestContext(request))
-
-    return render_to_response("teams/player_form.html", {'action': 'update', 'player': player, 'form': form, 'c':c},
+        form = EditUserForm({'username': user.username,
+                             'first_name': user.first_name,
+                             'last_name': user.last_name,
+                             'email': user.email,
+                             'user_type': member.kind,
+                             'position': member.position,
+                             'number': member.number,
+                            }) # An unbound form
+    return render_to_response("users/update.html", {'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 
@@ -71,10 +73,11 @@ def delete_user(request, user_id):
     return render_to_response('users/details.html', {'user': user}, context_instance=RequestContext(request))
 
 
-
 def user_details(request, username):
     user = get_object_or_404(User, username=username)
-    return render_to_response('users/details.html', {'user': user}, context_instance=RequestContext(request))
+    member = user.member_set.get()
+    team = member.team
+    return render_to_response('users/details.html', {'team':team, 'member':member, 'user': user}, context_instance=RequestContext(request))
 
 
 def users(request, team_id):

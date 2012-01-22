@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Update User{% endblock title %}
+
+{% block main-content %}
+<h2>Update User</h2>
+    <form class="form-stacked" method="post" action="{% url update_user user.username %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+ 
+<div id="actions" class="actions">
+    <input class="btn primary" type="submit" value="Sign Up" />
+    <input type="hidden" name="next" value="{{ next }}" />
+</div>
+    </form>
+
+{% endblock main-content %}
+

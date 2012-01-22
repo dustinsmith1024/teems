@@ -120,6 +120,38 @@ def new_player(request, team_id):
 
 @login_required
 @csrf_protect
+def new_member(request, team_id):
+    # If coach
+    team = get_object_or_404(Team, pk=team_id)
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST': # If the form has been submitted...
+        form = TeamPlayerForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            user = User(first_name = form.cleaned_data['first_name'],
+                        last_name = form.cleaned_data['last_name'],
+                        username = form.cleaned_data['username'],
+                        email = form.cleaned_data['email'],
+                       )
+            user.set_password('password')
+            user.save()
+            member = Member(team=team, user=user, position=form.cleaned_data['position'],
+                            number=form.cleaned_data['number'], kind='player',
+                           )
+            member.save()
+            messages.add_message(request, messages.INFO, 'New player created!')
+            return HttpResponseRedirect(reverse('user_details', args=(user.username)))
+    else:
+        form = TeamPlayerForm()
+    return render_to_response("teams/player_form.html", {'action': 'new', 'team':team, 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
+
+
+
+@login_required
+@csrf_protect
 def edit_player(request, team_id, player_id):
     # If coach
     team = get_object_or_404(Team, pk=team_id)
@@ -178,9 +210,6 @@ def mine(request):
 
 def team_details(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
-    #RosterForm = inlineformset_factory(Team, Player)
-    #formset = RosterForm(instance=team)
-    #print formset
     return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
 
 def player(request, team_id, player_id):

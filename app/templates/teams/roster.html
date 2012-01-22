@@ -1,8 +1,8 @@
 <table class="" >
-    {% for player in roster %}
+    {% for member in roster %}
         <tr>
-          <td>{{ player.number }}</td><td>{{ player.position }}</td>
-          <td><a href="/teams/{{ team.id }}/players/{{ player.id }}">{{ player.full_name }}</a></td>
+          <td>{{ member.number }}</td><td>{{ member.position }}</td>
+          <td><a href="{% url user_details member.user.username %}">{{ member.full_name }}</a></td>
         </tr>
     {% endfor %}
 </table>

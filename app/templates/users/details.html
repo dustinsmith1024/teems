@@ -14,21 +14,21 @@
          Email: {{ user.email }}
       </li>
       <li>
-         Team: {% if request.user.team %}{{ request.user.team }}{% else %}None{% endif %}
+         Team: {% if team %}{{ team }}{% else %}None{% endif %}
       </li>
       <li>
-         Kind: {% if request.user.member %}{{ request.user.member.kind }}{% else %}None{% endif %}
+         Kind: {% if member %}{{ member.kind }}{% else %}None{% endif %}
       </li>
     </ul>
 
 </section>
 
 <div id="actions" class="actions">
-  {% if request.user.team %}
-      <a class="btn primary" href="/teams/{{ request.user.team.id }}/">{{ request.user.team }}</a>
+  {% if team %}
+      <a class="btn primary" href="/teams/{{ team.id }}/">{{ team }}</a>
   {% else %}
-      <a class="btn primary" href="{% url teams.join %}">Join Team</a>
-      <a class="btn primary" href="{% url teams.new %}">Create Team</a>
+      <a class="btn primary" href="{% url join_team %}">Join Team</a>
+      <a class="btn primary" href="{% url create_and_join_team %}">Create Team</a>
   {% endif %}
 </div>
 {% endblock %}
