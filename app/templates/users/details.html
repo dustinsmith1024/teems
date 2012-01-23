@@ -1,34 +1,54 @@
 {% extends "base.html" %}
 
-{% block title %}{{ user.full_name }} {% endblock %}
+{% block title %}{{ view_user.full_name }} {% endblock %}
 
 {% block main-content %}
 
 <section id="user">
-    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+    <h3>{{ view_user.first_name }} {{ view_user.last_name }}</h3>
     <ul>
       <li>
-         Username: {{ user.username }}
+         Username: {{ view_user.username }}
       </li>
       <li>
-         Email: {{ user.email }}
+         Email: <a href="mailto:{{ view_user.email }}">{{ view_user.email }}</a>
       </li>
       <li>
-         Team: {% if team %}{{ team }}{% else %}None{% endif %}
+         Team: 
+         {% if team %}
+             <a href="{% url team_details team.id %}">{{ team }}</a>
+         {% else %}
+             <a class="" href="{% url join_team %}">Join Team</a> | 
+             <a class="" href="{% url create_and_join_team %}">Create Team</a>
+         {% endif %}
       </li>
       <li>
-         Kind: {% if member %}{{ member.kind }}{% else %}None{% endif %}
+         User Type: {{ member.kind|capfirst }}
+      </li>
+      <li>
+         Position: {{ member.position }}
+      </li>
+      <li>
+         Number: {{ member.number }}
       </li>
     </ul>
 
 </section>
 
+{% if team %}
 <div id="actions" class="actions">
-  {% if team %}
-      <a class="btn primary" href="/teams/{{ team.id }}/">{{ team }}</a>
-  {% else %}
-      <a class="btn primary" href="{% url join_team %}">Join Team</a>
-      <a class="btn primary" href="{% url create_and_join_team %}">Create Team</a>
-  {% endif %}
+      {% if user == view_user %}
+          <a class="btn primary" href="{% url update_user view_user.username %}">Update Details</a>
+      {% endif %}
+      <a class="btn primary" href="{% url team_details team.id %}">View Team</a>
 </div>
+  {% else %}
+      {% if user == view_user %}
+<div id="actions" class="actions">
+          <a class="btn primary" href="{% url update_user view_user.username %}">Update Details</a>
+          <a class="btn primary" href="{% url join_team %}">Join Team</a>
+          <a class="btn primary" href="{% url create_and_join_team %}">Create Team</a>
+</div>
+      {% endif %}
+  {% endif %}
 {% endblock %}

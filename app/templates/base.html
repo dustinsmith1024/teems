@@ -60,6 +60,7 @@
                   <ul class="dropdown-menu {{ user.team.color }} ">
                     <li><a href="/teams/mine">My Teem</a></li>
                     <li><a href="/workouts/mine">My Workouts</a></li>
+                    <li><a href="/users/{{ user.username }}">My Settings</a></li>
                     <li><a href="/logout">Logout</a></li>
                   </ul>
                 </li>
@@ -81,12 +82,13 @@
     {% endblock header %}
     <div id="main" role"main">
       {% if messages %}
-        <ul id="messages">
+        <div id="messages">
           {% for message in messages %}
             <div class="alert-message {{ message.tags }}">
             <p>{{ message }}</p>
+            </div>
           {% endfor %}
-        </ul>
+        </div>
       {% endif %}
 
       {% block main-content %}

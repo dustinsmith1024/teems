@@ -3,7 +3,7 @@
 
 {% block main-content %}
 <h2>Update User</h2>
-    <form class="form-stacked" method="post" action="{% url update_user user.username %}">
+    <form class="form-stacked" method="post" action="{% url update_user edit_user.username %}">
     {% csrf_token %}
     {{ form.as_p }}
  

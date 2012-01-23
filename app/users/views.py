@@ -37,7 +37,6 @@ def new(request):
 def update_user(request, username):
     user = get_object_or_404(User, username=username)
     member = user.member_set.get()
-    print member
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
@@ -64,7 +63,7 @@ def update_user(request, username):
                              'position': member.position,
                              'number': member.number,
                             }) # An unbound form
-    return render_to_response("users/update.html", {'form': form, 'c':c},
+    return render_to_response("users/update.html", {'form': form, 'c':c, 'edit_user':user},
                                context_instance=RequestContext(request))
 
 
@@ -74,10 +73,11 @@ def delete_user(request, user_id):
 
 
 def user_details(request, username):
+    print username
     user = get_object_or_404(User, username=username)
     member = user.member_set.get()
     team = member.team
-    return render_to_response('users/details.html', {'team':team, 'member':member, 'user': user}, context_instance=RequestContext(request))
+    return render_to_response('users/details.html', {'team':team, 'member':member, 'view_user': user}, context_instance=RequestContext(request))
 
 
 def users(request, team_id):
