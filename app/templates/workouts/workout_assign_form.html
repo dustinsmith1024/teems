@@ -8,12 +8,12 @@
 {% csrf_token %}
     <fieldset>
       <div class="clearfix">
-        <label for="players">Players:</label>
+        <label for="members">Team Members:</label>
         <div class="input">
-          <select name="player" id="players">
+          <select name="member" id="members">
             <option value="">---------</option>
-            {% for player in team.player_set.all %} {{ s }}
-                <option value="{{ player.id }}" >{{ player.name_and_number }}</option>
+            {% for member in team.member_set.all %} {{ s }}
+                <option value="{{ member.id }}" >{{ member.name_and_number }}</option>
             {% endfor %}
           </select>
         </div>
@@ -33,6 +33,7 @@
     </fieldset>
     <div id="actions" class="actions">
     <button class="btn primary" type="submit" >Save</button>
+    <button class="btn primary" type="submit" value="True" name="add_another">Save & Add Another</button>
     <a href="#" class="btn " >Cancel</a>
     </div>
 </form>

@@ -2,9 +2,9 @@
     <h3>Roster</h3>
 
     <ul>
-        {% for player in roster %}
+        {% for member in roster %}
             <li>
-              {{ player.number }}. {{ player.position }} - <a href="/player/{{ player.id }}">{{ player.full_name }}</a>
+              {{ member.number }}. {{ member.position }} - <a href="/user/{{ member.user.id }}">{{ member.full_name }}</a>
             </li>
         {% endfor %}
 

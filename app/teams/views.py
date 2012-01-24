@@ -87,36 +87,6 @@ def join(request):
                                context_instance=RequestContext(request))
 
 
-@login_required
-@csrf_protect
-def new_player(request, team_id):
-    # If coach
-    team = get_object_or_404(Team, pk=team_id)
-    c = {}
-    c.update(csrf(request))
-    if request.method == 'POST': # If the form has been submitted...
-        form = TeamPlayerForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            print form.cleaned_data
-            user = User(first_name = form.cleaned_data['first_name'],
-                        last_name = form.cleaned_data['last_name'],
-                        username = form.cleaned_data['username'],
-                        email = form.cleaned_data['email'],
-                       )
-            user.set_password('password')
-            user.save()
-            player = Player(team=team, user=user, position=form.cleaned_data['position'],
-                            number=form.cleaned_data['number']
-                           )
-            player.save()
-            messages.add_message(request, messages.INFO, 'Player created!')
-            return HttpResponseRedirect(reverse('player', args=(team.id, player.id)))
-    else:
-        form = TeamPlayerForm()
-    return render_to_response("teams/player_form.html", {'action': 'new', 'team':team, 'form': form, 'c':c},
-                               context_instance=RequestContext(request))
-
 
 @login_required
 @csrf_protect
@@ -201,20 +171,11 @@ def update(request, team_id):
 @csrf_protect
 def mine(request):
     # If coach
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
 
 def team_details(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
 
-def player(request, team_id, player_id):
-    player = get_object_or_404(Player, pk=player_id)
-    return render_to_response('teams/player.html', {'player': player}, context_instance=RequestContext(request))
-
-
-def players(request, team_id):
-    team = get_object_or_404(Team, pk=team_id)
-    return render_to_response('teams/player.html', {'team':team}, context_instance=RequestContext(request))
- 
 

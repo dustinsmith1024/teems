@@ -13,9 +13,9 @@
 
     <form action="/teams/{{ team.id }}/captain/" method="post">
     {% csrf_token %}
-    {% for player in team.player_set.all %}
-        <input type="radio" name="player" id="player{{ forloop.counter }}" value="{{ player.id }}" />
-        <label for="player{{ forloop.counter }}">{{ player.full_name }}</label><br />
+    {% for member in team.member_set.all %}
+        <input type="radio" name="member" id="member{{ forloop.counter }}" value="{{ member.id }}" />
+        <label for="member{{ forloop.counter }}">{{ member.full_name }}</label><br />
     {% endfor %}
     <input type="submit" value="Vote" />
     </form>

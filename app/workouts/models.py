@@ -1,5 +1,5 @@
 from django.db import models
-from teams.models import Team, Player
+from teams.models import Team, Member
 from django.forms import ModelForm
 
 class Activity(models.Model):
@@ -94,11 +94,11 @@ class PracticeForm(ModelForm):
 
 class Individual(models.Model):
     """
-      A workout that is assigned to a player. 
+      A workout that is assigned to a member. 
       Extra fields for tracking each one
     """
     workout = models.ForeignKey(Workout)
-    player = models.ForeignKey(Player)
+    member = models.ForeignKey(Member)
     date_complete = models.DateField(null=True, blank=True)
     date_suggested = models.DateField()
     time_suggested = models.TimeField(null=True)
@@ -111,6 +111,9 @@ class Individual(models.Model):
 
     def __unicode__(self):
       return self.name()
+
+    class Meta:
+        ordering = ['date_suggested', 'time_suggested']
 
 class IndividualEditForm(ModelForm):
     class Meta:

@@ -19,8 +19,6 @@ urlpatterns = patterns('workouts.views',
     url(r'^practices/(?P<practice_id>\d+)/$', 'practice', name='practice'),
     url(r'^practices/', 'practices', name='pratices'),
     url(r'^$', 'workouts', name='workouts'),
-    #url(r'^(?P<pk>\d+)/$',
-    #    DetailView.as_view(model=Workout,), name='workout_details'
-    #   ),
+    url(r'^(?P<workout_id>\d+)/$', 'workout', name='workout_details'),
 )
 

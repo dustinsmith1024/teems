@@ -8,9 +8,10 @@ from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 from django.forms.models import formset_factory, inlineformset_factory
-from teams.models import Team, Player
+from teams.models import Team, Member
 from models import *
 from forms import *
+import operator
 
 def index(request):
     teams = Team.objects.all()
@@ -22,10 +23,9 @@ def index(request):
 
 @login_required
 def mine(request):
-    import operator
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     practices = Practice.objects.filter(team=team).all()
-    individuals = Player.objects.get(user=request.user).individual_set.all()
+    individuals = Member.objects.get(user=request.user).individual_set.all()
     for index, i in enumerate(individuals):
         individuals[index].date = i.date_suggested
         individuals[index].time = i.time_suggested
@@ -52,6 +52,13 @@ def mine(request):
 def workouts(request):
     practices = Practice.objects.all()
     individuals = Individual.objects.all()
+    i_set = []
+    date = None
+    time = None
+    """
+    for i in individual:
+       #loop em all
+    """
     workouts = Workout.objects.all()
     c = Context({
         'workout_list': workouts,
@@ -76,7 +83,7 @@ def new_workout(request):
     c = {} 
     c.update(csrf(request))
     w = Workout()
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
         workoutForm = WorkoutPlanForm(request.POST) #for update pass in instance=w
         if workoutForm.is_valid():
@@ -100,6 +107,7 @@ def new_workout(request):
                                context_instance=RequestContext(request))
 
 
+
 @login_required
 @csrf_protect
 def update_workout(request, workout_id):
@@ -109,7 +117,7 @@ def update_workout(request, workout_id):
     c = {}
     c.update(csrf(request))
     workout = get_object_or_404(Workout, pk=workout_id)
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
         workoutForm = WorkoutForm(request.POST) #for update pass in instance=w
         if workoutForm.is_valid():
@@ -154,14 +162,19 @@ def assign_workout(request, workout_id):
     c = {}
     c.update(csrf(request))
     workout = get_object_or_404(Workout, pk=workout_id)
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
-          player = Player.objects.get(pk=request.POST['player'])
-          individual = Individual(workout=workout, player=player, 
+          member = Member.objects.get(pk=request.POST['member'])
+          individual = Individual(workout=workout, member=member, 
                                   date_suggested=request.POST['date_suggested'],
                                   time_suggested=request.POST['time_suggested'],
                                   )
           individual.save()
+          messages.add_message(request, messages.SUCCESS, 'Individual scheduled!')
+          if not request.POST['add_another']:
+              return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
+          else:
+              return HttpResponseRedirect(reverse('assign_workout', args=(workout.id,)))
     else:
         print workout
 
@@ -177,7 +190,7 @@ def schedule_practice(request, workout_id):
     c = {}
     c.update(csrf(request))
     workout = get_object_or_404(Workout, pk=workout_id)
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
           form = PracticeForm(request.POST)
           if form.is_valid():
@@ -205,7 +218,7 @@ def edit_practice(request, workout_id, practice_id):
     c = {} 
     c.update(csrf(request))
     workout = get_object_or_404(Workout, pk=workout_id)
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     practice = Practice.objects.get(pk=practice_id)
     if request.method == 'POST': # If the form has been submitted...
           form = PracticeForm(request.POST)
@@ -227,7 +240,7 @@ def edit_practice(request, workout_id, practice_id):
 
 @login_required
 def activities(request):
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     activities = Activity.objects.filter(team=team).all()
     return render_to_response("workouts/activities/activities_list.html", {'activities_list':activities},
                                context_instance=RequestContext(request))
@@ -248,7 +261,7 @@ def new_activity(request):
     # If coach
     c = {}
     c.update(csrf(request))
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
         form = ActivityForm(request.POST, instance=team) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
@@ -295,7 +308,7 @@ def edit_activity(request, activity_id):
 
 @login_required
 def practices(request):
-    team = Player.objects.get(user=request.user).team
+    team = Member.objects.get(user=request.user).team
     practices = Practice.objects.filter(team=team).all()
     c = Context({
         'practice_list': practices,
@@ -324,6 +337,16 @@ def individual(request, individual_id):
     })
     return render_to_response("workouts/individuals/detail.html", c,
                                context_instance=RequestContext(request))
+
+@login_required
+def workout(request, workout_id):
+    workout = get_object_or_404(Workout, pk=workout_id)
+    c = Context({
+        'workout': workout,
+    })
+    return render_to_response("workouts/workout_detail.html", c,
+                               context_instance=RequestContext(request))
+
 
 @login_required
 @csrf_protect
