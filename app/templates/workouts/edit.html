@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Update Workout{% endblock %}
+{% block title %}Edit Workout{% endblock %}
 
 {% block main-content %}
-<h2>Update Workout</h2>
-<form action="/workouts/{{ id }}/update/" class="form-stacked" method="post">
+<h2>Edit Workout</h2>
+<form action="{% url edit_workout workout.id %}" class="form-stacked" method="post">
 {% csrf_token %}
 <fieldset>
-{{ workout.as_p}}
-    {% for s in steps %} {{ a }}
+{{ workout_form.as_p}}
+    {% for s in steps %}
     <div class="clearfix">
       <label for="id_{{ forloop.counter }}-activities">Activities:</label>
       <input name="{{ forloop.counter }}-step_id" type="hidden" value="{{ s.id }}" />
@@ -57,5 +57,4 @@
 </form>
 
 {% endblock %}
-
 

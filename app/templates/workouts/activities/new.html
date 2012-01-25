@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}New Activity{% endblock %}
+
+{% block main-content %}
+<h2>New Activity</h2>
+<form action="{% url new_activity %}" class="form-stacked" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+    <div id="actions" class="actions">
+    <button class="btn primary" type="submit" >Save</button>
+    </div>
+</form>
+
+{% endblock %}
+
+

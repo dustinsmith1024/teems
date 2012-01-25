@@ -4,10 +4,10 @@
 
 {% block main-content %}
 <h2>{{ action|capfirst }} Player</h2>
-{% if action == 'update' %}
-<form action="/teams/{{ team.id }}/players/{{ player.id }}/update/" class="form-stacked" method="post">
+{% if action == 'edit' %}
+<form action="{% url edit_member team.id member.id %}" class="form-stacked" method="post">
 {% else %}
-<form action="/teams/{{ team.id }}/players/new" class="form-stacked" method="post">
+<form action="{% url new_member team.id %}" class="form-stacked" method="post">
 {% endif %}
 
 {% csrf_token %}

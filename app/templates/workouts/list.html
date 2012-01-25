@@ -18,9 +18,9 @@
 <h3>Scheduled Individuals</h3>
     <dl>
     {% for workout in individuals_list %}
-        <dt>{{workout.date_suggested|date:'D, M, d'}} at {{ workout.time_suggested|time:'G:i' }}:</dt>
-        <dd> <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }} for {{ workout.member }}
-        </a></dd>
+        <li>{{workout.date_suggested|date:'D, M, d'}} at {{ workout.time_suggested|time:'G:i' }}:
+         <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }} for {{ workout.member }}
+        </a></li>
     {% endfor %}
     </ul>
 {% else %}

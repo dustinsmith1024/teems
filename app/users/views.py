@@ -34,7 +34,7 @@ def new(request):
 
 
 @csrf_protect
-def update_user(request, username):
+def edit_user(request, username):
     user = get_object_or_404(User, username=username)
     member = user.member_set.get()
     c = {}
@@ -63,7 +63,7 @@ def update_user(request, username):
                              'position': member.position,
                              'number': member.number,
                             }) # An unbound form
-    return render_to_response("users/update.html", {'form': form, 'c':c, 'edit_user':user},
+    return render_to_response("users/edit.html", {'form': form, 'c':c, 'edit_user':user},
                                context_instance=RequestContext(request))
 
 

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Workout{% endblock %}
+
+{% block main-content %}
+<h2>Edit Workout</h2>
+<form action="{% url edit_practice workout.id practice.id  %}" class="form-stacked" method="post">
+{% csrf_token %}
+    <fieldset>
+    {{ form.as_p }}
+    </fieldset>
+    <div id="actions" class="actions">
+    <button class="btn primary" type="submit" >Save</button>
+    <button class="btn danger" type="submit" name="cancel" value="cancel">Cancel Practice</a>
+    </div>
+</form>
+
+{% endblock %}
+
+

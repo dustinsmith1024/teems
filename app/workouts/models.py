@@ -10,8 +10,8 @@ class Activity(models.Model):
     name = models.CharField(max_length=50,default='Activity Name')
     kind = models.CharField(max_length=50,default='Kind of Activity')
     people_needed = models.IntegerField(default='1')
-    location = models.CharField(max_length=200,null=True)
-    instructions = models.TextField(null=True)
+    location = models.CharField(max_length=200,null=True, blank=True)
+    instructions = models.TextField(null=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -75,8 +75,8 @@ class Practice(models.Model):
     workout = models.ForeignKey(Workout)
     team = models.ForeignKey(Team)
     date = models.DateField()
-    time = models.TimeField(null=True)
-    notes = models.TextField(null=True)
+    time = models.TimeField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -101,8 +101,8 @@ class Individual(models.Model):
     member = models.ForeignKey(Member)
     date_complete = models.DateField(null=True, blank=True)
     date_suggested = models.DateField()
-    time_suggested = models.TimeField(null=True)
-    notes = models.TextField(null=True)
+    time_suggested = models.TimeField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Update User{% endblock title %}
+{% block title %}Edit User{% endblock title %}
 
 {% block main-content %}
-<h2>Update User</h2>
-    <form class="form-stacked" method="post" action="{% url update_user edit_user.username %}">
+<h2>Edit User</h2>
+    <form class="form-stacked" method="post" action="{% url edit_user edit_user.username %}">
     {% csrf_token %}
     {{ form.as_p }}
  

@@ -28,7 +28,7 @@ def new(request):
     else:
         form = TeamForm() # An unbound form
 
-    return render_to_response("teams/team_form.html", {'action': 'new', 'form': form, 'c':c},
+    return render_to_response("teams/form.html", {'action': 'new', 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 
@@ -119,7 +119,7 @@ def new_member(request, team_id):
 
 @login_required
 @csrf_protect
-def update_member(request, team_id, member_id):
+def edit_member(request, team_id, member_id):
     # If coach
     team = get_object_or_404(Team, pk=team_id)
     member = get_object_or_404(Member, pk=member_id)
@@ -144,13 +144,13 @@ def update_member(request, team_id, member_id):
                                'last_name': user.last_name, 
                                'number': member.number, 'position': member.position,
                                'email': user.email, 'username': user.username})
-    return render_to_response("teams/member_form.html", {'action': 'update', 'member': member, 'team':team, 'form': form, 'c':c},
+    return render_to_response("teams/member_form.html", {'action': 'edit', 'member': member, 'team':team, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 
 @login_required
 @csrf_protect
-def update(request, team_id):
+def edit(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     c = {}
     c.update(csrf(request))
@@ -164,7 +164,7 @@ def update(request, team_id):
         form = TeamForm(instance=team) # An unbound form
 
     # pass action with the id, probably need a cleaner way of doing this
-    return render_to_response("teams/team_form.html", {'action': str(team.id) + '/update', 'form': form, 'c':c},
+    return render_to_response("teams/team_form.html", {'action': str(team.id) + '/edit', 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 @login_required

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Activity{% endblock %}
+
+{% block main-content %}
+<h2>Edit Activity</h2>
+<form action="{% url edit_activity activity.id %}" class="form-stacked" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+    <div id="actions" class="actions">
+    <button class="btn primary" type="submit" >Save</button>
+    <button class="btn danger" type="submit" name="cancel" value="cancel">Delete Activity</a>
+    </div>
+</form>
+
+{% endblock %}
+
+

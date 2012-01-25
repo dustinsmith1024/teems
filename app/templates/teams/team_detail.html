@@ -14,7 +14,7 @@
     <h3>Roster</h3>
     {% include 'teams/roster.html' with roster=team.member_set.all %}
  
-    {% include 'workouts/practices/practice_list_fragment.html' with practice_list=team.practice_set.all %}
+    {% include 'workouts/practices/list_fragment.html' with practice_list=team.practice_set.all %}
 
 
 {% else %}
@@ -23,7 +23,7 @@
 
 <div id="actions" class="actions">
   <a class="btn primary" href="{% url new_member team.id %}">New Team Member</a>
-  <a class="btn primary" href="{% url update_team team.id %}">Edit Details</a>
+  <a class="btn primary" href="{% url edit_team team.id %}">Edit Details</a>
 </div>
 
 {% endblock %}

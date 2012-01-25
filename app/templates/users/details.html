@@ -38,14 +38,14 @@
 {% if team %}
 <div id="actions" class="actions">
       {% if user == view_user %}
-          <a class="btn primary" href="{% url update_user view_user.username %}">Update Details</a>
+          <a class="btn primary" href="{% url edit_user view_user.username %}">Edit Details</a>
       {% endif %}
       <a class="btn primary" href="{% url team_details team.id %}">View Team</a>
 </div>
   {% else %}
       {% if user == view_user %}
 <div id="actions" class="actions">
-          <a class="btn primary" href="{% url update_user view_user.username %}">Update Details</a>
+          <a class="btn primary" href="{% url edit_user view_user.username %}">Edit Details</a>
           <a class="btn primary" href="{% url join_team %}">Join Team</a>
           <a class="btn primary" href="{% url create_and_join_team %}">Create Team</a>
 </div>

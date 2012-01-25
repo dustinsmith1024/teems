@@ -29,8 +29,8 @@
     <p>No activities are available.</p>
 {% endif %}
 <div id="actions" class="actions">
-  <a class="btn primary" href="/workouts/activities/{{ activity.id }}/update/">Update Activity</a>
-  <a class="btn primary" href="/workouts/activities/new/">New Activity</a>
+  <a class="btn primary" href="{% url edit_activity activity.id %}">Edit Activity</a>
+  <a class="btn primary" href="{% url new_activity %}">New Activity</a>
 </div>
 {% endblock %}
 

@@ -9,8 +9,8 @@ urlpatterns = patterns('teams.views',
     url(r'^join/$', 'join', name='join_team'),
     url(r'^create/$', 'create_and_join', name='create_and_join_team'),
     url(r'^(?P<team_id>\d+)/members/new$', 'new_member', name='new_member'),
-    url(r'^(?P<team_id>\d+)/members/(?P<member_id>\d+)/update/$', 'update_member', name='update_member'),
-    url(r'^(?P<team_id>\d+)/update/$', 'update', name='update_team'),
+    url(r'^(?P<team_id>\d+)/members/(?P<member_id>\d+)/edit/$', 'edit_member', name='edit_member'),
+    url(r'^(?P<team_id>\d+)/edit/$', 'edit', name='edit_team'),
     url(r'^(?P<team_id>\d+)/$', 'team_details', name='team_details'),
 )
 

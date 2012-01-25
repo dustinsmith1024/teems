@@ -7,9 +7,9 @@
 
 <div>
 {% if individual.date_complete %}
-Completed on <a href="/workouts/individuals/{{ individual.id }}/update/">{{ individual.date_complete }}</a>
+Completed on <a href="{% url edit_individual individual.id %}">{{ individual.date_complete }}</a>
 {% else %}
-Scheduled for <a href="/workouts/individuals/{{ individual.id }}/update/">
+Scheduled for <a href="{% url edit_individual individual.id %}">
     {{ individual.date_suggested }} at {{ individual.time_suggested }}
 </a>
 </div>
@@ -21,8 +21,8 @@ Scheduled for <a href="/workouts/individuals/{{ individual.id }}/update/">
 <h3>Activities</h3>
 {% include 'workouts/activities/list.html' with activities=workout.step_set.all %}
 <div id="actions" class="actions">
-  <a class="btn primary" href="/workouts/individuals/{{ individual.id }}/update/">Edit Individual</a>
-  <a class="btn primary" href="/workouts/{{ workout.id }}/update">Edit Workout</a>
+  <a class="btn primary" href="{% url edit_individual individual.id %}">Edit Individual</a>
+  <a class="btn primary" href="{% url edit_workout workout.id %}">Edit Workout</a>
 </div>
 
 {% endblock %}
