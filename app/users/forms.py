@@ -3,7 +3,7 @@ from django.forms.widgets import Select, RadioSelect, CheckboxSelectMultiple
 
 class EditUserForm(forms.Form):
     user_type = forms.ChoiceField(widget=RadioSelect(),
-                    choices=[['player','I am a Player'],['coach','I am a Coach, Manager, Other']]
+                    choices=[['player','Player'],['coach','Coach, Manager, Other']]
                     , label='User Type')
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)

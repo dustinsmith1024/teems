@@ -8,7 +8,8 @@
     {{ form.as_p }}
  
 <div id="actions" class="actions">
-    <input class="btn primary" type="submit" value="Sign Up" />
+    <button class="btn primary" type="submit">Edit</button>
+    <button class="btn danger" type="submit" name="delete" value="delete">Delete</button>
     <input type="hidden" name="next" value="{{ next }}" />
 </div>
     </form>

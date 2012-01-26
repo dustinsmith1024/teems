@@ -4,7 +4,7 @@
 
 {% block main-content %}
 <h2>Edit Individual</h2>
-<form action="/workouts/individuals/{{ individual.id }}/update/" class="form-stacked" method="post">
+<form action="{% url edit_individual individual.id %}" class="form-stacked" method="post">
 {% csrf_token %}
     <fieldset>
       {{form.as_p }}

@@ -4,7 +4,7 @@
 
 {% block main-content %}
 <h2>Setup Individual</h2>
-<form action="/workouts/{{ workout.id }}/assign/" class="form-stacked" method="post">
+<form action="{% url assign_workout workout.id %}" class="form-stacked" method="post">
 {% csrf_token %}
     <fieldset>
       <div class="clearfix">

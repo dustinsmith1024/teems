@@ -22,24 +22,3 @@ class UserPlayerMiddleware(object):
                 print 'No Member connection Found!'
 
 
-class UserPlayerMiddlewareOLD(object):
-    def process_request(self, request):
-        if request.user.is_authenticated():
-            coach = Coach.objects.filter(user=request.user)
-            player = Player.objects.filter(user=request.user.id)
-            if player:
-                request.user.player = player[0]
-                if player[0].team:
-                    request.user.team = player[0].team
-		else:
-                    if 'team' not in request.path and 'join' not in request.path:
-                        return HttpResponseRedirect(reverse('join_team'))
-
-            if coach:
-                request.user.coach = coach[0]
-                if coach[0].team: 
-                    request.user.team = coach[0].team 
-                else:
-                    if 'team' not in request.path and 'join' not in request.path:
-                        return HttpResponseRedirect(reverse('join_team'))
-

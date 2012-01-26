@@ -7,9 +7,14 @@
 {% if team %}
     <h2><a href="{% url team_details team.id %}">{{ team.name }} {{ team.mascot }}</a></h2>
 
-    <p>
+    <ul>
+      <li>
         {{ team.location }}
-    </p>
+      </li>
+      <li>Colors: {{ team.color }} {% if team.secondary_color %}and {{ team.secondary_color }}{% endif %}</li>
+      <li>Public: {{ team.public }}</li>
+    </ul>
+
 
     <h3>Roster</h3>
     {% include 'teams/roster.html' with roster=team.member_set.all %}

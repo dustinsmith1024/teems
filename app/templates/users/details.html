@@ -37,7 +37,7 @@
 
 {% if team %}
 <div id="actions" class="actions">
-      {% if user == view_user %}
+      {% if user == view_user or coach_editing %}
           <a class="btn primary" href="{% url edit_user view_user.username %}">Edit Details</a>
       {% endif %}
       <a class="btn primary" href="{% url team_details team.id %}">View Team</a>

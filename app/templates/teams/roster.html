@@ -3,13 +3,16 @@
     <tr>
       <th>Number</th>
       <th>Position</th>
+      <th>Kind</th>
       <th>Name</th>
     </tr>
   </thead>
   <tbody>
     {% for member in roster %}
         <tr>
-          <td>{{ member.number }}</td><td>{{ member.position }}</td>
+          <td>{{ member.number }}</td>
+          <td>{{ member.position }}</td>
+          <td>{{ member.kind }}</td>
           <td><a href="{% url user_details member.user.username %}">{{ member.full_name }}</a></td>
         </tr>
     {% endfor %}

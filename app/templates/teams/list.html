@@ -4,10 +4,10 @@
 
 {% block main-content %}
 <h2>Teams</h2>
-{% if team_list %}
+{% if teams %}
     <ul>
-    {% for team in team_list %}
-        <li><a href="/teams/{{ team.id }}/">{{ team.name }} {{ team.mascot }}</a></li>
+    {% for team in teams %}
+        <li><a href="{% url team_details team.id %}">{{ team.name }} {{ team.mascot }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
@@ -15,7 +15,7 @@
 {% endif %}
 
 <div id="actions" class="actions">
-    <a href="/teams/new/" class="btn primary" >New Team</a>
+    <a href="{% url new_team %}" class="btn primary" >New Team</a>
 </div>
 
 {% endblock %}

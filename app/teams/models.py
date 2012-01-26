@@ -5,11 +5,12 @@ from django.forms import ModelForm
 class Team(models.Model):
     name = models.CharField(max_length=100)
     mascot = models.CharField(max_length=100,)
-    city = models.CharField(max_length=50, null=True)
-    state = models.CharField(max_length=2, null=True)
-    color = models.CharField(null=True, max_length=6)
+    city = models.CharField(blank=True, max_length=50, null=True)
+    state = models.CharField(blank=True,max_length=2, null=True)
+    color = models.CharField(blank=True, null=True, max_length=6)
+    secondary_color = models.CharField(blank=True, null=True, max_length=6)
     public = models.BooleanField()
-    secret = models.CharField(null=True, max_length=30)
+    secret = models.CharField(blank=True, null=True, max_length=30)
 
     def __unicode__(self):
         return self.name
@@ -20,30 +21,6 @@ class Team(models.Model):
 class TeamForm(ModelForm):
     class Meta:
         model = Team
-
-class Coach(models.Model):
-    user = models.ForeignKey(User, unique=True, null=True)
-    team = models.ForeignKey(Team, null=True)
-    position = models.CharField(null=True,max_length=10)
-
-    def first_name(self):
-        return self.user.first_name
-
-    def last_name(self):
-        return self.user.last_name
-
-    def full_name(self):
-        return self.first_name() + " " + self.last_name()
-
-    def name(self):
-        return self.full_name()
-
-    def name_and_number(self, seperator="-"):
-        return str(self.number) + " " + seperator + " " + self.name()
-
-    def __unicode__(self):
-        return self.full_name()
-
 
 class Member(models.Model):
     user = models.ForeignKey(User, unique=True, null=True)
@@ -70,36 +47,20 @@ class Member(models.Model):
     def name_and_number(self, seperator="-"):
         return str(self.number) + " " + seperator + " " + self.name()
 
-    def __unicode__(self):
-        return self.full_name()
+    def is_coach(self):
+        return 'coach' == self.kind
 
-class Player(models.Model):
-    user = models.ForeignKey(User, unique=True, null=True)
-    team = models.ForeignKey(Team, null=True)
-    number = models.IntegerField(null=True)
-    position = models.CharField(null=True, max_length=10)
+    def is_player(self):
+        return 'player' == self.kind
 
-    def first_name(self):
-        return self.user.first_name
-
-    def last_name(self):
-        return self.user.last_name
-
-    def full_name(self):
-        return self.first_name() + " " + self.last_name()
-
-    def name(self):
-        return self.full_name()
-
-    def name_and_number(self, seperator="-"):
-        return str(self.number) + " " + seperator + " " + self.name() 
+    def coaches(self, member):
+        if self.is_coach():
+            if member.team == self.team:
+                return True
+        return False
 
     def __unicode__(self):
         return self.full_name()
 
-
-class PlayerForm(ModelForm):
-    class Meta:
-        model = Player
 
 

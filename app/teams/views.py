@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 from django.forms.models import inlineformset_factory
 from django.template import Context, loader
 from django.template import RequestContext
-from teams.models import Team, Member, TeamForm, PlayerForm
-from teams.forms import TeamJoinForm, TeamPlayerForm
+from teams.models import Team, Member, TeamForm
+from teams.forms import TeamJoinForm, TeamPlayerForm, NewMemberForm
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 
@@ -23,12 +23,12 @@ def new(request):
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             team = form.save()
-            messages.add_message(request, messages.INFO, 'Team info created!')
+            messages.add_message(request, messages.SUCCESS, 'Team created!')
             return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
     else:
         form = TeamForm() # An unbound form
 
-    return render_to_response("teams/form.html", {'action': 'new', 'form': form, 'c':c},
+    return render_to_response("teams/new.html", {'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 
@@ -46,7 +46,7 @@ def create_and_join(request):
             user = request.user
             user.team = team
             user.save()
-            messages.add_message(request, messages.INFO, 'Team info created!')
+            messages.add_message(request, messages.SUCCESS, 'Team info created!')
             return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
     else:
         form = TeamForm() # An unbound form
@@ -72,7 +72,7 @@ def join(request):
                 member = request.user.member
                 member.team = team
                 member.save()
-                messages.add_message(request, messages.INFO, 'Team joined!')
+                messages.add_message(request, messages.SUCCESS, 'Team joined!')
                 return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
             else:
                 print 'secret does not match'
@@ -83,7 +83,7 @@ def join(request):
         form = TeamForm() 
         team_join_form = TeamJoinForm()
 
-    return render_to_response("teams/join_team.html", {'action': 'join', 'team_join_form': team_join_form, 'form': form, 'c':c},
+    return render_to_response("teams/join.html", {'action': 'join', 'team_join_form': team_join_form, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 
@@ -96,7 +96,7 @@ def new_member(request, team_id):
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
-        form = TeamPlayerForm(request.POST) # A form bound to the POST data
+        form = NewMemberForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             user = User(first_name = form.cleaned_data['first_name'],
                         last_name = form.cleaned_data['last_name'],
@@ -109,12 +109,41 @@ def new_member(request, team_id):
                             number=form.cleaned_data['number'], kind='player',
                            )
             member.save()
-            messages.add_message(request, messages.INFO, 'New player created!')
+            messages.add_message(request, messages.SUCCESS, 'New team member addeed!')
             return HttpResponseRedirect(reverse('user_details', args=(user.username,)))
     else:
-        form = TeamPlayerForm()
-    return render_to_response("teams/member_form.html", {'action': 'new', 'team':team, 'form': form, 'c':c},
+        form = NewMemberForm()
+    return render_to_response("teams/members/new.html", {'team':team, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
+
+
+
+@csrf_protect
+def signup(request):
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST': # If the form has been submitted...
+        form = SignUpForm(request.POST) # A form bound to the POST data
+        extension = SignUpExtension(request.POST)
+        if form.is_valid() and extension.is_valid(): # All validation rules pass
+            user = form.save()
+            user_type = request.POST['user_type']
+            member = Member(user=user, kind=user_type)
+            member.save()
+            user = authenticate(username=user.username, password=form.cleaned_data['password1'])
+            login(request, user)
+            messages.add_message(request, messages.SUCCESS, 'Thanks for joining ' + user.first_name + '!')
+            return HttpResponseRedirect(reverse('users.user_details', args=(user.username,)))
+        messages.add_message(request, messages.ERROR, 'Sorry, something bad happend creating a new user!')
+    else:
+        form = SignUpForm() # An unbound form
+        extension = SignUpExtension(initial={'user_type':'player'})
+
+    return render_to_response("signup.html", {'extension': extension, 'form': form, 'c':c},
+                               context_instance=RequestContext(request))
+
+
+
 
 
 @login_required
@@ -144,7 +173,7 @@ def edit_member(request, team_id, member_id):
                                'last_name': user.last_name, 
                                'number': member.number, 'position': member.position,
                                'email': user.email, 'username': user.username})
-    return render_to_response("teams/member_form.html", {'action': 'edit', 'member': member, 'team':team, 'form': form, 'c':c},
+    return render_to_response("teams/members/edit.html", {'member': member, 'team':team, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 
@@ -155,16 +184,20 @@ def edit(request, team_id):
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
+        if request.POST.get('delete'):
+            team.delete()
+            messages.add_message(request, messages.SUCCESS, 'Team Deleted!')
+            return HttpResponseRedirect(reverse('teams'))
         form = TeamForm(request.POST, instance=team) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             form.save()
-            messages.add_message(request, messages.INFO, 'Team info updated!')
+            messages.add_message(request, messages.SUCCESS, 'Team info updated!')
             return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
     else:
         form = TeamForm(instance=team) # An unbound form
 
     # pass action with the id, probably need a cleaner way of doing this
-    return render_to_response("teams/team_form.html", {'action': str(team.id) + '/edit', 'form': form, 'c':c},
+    return render_to_response("teams/edit.html", {'team': team, 'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 @login_required
@@ -172,10 +205,16 @@ def edit(request, team_id):
 def mine(request):
     # If coach
     team = Member.objects.get(user=request.user).team
-    return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
+    return render_to_response('teams/detail.html', {'team':team}, context_instance=RequestContext(request))
 
 def team_details(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
-    return render_to_response('teams/team_detail.html', {'team':team}, context_instance=RequestContext(request))
+    return render_to_response('teams/detail.html', {'team':team}, context_instance=RequestContext(request))
+
+
+def teams(request):
+    teams = Team.objects.all()
+    return render_to_response('teams/list.html', {'teams':teams}, context_instance=RequestContext(request))
+
 
 

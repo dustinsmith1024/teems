@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Homie{% endblock %}
+{% block title %}New Member{% endblock %}
 
 {% block main-content %}
-<h2>Team Update</h2>
-<form action="/teams/{{ action }}/" class="form-stacked" method="post">
+<h2>New Team Member</h2>
+<form action="{% url new_member team.id %}" class="form-stacked" method="post">
 {% csrf_token %}
 {{ form.as_p }}
-
     <div id="actions" class="actions">
     <button class="btn primary" type="submit" >Save</button>
-    <a href="#" class="btn " >Cancel</a>
     </div>
 </form>
 

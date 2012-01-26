@@ -79,17 +79,19 @@ def new_workout(request):
     if request.method == 'POST': # If the form has been submitted...
         workoutForm = WorkoutPlanForm(request.POST) #for update pass in instance=w
         if workoutForm.is_valid():
-          w = Workout(name=workoutForm.cleaned_data['name'], 
+          workout = Workout(name=workoutForm.cleaned_data['name'], 
                       kind=workoutForm.cleaned_data['kind'],)
           formset_cls = formset_factory(make_step_form(team))
           form = formset_cls(request.POST)
           if form.is_valid():
-              w.save()
+              workout.save()
               for f in form:
                   if f.cleaned_data.get('activities'):
-                      step = Step(workout=w, activity=f.cleaned_data['activities'],
+                      step = Step(workout=workout, activity=f.cleaned_data['activities'],
                                   position=f.cleaned_data['position'])
                       step.save()
+              messages.add_message(request, messages.SUCCESS, 'Workout Created!')
+              return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
                   
     else:
         workoutForm = WorkoutPlanForm()
@@ -110,7 +112,7 @@ def edit_workout(request, workout_id):
     workout = get_object_or_404(Workout, pk=workout_id)
     team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
-        if request.POST.get('cancel'):
+        if request.POST.get('delete'):
           workout.delete()
           messages.add_message(request, messages.SUCCESS, 'Workout Deleted!')
           return HttpResponseRedirect(reverse('workouts'))
@@ -152,7 +154,7 @@ def edit_workout(request, workout_id):
 @login_required
 @csrf_protect
 def assign_workout(request, workout_id):
-    """
+    """FIX THIS AND MAKE A FORM FOR IT
     """
     c = {}
     c.update(csrf(request))
@@ -164,12 +166,19 @@ def assign_workout(request, workout_id):
                                   date_suggested=request.POST['date_suggested'],
                                   time_suggested=request.POST['time_suggested'],
                                   )
-          individual.save()
-          messages.add_message(request, messages.SUCCESS, 'Individual scheduled!')
-          if not request.POST['add_another']:
-              return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
-          else:
-              return HttpResponseRedirect(reverse('assign_workout', args=(workout.id,)))
+          try:
+              individual.full_clean()
+              individual.save()
+              messages.add_message(request, messages.SUCCESS, 'Individual scheduled!')
+              if not request.POST.get('add_another'):
+                  return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
+              else:
+                  return HttpResponseRedirect(reverse('assign_workout', args=(workout.id,)))
+          except Exception:
+              print Exception
+              return render_to_response("workouts/assign.html", {'action': 'assign', 'workout': workout, 'team':team, 'c':c},
+                                        context_instance=RequestContext(request))
+
     else:
         print workout
 
@@ -196,7 +205,7 @@ def schedule_practice(request, workout_id):
                                   )
               practice.save()
               messages.add_message(request, messages.SUCCESS, 'Practice scheduled!')
-              return HttpResponseRedirect(reverse('edit_practice', args=(workout.id, practice.id)))
+              return HttpResponseRedirect(reverse('practice', args=(practice.id,)))
 
     else:
         form = PracticeForm()
