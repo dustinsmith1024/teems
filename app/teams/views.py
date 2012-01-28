@@ -35,40 +35,36 @@ def new(request):
 @login_required
 @csrf_protect
 def create_and_join(request):
-    # If coach
+    """Create a new team and join it, should happen right after user reg"""
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
         form = TeamForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
             team = form.save()
-            user = request.user
-            user.team = team
-            user.save()
+            member = request.user.member
+            member.team = team
+            member.save()
             messages.add_message(request, messages.SUCCESS, 'Team info created!')
             return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
     else:
         form = TeamForm() # An unbound form
 
-    return render_to_response("teams/create.html", {'action': 'new', 'form': form, 'c':c},
+    return render_to_response("teams/create_and_join.html", {'form': form, 'c':c},
                                context_instance=RequestContext(request))
-
-
 
 
 @login_required
 @csrf_protect
 def join(request):
-    # If coach
+    """Join a team using team secret"""
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...
-        team_join_form = TeamJoinForm(request.POST)
-        if team_join_form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            team = Team.objects.get(pk=team_join_form.cleaned_data['team'])
-            if team.secret == team_join_form.cleaned_data['secret']:
+        form = TeamJoinForm(request.POST)
+        if form.is_valid(): # All validation rules pass
+            team = Team.objects.get(pk=form.cleaned_data['team'])
+            if team.secret == form.cleaned_data['secret']:
                 member = request.user.member
                 member.team = team
                 member.save()
@@ -78,12 +74,10 @@ def join(request):
                 print 'secret does not match'
         else:
             print 'form not valid'
-        form = TeamForm()
     else: 
-        form = TeamForm() 
-        team_join_form = TeamJoinForm()
+        form = TeamJoinForm()
 
-    return render_to_response("teams/join.html", {'action': 'join', 'team_join_form': team_join_form, 'form': form, 'c':c},
+    return render_to_response("teams/join.html", {'form': form, 'c':c},
                                context_instance=RequestContext(request))
 
 

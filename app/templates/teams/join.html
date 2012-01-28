@@ -4,9 +4,9 @@
 
 {% block main-content %}
 <h2>Join your team</h2>
-<form action="/teams/join/" class="form-stacked" method="post">
+<form action="{% url join_team %}" class="form-stacked" method="post">
 {% csrf_token %}
-{{ team_join_form.as_p }}
+{{ form.as_p }}
 <em>Dont' see your team?</em>
 <a href="{% url create_and_join_team %}">Add a new team</a>
 
