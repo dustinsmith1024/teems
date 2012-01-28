@@ -28,7 +28,7 @@ def signup(request):
             user = authenticate(username=user.username, password=form.cleaned_data['password1'])
             login(request, user)
             messages.add_message(request, messages.INFO, 'Thanks for joining ' + user.first_name + '!')
-            return HttpResponseRedirect(reverse('users.user_details', args=(user.username,)))
+            return HttpResponseRedirect(reverse('user_details', args=(user.username,)))
         messages.add_message(request, messages.INFO, 'Sorry, something bad happend creating a new user!')
     else:
         form = SignUpForm() # An unbound form
