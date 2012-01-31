@@ -25,8 +25,11 @@
   {% block base-styles %}
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
-  <link rel="stylesheet" href="{{ STATIC_URL }}style.css">
-<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+  <link rel="stylesheet/less" href="{{ STATIC_URL }}style.less">
+  <link rel="stylesheet/less" href="{{ STATIC_URL }}bootstrap.less">
+  <script src="{{ STATIC_URL }}less-1.2.1.min.js"></script>
+  <!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+  --!>
   <!-- end CSS-->
 
   <!-- Uncomment if you are specifically targeting less enabled mobile browsers
@@ -35,15 +38,14 @@
 </head>
 {% endblock head %}
 {% block body %}
-<body id="body" >
-
-  <div id="container">
+<body id="body" class="row" >
+  <div id="container" class="span12">
     {% block header %}
-    <div class="topbar" id="topbar" data-dropdown="dropdown" data-scrollspy="scrollspy">
+    <div class="navbar navbar-fixed-top" id="navbar">
       {% if user.is_authenticated %}
-        <div class="topbar-inner {{ user.team.color }}">
+        <div class="navbar-inner {{ user.team.color }}">
       {% else %}
-        <div class="topbar-inner">
+        <div class="navbar-inner">
       {% endif %}
         <div class="container">
           {% if user.is_authenticated %}
@@ -56,16 +58,17 @@
             <nav>
               <ul class="nav">
                 <li class="dropdown" >
-                  <a class="dropdown-toggle" href="#">{{ user.first_name }}</a>
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.first_name }}
+                  <b class="caret"></b></a>
                   <ul class="dropdown-menu {{ user.team.color }} ">
-                    <li><a href="/teams/mine">My Teem</a></li>
+                    <li><a href="/teams/mine">My Team</a></li>
                     <li><a href="/workouts/mine">My Workouts</a></li>
                     <li><a href="/users/{{ user.username }}">My Settings</a></li>
                     <li><a href="/logout">Logout</a></li>
                   </ul>
                 </li>
                 <li class="dropdown" >
-                  <a class="dropdown-toggle" href="#">Team</a>
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Team<b class="caret"></b></a>
                   <ul class="dropdown-menu {{ user.team.color }} ">
                     <li><a href="/teams/">Teams</a></li>
                     <li><a href="/workouts">Workouts</a></li>
@@ -127,9 +130,7 @@
 
   <!-- scripts concatenated and minified via ant build script-->
   {% block my-js %}
-  <script src="{{ STATIC_URL }}/plugins.js"></script>
-  <script src="{{ STATIC_URL }}/script.js"></script>
-  <script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-dropdown.js"></script>
+  <script src="{{ STATIC_URL }}bootstrap-dropdown.js"></script>
   {% endblock my-js %}
   <!-- end scripts-->
 

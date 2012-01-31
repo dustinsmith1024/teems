@@ -1,4 +1,17 @@
-<table class="" >
+<ul id="roster">
+{% for member in roster %}
+  <li title="{{ member.number }}">
+    <a href="{% url user_details member.user.username %}">
+      <h3>{{ member.first_name }}</h3>
+      <h3>{{ member.last_name }}</h3>
+      <p>Position: {{ member.position }}</p>
+      <p>From: Sioux City, IA</p>
+      <p>Class: FR</p>
+    </a>
+  </li>
+{% endfor %}
+</ul>
+<table class="table" >
   <thead>
     <tr>
       <th>Number</th>

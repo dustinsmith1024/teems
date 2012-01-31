@@ -40,10 +40,11 @@
   padding: 5px;
 }
 
-#footer {
+#footer, #actions {
   background: none repeat scroll 0 0 #F5F5F5;
   border-top: 1px solid #DDDDDD;
   margin: 0;
+  padding-top: 10px;
 }
 
 #footer ul {
@@ -59,6 +60,6 @@
   width: 96%;
 }
 #actions {
-    padding-left: 20px;
+    padding: 10px;
     margin-bottom: 0;
 }
