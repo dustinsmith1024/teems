@@ -1,6 +1,11 @@
-<ul id="roster">
+<section id="roster">
+<ul>
 {% for member in roster %}
+  {% if member.number < 10 %}
+  <li title="0{{ member.number }}">
+  {% else %}
   <li title="{{ member.number }}">
+  {% endif %}
     <a href="{% url user_details member.user.username %}">
       <h3>{{ member.first_name }}</h3>
       <h3>{{ member.last_name }}</h3>
@@ -11,6 +16,9 @@
   </li>
 {% endfor %}
 </ul>
+<div class="clear"></div>
+</section>
+{% if table %}
 <table class="table" >
   <thead>
     <tr>
@@ -31,3 +39,4 @@
     {% endfor %}
   </tbody>
 </table>
+{% endif %}

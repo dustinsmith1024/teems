@@ -27,6 +27,7 @@
   <!-- CSS concatenated and minified via ant build script-->
   <link rel="stylesheet/less" href="{{ STATIC_URL }}style.less">
   <link rel="stylesheet/less" href="{{ STATIC_URL }}bootstrap.less">
+  <link rel="stylesheet/less" href="{{ STATIC_URL }}responsive.less">
   <script src="{{ STATIC_URL }}less-1.2.1.min.js"></script>
   <!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
   --!>
@@ -39,7 +40,7 @@
 {% endblock head %}
 {% block body %}
 <body id="body" class="row" >
-  <div id="container" class="span12">
+  <div id="container" class="container">
     {% block header %}
     <div class="navbar navbar-fixed-top" id="navbar">
       {% if user.is_authenticated %}
@@ -83,7 +84,8 @@
     </div>
     </header>
     {% endblock header %}
-    <div id="main" role"main">
+    <div class="row">
+    <div id="main" class="span12" role="main" >
       {% if messages %}
         <div id="messages">
           {% for message in messages %}
@@ -117,7 +119,7 @@
     {% endif %}
     {% endblock footer %}
   </div> <!--! end of #container -->
-
+  </div>
 
   <!-- JavaScript at the bottom for fast page loading -->
 
