@@ -10,8 +10,8 @@
       <h3>{{ member.first_name }}</h3>
       <h3>{{ member.last_name }}</h3>
       <p>Position: {{ member.position }}</p>
-      <p>From: Sioux City, IA</p>
-      <p>Class: FR</p>
+      <p>From: {{ member.city }} {{ member.state }}</p>
+      <p>Class: {{ member.year }}</p>
     </a>
   </li>
 {% endfor %}

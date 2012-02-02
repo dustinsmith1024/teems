@@ -11,6 +11,8 @@ class Team(models.Model):
     secondary_color = models.CharField(blank=True, null=True, max_length=6)
     public = models.BooleanField()
     secret = models.CharField(blank=True, null=True, max_length=30)
+    # Player vs Coach vs Whatever
+    kind = models.CharField(blank=True, null=True, max_length=50)
 
     def __unicode__(self):
         return self.name
@@ -31,6 +33,13 @@ class Member(models.Model):
     number = models.IntegerField(null=True)
     # Player vs Coach vs Whatever
     kind = models.CharField(null=False, max_length=50)
+    # year is based on type of team, pro, college, etc
+    year = models.CharField(null=True, blank=True, max_length=20)
+    city = models.CharField(null=True, blank=True, max_length=50)
+    state = models.CharField(blank=True,max_length=2, null=True)
+    country = models.CharField(blank=True,max_length=50, null=True)
+
+
 
     def first_name(self):
         return self.user.first_name

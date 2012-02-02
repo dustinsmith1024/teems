@@ -35,7 +35,11 @@ def edit_user(request, username):
             user.last_name = form.cleaned_data['last_name']
             member.number = form.cleaned_data['number']
             member.position = form.cleaned_data['position']
-            member.kind = form.cleaned_data['user_type']
+            member.city = form.cleaned_data['city']
+            member.state = form.cleaned_data['state']
+            member.country = form.cleaned_data['country']
+            member.year = form.cleaned_data['year']
+
             user.save()
             member.save()
             messages.add_message(request, messages.SUCCESS, 'User details updated!')
@@ -49,6 +53,10 @@ def edit_user(request, username):
                              'user_type': member.kind,
                              'position': member.position,
                              'number': member.number,
+                             'city': member.city,
+                             'state': member.state,
+                             'year': member.year,
+                             'country': member.country,
                             }) # An unbound form
     return render_to_response("users/edit.html", {'coach_editing': coaches, 'form': form, 'c':c, 'edit_user':user},
                                context_instance=RequestContext(request))

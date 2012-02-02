@@ -65,24 +65,27 @@
     margin-bottom: 0;
 }
 #roster {
+  ul {
+    margin: 0;
+  }
   position: relative;
   li {
     border: 1px dotted grey;
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
     float: left;
-    height: 125px;
+    height: 130px;
     line-height: 18px;
     list-style-type: none;
     margin: 5px;
     padding: 10px;
-    width: 125px;
+    width: 130px;
     transition: all 0.4s ease-in-out 0s;
     &:after {
       -moz-transition: all 0.4s ease-in-out 0s;
       color: gray;
       content: attr(title);
       font-size: 80px;
-      left: 40px;
+      left: 50px;
       position: relative;
       top: -125px;
       opacity: .2;
@@ -90,7 +93,7 @@
         -moz-transition: all 0.4s ease-in-out 0s;
         content: attr(title);
         font-size: 80px;
-        left: 40px;
+        left: 50px;
         position: relative;
         top: -125px;
       }

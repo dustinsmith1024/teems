@@ -3,10 +3,17 @@
 
 {% block main-content %}
 <h2>Edit User</h2>
-    <form class="form-stacked" method="post" action="{% url edit_user edit_user.username %}">
+    <form class="form-horizontal" method="post" action="{% url edit_user edit_user.username %}">
     {% csrf_token %}
-    {{ form.as_p }}
- 
+    {% for field in form %}
+        <div class="control-group">
+	    <label class="controls-label">{{ field.label_tag}}</label>
+            <div class="controls">
+            	{{ field.errors }}
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %} 
 <div id="actions" class="actions">
     <button class="btn primary" type="submit">Edit</button>
     <button class="btn danger" type="submit" name="delete" value="delete">Delete</button>

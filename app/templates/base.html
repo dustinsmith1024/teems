@@ -89,8 +89,8 @@
       {% if messages %}
         <div id="messages">
           {% for message in messages %}
-            <div class="alert-message {{ message.tags }}">
-            <p>{{ message }}</p>
+            <div class="alert alert-{{ message.tags }}">
+            {{ message }}
             </div>
           {% endfor %}
         </div>
