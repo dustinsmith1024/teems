@@ -2,16 +2,16 @@
 <ul>
 {% for member in roster %}
   {% if member.number < 10 %}
-  <li title="0{{ member.number }}">
+  <li title="0{{ member.number|default:"0" }}">
   {% else %}
   <li title="{{ member.number }}">
   {% endif %}
     <a href="{% url user_details member.user.username %}">
       <h3>{{ member.first_name }}</h3>
       <h3>{{ member.last_name }}</h3>
-      <p>Position: {{ member.position }}</p>
-      <p>From: {{ member.city }} {{ member.state }}</p>
-      <p>Class: {{ member.year }}</p>
+      <p>Position: {{ member.position|default:"" }}</p>
+      <p>From: {{ member.city|default:"" }} {{ member.state|default:"" }}</p>
+      <p>Class: {{ member.year|default:"" }}</p>
     </a>
   </li>
 {% endfor %}
