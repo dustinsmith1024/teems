@@ -39,7 +39,7 @@ def edit_user(request, username):
             member.state = form.cleaned_data['state']
             member.country = form.cleaned_data['country']
             member.year = form.cleaned_data['year']
-
+            member.kind = form.cleaned_data['user_type']
             user.save()
             member.save()
             messages.add_message(request, messages.SUCCESS, 'User details updated!')
