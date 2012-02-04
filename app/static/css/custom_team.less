@@ -1,0 +1,22 @@
+/* 
+  These are custom styles that will need to be set to team colors
+  Not sure how best to do this
+  Option 1: Name a bunch of CSS files and pull them in like secondatBlue.css and primaryWhite.css
+  Option 2: Inline some styles from DB stored colors
+*/
+#roster {
+  ul {
+    margin: 0;
+  }
+  li {
+    a {
+      &:active {
+        color: #005580;
+      }
+    }
+  }
+  .thumbnail:hover {
+    border-color: red;
+  }
+}
+

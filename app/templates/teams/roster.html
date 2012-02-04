@@ -1,18 +1,18 @@
 {% load extra_tags %}
 <section id="roster">
-<ul>
+<ul class="thumbnails">
 {% for member in roster %}
   {% if member.number < 10 %}
-  <li title="0{{ member.number|default:"0" }}">
+  <li class="span2" title="0{{ member.number|default:"0" }}">
   {% else %}
-  <li title="{{ member.number }}">
+  <li class="span2" title="{{ member.number }}">
   {% endif %}
-    <a href="{% url user_details member.user.username %}">
+    <a class="thumbnail" href="{% url user_details member.user.username %}">
       <h3>{{ member.first_name }}</h3>
       <h3>{{ member.last_name }}</h3>
-      <p>{{ member.position|prefix:"Position: " }}</p>
-      <p>{{ member.city|prefix:"From: " }} {{ member.state|default:"" }}</p>
-      <p>{{ member.year|prefix:"Year: " }}</p>
+      <p>{{ member.position|default:"" }}</p>
+      <p>{{ member.city|default:"" }} {{ member.state|default:"" }}</p>
+      <p>{{ member.year|prefix_or_none:"Year: " }}</p>
     </a>
   </li>
 {% endfor %}
