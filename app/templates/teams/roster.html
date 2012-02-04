@@ -1,3 +1,4 @@
+{% load extra_tags %}
 <section id="roster">
 <ul>
 {% for member in roster %}
@@ -9,9 +10,9 @@
     <a href="{% url user_details member.user.username %}">
       <h3>{{ member.first_name }}</h3>
       <h3>{{ member.last_name }}</h3>
-      <p>Position: {{ member.position|default:"" }}</p>
-      <p>From: {{ member.city|default:"" }} {{ member.state|default:"" }}</p>
-      <p>Class: {{ member.year|default:"" }}</p>
+      <p>{{ member.position|prefix:"Position: " }}</p>
+      <p>{{ member.city|prefix:"From: " }} {{ member.state|default:"" }}</p>
+      <p>{{ member.year|prefix:"Year: " }}</p>
     </a>
   </li>
 {% endfor %}
