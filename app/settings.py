@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'south',
     'workouts',
     'users',
+    'gunicorn',
 )
 
 LOGIN_URL = '/login'
