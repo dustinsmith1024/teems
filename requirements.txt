@@ -4,3 +4,4 @@ South==0.7.3
 wsgiref==0.1.2
 gunicorn
 psycopg2
+newrelic
