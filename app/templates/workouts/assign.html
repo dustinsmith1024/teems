@@ -18,23 +18,11 @@
           </select>
         </div>
       </div>
-      <div class="clearfix">
-        <label for="date">Date</label>
-        <div class="input">
-          <input id="date" name="date_suggested" type="date" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label for="time">Time</label>
-        <div class="input">
-          <input id="time" name="time_suggested" type="time" />
-        </div>
-      </div>
+    {{ form.as_p }}
     </fieldset>
     <div id="actions" class="actions">
-    <button class="btn primary" type="submit" >Save</button>
-    <button class="btn primary" type="submit" value="True" name="add_another">Save & Add Another</button>
-    <a href="#" class="btn " >Cancel</a>
+      <button class="btn primary" type="submit" >Save</button>
+      <button class="btn primary" type="submit" value="True" name="add_another">Save & Add Another</button>
     </div>
 </form>
 

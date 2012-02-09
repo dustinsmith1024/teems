@@ -2,11 +2,12 @@ from teams.models import Team, Member
 from workouts.models import *
 from django import forms
 from django.forms.models import inlineformset_factory
-
+import datetime
 
 class WorkoutPlanForm(forms.Form):
     name = forms.CharField(max_length=50)
     kind = forms.CharField(max_length=50)
+
 
 class StepForm2(forms.Form):
     activity = models.ForeignKey(Activity)
@@ -19,6 +20,10 @@ def make_step_form(team):
                  queryset=Activity.objects.filter(team=team))
         position = forms.IntegerField()
     return StepsForm
+
+class IndividualAssignForm(forms.Form):
+    date_suggested = forms.DateField(initial=datetime.date.today, widget=forms.TextInput(attrs={'data-js-widget':'datepicker'}))
+    time_suggested = forms.TimeField(initial='18:00')
 
 
 class TeamPlayerForm(forms.Form):

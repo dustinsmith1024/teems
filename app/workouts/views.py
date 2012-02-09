@@ -161,11 +161,13 @@ def assign_workout(request, workout_id):
     workout = get_object_or_404(Workout, pk=workout_id)
     team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
-          member = Member.objects.get(pk=request.POST['member'])
-          individual = Individual(workout=workout, member=member, 
-                                  date_suggested=request.POST['date_suggested'],
-                                  time_suggested=request.POST['time_suggested'],
-                                  )
+          form = IndividualAssignForm(request.POST)
+          if form.is_valid():
+              member = Member.objects.get(pk=request.POST['member'])
+              individual = Individual(workout=workout, member=member, 
+                                      date_suggested=form.cleaned_data['date_suggested'],
+                                      time_suggested=form.cleaned_data['time_suggested'],
+                                     )
           try:
               individual.full_clean()
               individual.save()
@@ -175,14 +177,15 @@ def assign_workout(request, workout_id):
               else:
                   return HttpResponseRedirect(reverse('assign_workout', args=(workout.id,)))
           except Exception:
-              print Exception
-              return render_to_response("workouts/assign.html", {'action': 'assign', 'workout': workout, 'team':team, 'c':c},
+              messages.add_message(request, messages.ERROR, 'Something happend with form!')
+              return render_to_response("workouts/assign.html", {'form':form, 'workout': workout, 'team':team, 'c':c},
                                         context_instance=RequestContext(request))
 
     else:
-        print workout
+        print 'here'
+        form = IndividualAssignForm()
 
-    return render_to_response("workouts/assign.html", {'action': 'assign', 'workout': workout, 'team':team, 'c':c},
+    return render_to_response("workouts/assign.html", {'form': form, 'workout': workout, 'team':team, 'c':c},
                                context_instance=RequestContext(request))
 
 
