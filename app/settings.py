@@ -22,6 +22,11 @@ DATABASES = {
     }
 }
 
+if os.environ.get('NEW_RELIC_APP_NAME'):
+    MODE = 'prod'
+else:
+    MODE = 'dev'
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -105,7 +110,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.request",)
+    "django.core.context_processors.request",
+    "app.context_processors.mode",
+)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -139,6 +146,7 @@ INSTALLED_APPS = (
     'workouts',
     'users',
     'gunicorn',
+    'floppyforms',
 )
 
 LOGIN_URL = '/login'

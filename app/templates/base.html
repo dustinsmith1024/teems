@@ -25,19 +25,19 @@
   {% block base-styles %}
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
-  {% if "i" == "" %}
+  {% if MODE == "prod" %}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}min_styles.css"> 
   {% else %} 
   <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}style.less">
-  <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}bootstrap.less">
-  <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}responsive.less">
-  <script src="http://lesscss.googlecode.com/files/less-1.2.1.min.js" type="text/javascript"></script>
+  <!-- HOSTED VERSION link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" -->
+  <script src="http://lesscss.googlecode.com/files/less-1.2.1.min.js"></script>
   <!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">-->
   {% endif %}
+  <link media="all" rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap.min.css">
   <link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css" rel="stylesheet">
   <link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/excite-bike/jquery-ui.css" rel="stylesheet">
   <!-- end CSS-->
-
+  <script src="{{ STATIC_URL }}modernizr.js"></script>
   <!-- Uncomment if you are specifically targeting less enabled mobile browsers
   <link rel="stylesheet" media="handheld" href="css/handheld.css">  -->
   {% endblock base-styles %}
@@ -45,7 +45,6 @@
 {% endblock head %}
 {% block body %}
 <body id="body" class="row" >
-  <div id="container" class="container">
     {% block header %}
     <div class="navbar navbar-fixed-top" id="navbar">
       {% if user.is_authenticated %}
@@ -88,49 +87,53 @@
       </div>
     </div>
     {% endblock header %}
-    <div class="row">
-    <div id="main" class="span12" role="main" >
-      {% if messages %}
-        <div id="messages">
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-            {{ message }}
-            </div>
-          {% endfor %}
-        </div>
+
+    <div id="main-row" class="container">
+      <section id="main" role="main" >
+        {% if messages %}
+          <div id="messages">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% block main-content %}
+          <div id="main-content">
+  
+          </div>
+        {% endblock main-content %}
+      </section>
+
+      {% block footer %}
+      {% if user.is_authenticated %}
+      <footer class="footer" id="page-footer">
+          <ul class="nav nav-tabs nav-stacked">
+            <li><a  href="/teams/">Teams</a></li>
+            <li><a  href="/teams/mine">My Teem</a></li>
+            <li><a  href="/workouts">Workouts</a></li>
+            <li><a  href="/workouts/mine">My Workouts</a></li>
+            <li><a  href="/workouts/activities">Actvities</a></li>
+          </ul>
+      </footer>
       {% endif %}
-
-      {% block main-content %}
-        <div id="main-content">
-
-        </div>
-      {% endblock main-content %}
-    </div>
-
-    {% block footer %}
-    {% if user.is_authenticated %}
-    <footer id="footer">
-      <nav>
-        <ul>
-          <li><a class="btn" href="/teams/">Teams</a></li>
-          <li><a class="btn" href="/teams/mine">My Teem</a></li>
-          <li><a class="btn" href="/workouts">Workouts</a></li>
-          <li><a class="btn" href="/workouts/mine">My Workouts</a></li>
-          <li><a class="btn" href="/workouts/activities">Actvities</a></li>
-        </ul>
-      </nav>
-    </footer>
-    {% endif %}
-    {% endblock footer %}
-  </div> <!--! end of #container -->
-  </div>
+      {% endblock footer %}
+    </div> <!--! end of #container -->
 
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
   {% block js-libs %}
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>
+  Modernizr.load({
+    test: Modernizr.date,
+    nope: ['http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js', '{{ STATIC_URL }}dates.js'],
+    complete: function(){ my_dates.init(); }
+  });
+  </script>
   <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-1.7.0.min.js">\x3C/script>')</script>
   {% endblock js-libs %}
 
@@ -151,11 +154,6 @@
   </script>
   {% endblock google-analytics %}
 
-  <script>
-	$(function() {
-                $("input[data-js-widget='datepicker']").datepicker();
-	});
-  </script>
   <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
        chromium.org/developers/how-tos/chrome-frame-getting-started -->
   <!--[if lt IE 7 ]>

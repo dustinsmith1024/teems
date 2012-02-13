@@ -3,17 +3,13 @@
 {% block title %}Schedule Workout{% endblock %}
 
 {% block main-content %}
-<h2>Schedule Workout</h2>
-<form action="{% url schedule_practice workout.id %}" class="form-stacked" method="post">
-{% csrf_token %}
-    <fieldset>
-    {{ form.as_p }}
-    </fieldset>
-    <div id="actions" class="actions">
-    <button class="btn primary" type="submit" >Save</button>
-    </div>
-</form>
+    <h2>Schedule Workout</h2>
+    <form action="{% url schedule_practice workout.id %}" class="form-horizontal" method="post">
+        {% csrf_token %}
+        {% include "fragments/fields.html" %}
 
+        <div id="actions" class="form-actions">
+            <button class="btn btn-primary" type="submit" >Save</button>
+        </div>
+    </form>
 {% endblock %}
-
-

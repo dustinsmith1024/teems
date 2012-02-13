@@ -4,22 +4,14 @@
 {% block main-content %}
 <h2>Edit User</h2>
     <form class="form-horizontal" method="post" action="{% url edit_user edit_user.username %}">
-    {% csrf_token %}
-    {% for field in form %}
-        <div class="control-group">
-	    <label class="controls-label">{{ field.label_tag}}</label>
-            <div class="controls">
-            	{{ field.errors }}
-                {{ field }}
-            </div>
-        </div>
-    {% endfor %} 
-<div id="actions" class="actions">
-    <button class="btn primary" type="submit">Edit</button>
-    <button class="btn danger" type="submit" name="delete" value="delete">Delete</button>
-    <input type="hidden" name="next" value="{{ next }}" />
-</div>
-    </form>
+        {% csrf_token %}
+        {% include "fragments/fields.html" %}
 
+        <div id="actions" class="form-actions">
+            <button class="btn btn-primary" type="submit">Edit</button>
+            <button class="btn btn-danger" type="submit" name="delete" value="delete">Delete</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+    </form>
 {% endblock main-content %}
 

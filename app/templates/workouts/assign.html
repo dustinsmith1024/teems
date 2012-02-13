@@ -3,29 +3,27 @@
 {% block title %}New Workout{% endblock %}
 
 {% block main-content %}
-<h2>Setup Individual</h2>
-<form action="{% url assign_workout workout.id %}" class="form-stacked" method="post">
-{% csrf_token %}
-    <fieldset>
-      <div class="clearfix">
-        <label for="members">Team Members:</label>
-        <div class="input">
-          <select name="member" id="members">
-            <option value="">---------</option>
-            {% for member in team.member_set.all %} {{ s }}
-                <option value="{{ member.id }}" >{{ member.name_and_number }}</option>
-            {% endfor %}
-          </select>
+    <h2>Setup Individual</h2>
+    <form action="{% url assign_workout workout.id %}" class="form-horizontal" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <div class="clearfix">
+                <label for="members">Team Members:</label>
+                <div class="input">
+                    <select name="member" id="members">
+                        <option value="">---------</option>
+                        {% for member in team.member_set.all %} {{ s }}
+                            <option value="{{ member.id }}" >{{ member.name_and_number }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            {% include "fragments/fields.html" %}
+        </fieldset>
+
+        <div id="actions" class="form-actions">
+            <button class="btn btn-primary" type="submit" >Save</button>
+            <button class="btn btn-primary" type="submit" value="True" name="add_another">Save & Add Another</button>
         </div>
-      </div>
-    {{ form.as_p }}
-    </fieldset>
-    <div id="actions" class="actions">
-      <button class="btn primary" type="submit" >Save</button>
-      <button class="btn primary" type="submit" value="True" name="add_another">Save & Add Another</button>
-    </div>
-</form>
-
+    </form>
 {% endblock %}
-
-

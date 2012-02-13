@@ -3,16 +3,16 @@
 {% block title %}Edit Team{% endblock %}
 
 {% block main-content %}
-<h2>Team Edit</h2>
-<form action="{% url edit_team team.id %}" class="form-stacked" method="post">
-{% csrf_token %}
-{{ form.as_p }}
-    <div id="actions" class="actions">
-    <button class="btn primary" type="submit" >Save</button>
-    <button class="btn danger" type="submit" name="delete" value="delete">Delete</a>
-    </div>
-</form>
+    <h2>Team Edit</h2>
+    <form action="{% url edit_team team.id %}" class="form-horizontal" method="post">
+        {% csrf_token %}
+        {% include "fragments/fields.html" %}
 
+        <div id="actions" class="form-actions">
+            <button class="btn btn-primary" type="submit" >Save</button>
+            <button class="btn btndanger" type="submit" name="delete" value="delete">Delete</a>
+        </div>
+    </form>
 {% endblock %}
 
 

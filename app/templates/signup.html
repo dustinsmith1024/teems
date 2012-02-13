@@ -3,15 +3,15 @@
 
 {% block main-content %}
 <h2>Sign Up</h2>
-    <form class="form-stacked" method="post" action="{% url views.signup %}">
-    {{ extension.as_p }}
-    {% csrf_token %}
-    {{ form.as_p }}
+    <form class="form-horizontal" method="post" action="{% url views.signup %}">
+        {% csrf_token %}
+        {% include "fragments/fields.html" with form=extension %}
+        {% include "fragments/fields.html" %}
  
-<div id="actions" class="actions">
-    <input class="btn primary" type="submit" value="Sign Up" />
-    <input type="hidden" name="next" value="{{ next }}" />
-</div>
+        <div id="actions" class="form-actions">
+            <input class="btn btn-primary" type="submit" value="Sign Up" />
+            <input type="hidden" name="next" value="{{ next }}" />
+        </div>
     </form>
 
 {% endblock main-content %}

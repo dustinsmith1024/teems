@@ -3,18 +3,13 @@
 {% block title %}Edit Individual{% endblock %}
 
 {% block main-content %}
-<h2>Edit Individual</h2>
-<form action="{% url edit_individual individual.id %}" class="form-stacked" method="post">
-{% csrf_token %}
-    <fieldset>
-      {{form.as_p }}
-    </fieldset>
-    <div id="actions" class="actions">
-    <button class="btn primary" type="submit" >Save</button>
-    <button class="btn danger" type="submit" name="cancel" value="cancel">Cancel Workout</a>
-    </div>
-</form>
-
+    <h2>Edit Individual</h2>
+    <form action="{% url edit_individual individual.id %}" class="form-horizontal" method="post">
+        {% csrf_token %}
+        {% include "fragments/fields.html" %}
+        <div id="actions" class="form-actions">
+            <button class="btn btn-primary" type="submit" >Save</button>
+            <button class="btn btn-danger" type="submit" name="cancel" value="cancel">Cancel Workout</a>
+        </div>
+    </form>
 {% endblock %}
-
-

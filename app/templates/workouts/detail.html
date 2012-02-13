@@ -10,10 +10,10 @@
     <h3>Activities</h3>
     {% include 'workouts/activities/list.html' with activities=workout.step_set.all %}
 
-<div id="actions" class="actions">
-    <a class="btn primary" href="{% url edit_workout workout.id %}">Update Workout</a></li>
-    <a class="btn primary" href="{% url schedule_practice workout.id %}">Schedule as Practice</a>
-    <a class="btn primary" href="{% url assign_workout workout.id %}">Schedule as Individual</a>
+<div id="actions" class="form-actions">
+    <a class="btn btn-primary" href="{% url edit_workout workout.id %}">Update Workout</a></li>
+    <a class="btn btn-primary" href="{% url schedule_practice workout.id %}">Schedule as Practice</a>
+    <a class="btn btn-primary" href="{% url assign_workout workout.id %}">Schedule as Individual</a>
 </div>
 {% else %}
     <p>Issue finding workout details...</p>
