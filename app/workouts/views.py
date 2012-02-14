@@ -13,6 +13,7 @@ from models import *
 from forms import *
 import operator
 
+
 def index(request):
     teams = Team.objects.all()
     c = Context({

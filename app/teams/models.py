@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.contrib.localflavor.us.models import PhoneNumberField
+
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
@@ -38,7 +40,7 @@ class Member(models.Model):
     city = models.CharField(null=True, blank=True, max_length=50)
     state = models.CharField(blank=True,max_length=2, null=True)
     country = models.CharField(blank=True,max_length=50, null=True)
-
+    phone = PhoneNumberField(blank=True, null=True)
 
 
     def first_name(self):

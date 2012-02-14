@@ -12,9 +12,12 @@ from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 from forms import SignUpForm, UserCreationFormExtended
 from django.contrib.auth import authenticate, login
+#from django.core.mail import send_mail
+
 
 @csrf_protect
 def signup(request):
+    #send_mail('Practice Rescheduled', 'Tomorrows practice is now at 6:00pm.', 'dds1024@gmail.com', ['7128997278@vtext.com'], fail_silently=False)
     c = {}
     c.update(csrf(request))
     if request.method == 'POST': # If the form has been submitted...

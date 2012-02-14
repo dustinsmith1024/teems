@@ -27,6 +27,13 @@ if os.environ.get('NEW_RELIC_APP_NAME'):
 else:
     MODE = 'dev'
 
+# Email settings
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'app2384741@heroku.com'
+EMAIL_HOST_PASSWORD = 'ovzh6rku'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.

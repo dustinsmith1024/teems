@@ -37,6 +37,7 @@ def edit_user(request, username):
             member.position = form.cleaned_data['position']
             member.city = form.cleaned_data['city']
             member.state = form.cleaned_data['state']
+            member.phone = form.cleaned_data['phone']
             member.country = form.cleaned_data['country']
             member.year = form.cleaned_data['year']
             member.kind = form.cleaned_data['user_type']
@@ -54,6 +55,7 @@ def edit_user(request, username):
                              'position': member.position,
                              'number': member.number,
                              'city': member.city,
+                             'phone': member.phone,
                              'state': member.state,
                              'year': member.year,
                              'country': member.country,
