@@ -6,7 +6,3 @@ django-floppyforms==0.4.7
 gunicorn
 psycopg2
 newrelic
-djangoembed
-simplejson
-httplib2
-Image
