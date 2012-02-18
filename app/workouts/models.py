@@ -14,6 +14,8 @@ class Activity(models.Model):
     instructions = models.TextField(null=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    video = models.URLField(blank=True, null=True, verbose_name='Video URL')
+    public = models.BooleanField(default=True)
 
     def __unicode__(self):
       return self.name
@@ -21,7 +23,8 @@ class Activity(models.Model):
 class ActivityForm(ModelForm):
     class Meta:
         model = Activity
-        fields = ('name', 'kind', 'people_needed', 'location', 'instructions',)
+        fields = ('name', 'kind', 'people_needed', 'location', 'instructions',
+			'video', 'public')
 
 
 class Workout(models.Model):
@@ -34,6 +37,7 @@ class Workout(models.Model):
     kind = models.CharField(max_length=50,default='Kind of Workout')
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    public = models.BooleanField(default=True)
 
     def __unicode__(self):
       return self.name
@@ -41,7 +45,7 @@ class Workout(models.Model):
 class WorkoutForm(ModelForm):
     class Meta:
         model = Workout
-        fields = ('name', 'kind',)
+        fields = ('name', 'kind', 'public')
 
 
 class Step(models.Model):
@@ -79,6 +83,7 @@ class Practice(models.Model):
     notes = models.TextField(null=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    open = models.BooleanField(default=False)
 
     def name(self):
       return self.workout.name
@@ -89,7 +94,7 @@ class Practice(models.Model):
 class PracticeForm(ModelForm):
     class Meta:
         model = Practice
-        fields = ['date', 'time', 'notes']
+        fields = ['date', 'time', 'notes', 'open']
 
 
 class Individual(models.Model):

@@ -22,8 +22,18 @@
     Location: {{ activity.location }}
   </li>
   <li>
-    Instructions: {{ activity.instructions }}
+    Instructions: {{ activity.instructions|safe }}
   </li>
+  <li>
+    Public: {{ activity.public }}
+  </li>
+  {% if activity.video %}
+  <li>
+      Instruction Video: 
+      <a href="{{ activity.video }}" target="_blank" data-embed="true">Instructions</a>
+      <div ><div id="player"></div></div>
+  </li>
+  {% endif %}
 </ul>
 {% else %}
     <p>No activities are available.</p>
