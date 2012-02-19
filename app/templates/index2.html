@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block main-content %}
+    <div class="hero-unit">
+      <h1>We On Three</h1>
+      <p>Together we can improve your team communications and collaboration. Manage practice plans, individual workouts, and update everyone when things change.</p>
+      <p>
+      <a href="{% url signup %}" class="btn btn-success btn-large">
+        Sign Up for Free
+      </a>
+      <a href="{% url learn %}" class="btn btn-primary btn-large">
+        Learn More
+      </a>
+      Already a member? <a href="{% url login %}" class="">Log-in</a"
+      </p>
+    </div>
+    {% endblock %}
