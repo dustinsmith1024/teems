@@ -42,4 +42,8 @@ def signup(request):
 
 
 
+def learn(request):
+    c = {}
+    return render_to_response("learn.html", {},
+         context_instance=RequestContext(request))
 

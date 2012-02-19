@@ -16,7 +16,7 @@
 {% endif %}
 {% if individuals_list %}
 <h3>Scheduled Individuals</h3>
-    <dl>
+    <ul>
     {% for workout in individuals_list %}
         <li>{{workout.date_suggested|date:'D, M, d'}} at {{ workout.time_suggested|time:'G:i' }}:
          <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.name }} for {{ workout.member }}

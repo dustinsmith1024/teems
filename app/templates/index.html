@@ -3,6 +3,17 @@
 {% block title %}Home{% endblock %}
 
 {% block main-content %}
-    <h2>Welcome to Teems</h2>
-    <p>Manage your teams, workouts, and players accordingly.</p>
-{% endblock %}
+    <div class="hero-unit">
+      <h1>We On Three</h1>
+      <p>Together we can improve your team communications and collaboration. Manage practice plans, individual workouts, and update everyone all from one place.</p>
+      <p>Currently we are still private beta testing our solutions.
+      If your interested in helping us build and test out these services please contact us at  
+      <a href="mailto:dds1024@gmail.com">dds1024@gmail.com</a> or on Twitter <a href="href://twitter.com/weonthree">@WeOnThree</a></p>
+      <p>
+      <a href="{% url learn %}" class="btn btn-success btn-large">
+        Learn More
+      </a>
+      Already a member? <a href="{% url login %}" class="">Log-in</a"
+      </p>
+    </div>
+    {% endblock %}
