@@ -16,6 +16,7 @@ class Activity(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     video = models.URLField(blank=True, null=True, verbose_name='Video URL')
     public = models.BooleanField(default=True)
+    duration = models.IntegerField(blank=True, null=True, default=15)
 
     def __unicode__(self):
       return self.name
@@ -24,7 +25,7 @@ class ActivityForm(ModelForm):
     class Meta:
         model = Activity
         fields = ('name', 'kind', 'people_needed', 'location', 'instructions',
-			'video', 'public')
+			'video', 'public', 'duration')
 
 
 class Workout(models.Model):
@@ -56,6 +57,7 @@ class Step(models.Model):
     activity = models.ForeignKey(Activity)
     workout = models.ForeignKey(Workout)
     position = models.PositiveSmallIntegerField(null=True)
+    duration = models.IntegerField(blank=True, null=True, default=15)
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 

@@ -129,6 +129,7 @@ def edit_workout(request, workout_id):
                       step = Step.objects.get(pk=request.POST[k])
                       step.position = request.POST[num + '-position']
                       step.activity = Activity.objects.get(pk=request.POST[num + '-activities'])
+                      step.duration = request.POST[num + '-duration']
                       step.save()
                   else:
                       num = k.split('-')[0]

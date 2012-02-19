@@ -3,47 +3,42 @@
 {% block title %}Edit Workout{% endblock %}
 
 {% block main-content %}
-<h2>Edit Workout</h2>
+<h2>Edit Workout Plan</h2>
 <form action="{% url edit_workout workout.id %}" class="form-horizontal" method="post">
 {% csrf_token %}
 <fieldset>
-{{ workout_form.as_p}}
+  {% include "fragments/fields.html" with form=workout_form %}
     {% for s in steps %}
-    <div class="clearfix">
-      <label for="id_{{ forloop.counter }}-activities">Activities:</label>
+    <div class="control-group">
+    <label class="controls-label" for="id_{{ forloop.counter }}-activities">Activities:</label>
       <input name="{{ forloop.counter }}-step_id" type="hidden" value="{{ s.id }}" />
-      <div class="input">
+      <div class="controls">
+        <input type="text" name="{{ forloop.counter }}-position" value="{{ s.position }}" id="id_{{ forloop.counter }}-position" class="order" />
         <select name="{{ forloop.counter }}-activities" id="id_{{ forloop.counter }}-activities">
           <option value="">---------</option>
           {% for a in activities %} {{ s }}
             <option value="{{ a.id }}" {% if s.activity == a %}selected="selected"{% endif %}>{{ a.name }}</option>
           {% endfor %}
         </select>
-      </div>
-    </div>
-    <div class="clearfix">
-      <label for="id_{{ forloop.counter }}-position">Position:</label>
-      <div class="input">
-        <input type="text" name="{{ forloop.counter }}-position" value="{{ s.position }}" id="id_{{ forloop.counter }}-position" />
+        <input class="order" type="text" name="{{ forloop.counter }}-duration" value="{{ s.duration }}" id="id_{{ forloop.counter }}-duration" />
+        <span class="help-inline">minutes</span>
       </div>
     </div>
     {% endfor %}
 
-    <div class="clearfix">
-      <label for="id_{{ next_step }}-activities">Activities:</label>
+    <div class="control-group">
+      <label class="controls-label" for="id_{{ next_step }}-activities">Activities:</label>
       <input name="{{ next_step }}-step_id" type="hidden" value="new" />
-      <div class="input">
+      <div class="controls">
+        <input class="order" type="text" name="{{ next_step }}-position" value="{{ next_step }}" id="id_{{ next_step }}-position" />
         <select name="{{ next_step }}-activities" id="id_{{ next_step }}-activities">
           <option value="">---------</option>
           {% for a in activities %} {{ s }}
             <option value="{{ a.id }}" {% if s.activity == a %}selected="selected"{% endif %}>{{ a.name }}</option>
           {% endfor %}
         </select>
-      </div>
-    </div>
-    <div class="clearfix">
-      <label for="id_{{ next_step }}-position">Position:</label>
-      <div class="input"><input type="text" name="{{ next_step }}-position" value="{{ next_step }}" id="id_{{ next_step }}-position" />
+        <input class="order" type="text" name="{{ next_step }}-duration" value="{{ next_step }}" id="id_{{ next_step }}-duration" />
+        <span class="help-inline">minutes</span>
       </div>
     </div>
 

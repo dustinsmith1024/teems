@@ -21,8 +21,8 @@
 {% include 'workouts/activities/list.html' with activities=practice.workout.plan.all %}
 
 <div id="actions" class="form-actions">
-  <a class="btn btn-primary" href="/workouts/{{ practice.workout.id }}/schedule/{{ practice.id }}">Update Practice</a>
-  <a class="btn btn-primary" href="/workouts/{{ practice.workout.id }}/update">Update Workout</a>
+  <a class="btn btn-primary" href="{% url edit_practice practice.workout.id practice.id %}">Update Practice</a>
+  <a class="btn btn-primary" href="{% url edit_workout practice.workout.id %}">Update Workout</a>
 </div>
 {% endblock %}
 
