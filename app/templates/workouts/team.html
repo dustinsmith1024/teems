@@ -15,9 +15,9 @@
         {% endif %}
         {% if workout.date_suggested %}
             {{ combined.forloop.counter0 }}
-            <li class="time">{{ workout.time|time:"g:i A" }} <a href="/workouts/individuals/{{ workout.id }}/">Individual</a></li>
+            <li class="time">{{ workout.time|time:"g:i A" }} <a href="/workouts/individuals/{{ workout.id }}/">{{ workout.member }} ({{ workout.name }})</a></li>
         {% else %}
-            <li class="time">{{workout.time|time:"g:i A"}} <a href="/workouts/practices/{{ workout.id }}/">Practice</a></li>
+            <li class="time">{{workout.time|time:"g:i A"}} <a href="/workouts/practices/{{ workout.id }}/">Practice ({{ workout.name }})</a></li>
         {% endif %}
     {% endfor %}
       </ul>

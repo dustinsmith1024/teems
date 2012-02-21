@@ -1,6 +1,8 @@
 from django.db import models
 from teams.models import Team, Member
 from django.forms import ModelForm
+from helpers import add_time
+import datetime
 
 class Activity(models.Model):
     """
@@ -90,6 +92,21 @@ class Practice(models.Model):
     def name(self):
       return self.workout.name
 
+    def activities(self):
+        return self.workout.step_set.all()
+
+    def schedule(self):
+        """Takes and activities dictionary and adds start and end times
+        Pass in the practice or individual start time, then it will
+        increment"""
+        start_time = self.time
+        activities = self.activities()
+        for activity in activities:
+            activity.start_time = start_time
+            activity.end_time = add_time(start_time, activity.duration)
+            start_time = activity.end_time
+        return activities
+
     def __unicode__(self):
       return "Practice for " + self.name()
 
@@ -115,6 +132,22 @@ class Individual(models.Model):
 
     def name(self):
         return self.workout.name
+
+    def activities(self):
+        return self.workout.step_set.all()
+
+    def schedule(self):
+        """Takes workout activities and adds start and end times
+        Pass in the practice or individual start time, then it will
+        increment
+        TODO: We could cache this or store in the DB"""
+        start_time = self.time_suggested
+        activities = self.activities()
+        for activity in activities:
+            activity.start_time = start_time
+            activity.end_time = add_time(start_time, activity.duration)
+            start_time = activity.end_time
+        return activities
 
     def __unicode__(self):
       return self.name()

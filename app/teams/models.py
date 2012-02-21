@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.contrib.localflavor.us.models import PhoneNumberField
 
-
 class Team(models.Model):
     name = models.CharField(max_length=100)
     mascot = models.CharField(max_length=100,)
@@ -18,6 +17,21 @@ class Team(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def practices(self):
+        from workouts.models import Practice
+        return Practice.objects.filter(team=self).all()
+
+    def members(self):
+        return self.member_set.all()
+
+    def individuals(self):
+        """Could probably shorten this up but not necessary"""
+        individuals = []
+        for member in self.members():
+            for i in member.individuals():
+                individuals.append(i)
+        return individuals
 
     def location(self):
         return self.city + ", " + self.state
@@ -69,6 +83,9 @@ class Member(models.Model):
             if member.team == self.team:
                 return True
         return False
+
+    def individuals(self):
+        return self.individual_set.all()
 
     def __unicode__(self):
         return self.full_name()

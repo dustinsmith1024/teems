@@ -23,10 +23,10 @@ def index(request):
                                context_instance=RequestContext(request))
 
 @login_required
-def mine(request):
-    team = Member.objects.get(user=request.user).team
-    practices = Practice.objects.filter(team=team).all()
-    individuals = Member.objects.get(user=request.user).individual_set.all()
+def workouts(request):
+    team = request.user.team
+    practices = team.practices()
+    individuals = request.user.member.individuals()
     for index, i in enumerate(individuals):
         individuals[index].date = i.date_suggested
         individuals[index].time = i.time_suggested
@@ -42,24 +42,42 @@ def mine(request):
             combined[index].show_date = False
         saved_date = i.date
     c = Context({
-        #'individuals_list': individuals,
-        #'practice_list': practices,
         'combined': combined,
     })
     return render_to_response("workouts/mine.html", c,
                                context_instance=RequestContext(request))
 
 @login_required
-def workouts(request):
+def team_workouts(request):
+    team = request.user.team
+    practices = team.practices()
+    individuals = team.individuals()
+    for index, i in enumerate(individuals):
+        individuals[index].date = i.date_suggested
+        individuals[index].time = i.time_suggested
+    combined = list(practices)
+    combined.extend(list(individuals))
+    combined.sort(key=operator.attrgetter('date', 'time'))
+    show_date = False
+    saved_date = False
+    """ Put in some show_dates to help with formating on frontend """
+    for index, i in enumerate(combined):
+        combined[index].show_date = True
+        if saved_date and saved_date == i.date:
+            combined[index].show_date = False
+        saved_date = i.date
+    c = Context({
+        'combined': combined,
+    })
+    return render_to_response("workouts/team.html", c,
+                               context_instance=RequestContext(request))
+
+
+@login_required
+def public_workouts(request):
+    """Filter the public workouts"""
     practices = Practice.objects.all()
     individuals = Individual.objects.all()
-    i_set = []
-    date = None
-    time = None
-    """
-    for i in individual:
-       #loop em all
-    """
     workouts = Workout.objects.all()
     c = Context({
         'workout_list': workouts,
@@ -337,7 +355,7 @@ def practices(request):
 def practice(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
     activities = practice.workout.step_set.all()
-    schedule = make_schedule(activities, practice.time)
+    schedule = practice.schedule()
     c = Context({
         'practice': practice,
         'schedule': schedule
@@ -351,7 +369,7 @@ def individual(request, individual_id):
     individual = get_object_or_404(Individual, pk=individual_id)
     workout = individual.workout
     activities = workout.step_set.all()
-    schedule = make_schedule(activities, individual.time_suggested)
+    schedule = individual.schedule()
     c = Context({
         'individual': individual,
         'workout': workout,
@@ -359,20 +377,6 @@ def individual(request, individual_id):
     })
     return render_to_response("workouts/individuals/detail.html", c,
                                context_instance=RequestContext(request))
-
-def make_schedule(activities, start_time):
-    """Takes and activities dictionary and adds start and end times
-    Pass in the practice or individual start time, then it will increment"""
-    for activity in activities:
-        activity.start_time = start_time
-        fulldate = datetime.datetime(1,1,1,
-                    start_time.hour, 
-                    start_time.minute,
-                    start_time.second)
-        new_time = fulldate + datetime.timedelta(minutes=activity.duration)
-        activity.end_time = new_time.time()
-        start_time = activity.end_time
-    return activities
 
 @login_required
 def workout(request, workout_id):

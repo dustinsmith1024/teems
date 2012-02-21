@@ -42,6 +42,14 @@ def signup(request):
 
 
 
+def index(request):
+    c = {}
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(
+                reverse('workouts',))
+    return render_to_response("index.html", {},
+         context_instance=RequestContext(request))
+
 def learn(request):
     c = {}
     return render_to_response("learn.html", {},
