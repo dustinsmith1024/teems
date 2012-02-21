@@ -16,7 +16,7 @@
         <input type="text" name="{{ forloop.counter }}-position" value="{{ s.position }}" id="id_{{ forloop.counter }}-position" class="order" />
         <select name="{{ forloop.counter }}-activities" id="id_{{ forloop.counter }}-activities">
           <option value="">---------</option>
-          {% for a in activities %} {{ s }}
+          {% for a in activities %}
             <option value="{{ a.id }}" {% if s.activity == a %}selected="selected"{% endif %}>{{ a.name }}</option>
           {% endfor %}
         </select>

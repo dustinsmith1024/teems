@@ -29,15 +29,25 @@ input.order {
   color: white;
 }
 
-.navbar-inner {
-
-}
-.navbar-inner2 {
-  &.primary-blue {
-    background-color: #darkBlue;
-    background-image: -moz-linear-gradient(center top , blue, darkBlue);
+#body {
+  .primary-blue, .secondary-blue, .blue {
+    color: blue;
+  }
+  .primary-red, .secondary-red, .red {
+    color: red;
   }
 }
+
+div.navbar-inner {
+  border-radius: 0;
+  &.primary-blue {
+    border-top: 3px solid blue;
+  }
+  &.primary-red {
+    border-top: 3px solid red;
+  }
+}
+
 .blue-bg {
     background-color: blue;
     background-image: -moz-linear-gradient(center top , #0064CD, navy);

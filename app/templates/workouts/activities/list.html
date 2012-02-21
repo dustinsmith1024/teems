@@ -1,9 +1,14 @@
+{% load extra_tags %}
 <ol>
     {% for activity in activities %}
         {% if activity.name %}
-        <li><a href="/workouts/activities/{{ activity.id }}/">{{ activity.name }}</a></li>
+        <li><a href="/workouts/activities/{{ activity.id }}/">{{ activity.name }}</a>
         {% else %}
-        <li><a href="/workouts/activities/{{ activity.activity.id }}/">{{ activity.activity.name }}</a></li>
+        <li><a href="/workouts/activities/{{ activity.activity.id }}/">{{ activity.activity.name }}</a>
         {% endif %}
+        {% if activity.start_time %}
+        {{ activity.start_time }} - {{ activity.end_time }}
+        {% endif %}
+        </li>
     {% endfor %}
 </ol>

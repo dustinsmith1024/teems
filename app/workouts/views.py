@@ -12,7 +12,7 @@ from teams.models import Team, Member
 from models import *
 from forms import *
 import operator
-
+import datetime
 
 def index(request):
     teams = Team.objects.all()
@@ -336,8 +336,11 @@ def practices(request):
 @login_required
 def practice(request, practice_id):
     practice = get_object_or_404(Practice, pk=practice_id)
+    activities = practice.workout.step_set.all()
+    schedule = make_schedule(activities, practice.time)
     c = Context({
         'practice': practice,
+        'schedule': schedule
     })
     return render_to_response("workouts/practices/detail.html", c,
                                context_instance=RequestContext(request))
@@ -347,12 +350,29 @@ def practice(request, practice_id):
 def individual(request, individual_id):
     individual = get_object_or_404(Individual, pk=individual_id)
     workout = individual.workout
+    activities = workout.step_set.all()
+    schedule = make_schedule(activities, individual.time_suggested)
     c = Context({
         'individual': individual,
         'workout': workout,
+        'schedule': schedule,
     })
     return render_to_response("workouts/individuals/detail.html", c,
                                context_instance=RequestContext(request))
+
+def make_schedule(activities, start_time):
+    """Takes and activities dictionary and adds start and end times
+    Pass in the practice or individual start time, then it will increment"""
+    for activity in activities:
+        activity.start_time = start_time
+        fulldate = datetime.datetime(1,1,1,
+                    start_time.hour, 
+                    start_time.minute,
+                    start_time.second)
+        new_time = fulldate + datetime.timedelta(minutes=activity.duration)
+        activity.end_time = new_time.time()
+        start_time = activity.end_time
+    return activities
 
 @login_required
 def workout(request, workout_id):
