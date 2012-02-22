@@ -26,10 +26,12 @@
     <p>Issue finding team details...</p>
 {% endif %}
 
+{% if user.is_authenticated and user.team == team %}
 <div id="actions" class="form-actions">
   <a class="btn btn-primary" href="{% url new_member team.id %}">New Team Member</a>
   <a class="btn btn-primary" href="{% url edit_team team.id %}">Edit Details</a>
 </div>
+{% endif %}
 
 {% endblock %}
 

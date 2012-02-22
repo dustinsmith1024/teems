@@ -71,7 +71,9 @@ def join(request):
                 messages.add_message(request, messages.SUCCESS, 'Team joined!')
                 return HttpResponseRedirect(reverse('team_details', args=(team.id,)))
             else:
-                print 'secret does not match'
+                #TODO: Redirect
+                form._errors["secret"] = form.error_class(
+                        ['Secret does not match!'])
         else:
             print 'form not valid'
     else: 

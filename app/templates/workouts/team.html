@@ -4,8 +4,8 @@
 
 {% block main-content %}
 
+<h2>Team Workouts</h2>
 {% if combined %}
-<h2>Workouts</h2>
     <ul id="calendar" class="unstyled">
     {% for workout in combined %}
         {% if workout.show_date %}

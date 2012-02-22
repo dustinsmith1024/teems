@@ -1,0 +1,107 @@
+[
+  {
+    "pk": 1, 
+    "model": "teams.team", 
+    "fields": {
+      "city": "Sioux City", 
+      "kind": null, 
+      "name": "North High School", 
+      "color": "blue", 
+      "secret": "north1024", 
+      "secondary_color": null, 
+      "state": "IA", 
+      "public": false, 
+      "mascot": "Stars"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "teams.team", 
+    "fields": {
+      "city": "Sioux City", 
+      "kind": null, 
+      "name": "East High School", 
+      "color": null, 
+      "secret": null, 
+      "secondary_color": null, 
+      "state": "IA", 
+      "public": false, 
+      "mascot": "Black Raiders"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "teams.team", 
+    "fields": {
+      "city": "Sioux City", 
+      "kind": null, 
+      "name": "Bishop Heelan High School", 
+      "color": null, 
+      "secret": null, 
+      "secondary_color": null, 
+      "state": "IA", 
+      "public": false, 
+      "mascot": "Crusaders"
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "teams.team", 
+    "fields": {
+      "city": "Wayne", 
+      "kind": null, 
+      "name": "Wayne State College", 
+      "color": "black", 
+      "secret": "gocats", 
+      "secondary_color": "gold", 
+      "state": "NE", 
+      "public": true, 
+      "mascot": "Wildcats"
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "teams.team", 
+    "fields": {
+      "city": "Sioux City", 
+      "kind": "", 
+      "name": "Sioux City Northside", 
+      "color": "gold", 
+      "secret": "starz", 
+      "secondary_color": "red", 
+      "state": "IA", 
+      "public": true, 
+      "mascot": "Starz"
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "teams.team", 
+    "fields": {
+      "city": "Sioux City", 
+      "kind": null, 
+      "name": "Sioux City West High School", 
+      "color": "green", 
+      "secret": "gowolverines", 
+      "secondary_color": null, 
+      "state": "IA", 
+      "public": true, 
+      "mascot": "Wolverines"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "teams.team", 
+    "fields": {
+      "city": "South Sioux City", 
+      "kind": null, 
+      "name": "South Sioux City High School", 
+      "color": "red", 
+      "secret": "gocardinals", 
+      "secondary_color": "white", 
+      "state": "NE", 
+      "public": false, 
+      "mascot": "Cardinals"
+    }
+  }
+]

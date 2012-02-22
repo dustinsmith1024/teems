@@ -1,0 +1,155 @@
+[
+  {
+    "pk": 1, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "basketball", 
+      "name": "2 Ball Dribbling", 
+      "created": "2011-12-04 00:00:00", 
+      "last_modified": "2012-01-25 23:40:25", 
+      "video": null, 
+      "location": "gym", 
+      "team": 1, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 2, 
+      "instructions": "2 ball pounders!"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "basketball", 
+      "name": "2 Ball Shooting", 
+      "created": "2011-12-04 00:00:00", 
+      "last_modified": "2011-12-16 21:43:06", 
+      "video": null, 
+      "location": "gym", 
+      "team": 1, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 2, 
+      "instructions": "2 ball shooting yall"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "warm up", 
+      "name": "Stretching", 
+      "created": "2011-12-04 00:00:00", 
+      "last_modified": "2012-01-02 21:59:23", 
+      "video": null, 
+      "location": "gym", 
+      "team": 1, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 1, 
+      "instructions": "stretch it good"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "shootin", 
+      "name": "Free Throws", 
+      "created": "2011-12-19 21:10:39", 
+      "last_modified": "2012-01-24 22:02:22", 
+      "video": null, 
+      "location": "gym", 
+      "team": 1, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 2, 
+      "instructions": "Everyone shoot free throws and rotate baskets after each turn.  Shoot 2 at a time."
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "easty", 
+      "name": "easter", 
+      "created": "2011-12-19 21:24:36", 
+      "last_modified": "2011-12-19 21:24:36", 
+      "video": null, 
+      "location": "gym", 
+      "team": 2, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 1, 
+      "instructions": "hiiiiii"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "basketball", 
+      "name": "3 Man Weave", 
+      "created": "2012-01-02 22:11:52", 
+      "last_modified": "2012-01-02 22:11:52", 
+      "video": null, 
+      "location": "gym", 
+      "team": 1, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 10, 
+      "instructions": "weave it like the normal way"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "Ball handling", 
+      "name": "Louisville", 
+      "created": "2012-01-05 21:01:25", 
+      "last_modified": "2012-02-16 21:30:21", 
+      "video": "http://www.youtube.com/watch?v=2MqgZuj0Rec", 
+      "location": "gym", 
+      "team": 1, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 1, 
+      "instructions": "2 ball zig-zag dribbling:\r\ncross over\r\nbehind the back\r\nalternating\r\nsimultaneous\r\ndouble doozie"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "conditioning", 
+      "name": "Deep 6", 
+      "created": "2012-01-07 14:50:38", 
+      "last_modified": "2012-01-07 14:50:38", 
+      "video": null, 
+      "location": "gym", 
+      "team": 1, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 1, 
+      "instructions": "Horizontal width running and how many depends on free throws hit."
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "workouts.activity", 
+    "fields": {
+      "kind": "shooting", 
+      "name": "2 Ball Shooting", 
+      "created": "2012-02-20 18:32:26", 
+      "last_modified": "2012-02-20 18:32:26", 
+      "video": null, 
+      "location": "gym", 
+      "team": 16, 
+      "duration": 15, 
+      "public": true, 
+      "people_needed": 2, 
+      "instructions": ""
+    }
+  }
+]

@@ -158,7 +158,7 @@ INSTALLED_APPS = (
 )
 
 LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/workouts/mine'
+LOGIN_REDIRECT_URL = '/workouts/'
 AUTH_PROFILE_MODULE = 'teams.Member'
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

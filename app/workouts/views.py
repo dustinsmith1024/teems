@@ -83,6 +83,7 @@ def public_workouts(request):
         'workout_list': workouts,
         'practice_list': practices,
         'individuals_list': individuals,
+        'title': 'Community Workouts',
     })
     return render_to_response("workouts/list.html", c,
                                context_instance=RequestContext(request))

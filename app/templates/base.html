@@ -121,12 +121,15 @@
       {% block footer %}
       {% if user.is_authenticated %}
       <footer class="footer {{ request.user.team.color }} {{ request.user.team.secondary_color }}" id="page-footer">
-          <ul class="nav nav-tabs nav-stacked">
-            <li><a  href="/teams/">Teams</a></li>
-            <li><a  href="/teams/mine">My Teem</a></li>
-            <li><a  href="/workouts">Workouts</a></li>
-            <li><a  href="/workouts/mine">My Workouts</a></li>
-            <li><a  href="/workouts/activities">Actvities</a></li>
+      <ul class="nav nav-tabs nav-stacked">
+            <li><a href="/" class="home">Home</a>
+            <li><a  href="{% url teams %}">Teams</a></li>
+            {% if user.team %}
+            <li><a  href="{% url team_details user.team.id %}">My Teem</a></li>
+            {% endif %}
+            <li><a  href="{% url all_workouts %}">Workouts</a></li>
+            <li><a  href="{% url workouts %}">My Workouts</a></li>
+            <li><a  href="{% url activities %}">Actvities</a></li>
           </ul>
       </footer>
       {% endif %}
