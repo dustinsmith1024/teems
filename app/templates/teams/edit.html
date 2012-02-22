@@ -14,5 +14,25 @@
         </div>
     </form>
 {% endblock %}
-
+{% block extra-js %}
+<script>
+  var $input = $("[name='color']");
+  var colors = ['red', 'orange', 'gold', 'green', 'blue', 'purple'];
+  var l = colors.length + 1;
+  var divs = '';
+  for(l >= 0; l = l - 1;){
+    divs = divs + '<div class="' + colors[l - 1] + '-bg"></div>';
+  }
+  divs = '<div class="color-picker" >' + divs + '</div>';
+  var $template = $(divs).hide();
+  $input.after($template.css({ 
+    'width': $input.width(),
+    'margin-left': '2px'
+  })
+  );
+  $input.click(function(){
+    $(".color-picker").show();
+  });
+</script>
+{% endblock %}
 
