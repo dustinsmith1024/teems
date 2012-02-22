@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
     url(r'^signup/$', 'views.signup', name='signup'),
+    url(r'^robots\.txt$', direct_to_template,
+             {'template': 'robots.txt', 'mimetype': 'text/plain'}),
 )
 
 

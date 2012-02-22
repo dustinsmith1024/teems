@@ -48,13 +48,13 @@
     {% block header %}
     <div class="navbar" id="navbar">
       {% if user.is_authenticated %}
-      <div class="navbar-inner primary-{{ request.user.team.color }} ">
+      <div class="navbar-inner {{ request.user.team.color }} ">
       {% else %}
         <div class="navbar-inner">
       {% endif %}
       <div class="container">
         {% if user.is_authenticated and user.team %}
-        <a class="brand secondary-{{ user.team.secondary_color }}" href="/">{{ user.team.mascot }} on 3</a>
+        <a class="brand {{ user.team.primary_color }}" href="/"><span class="{{ user.team.color }}"><b>{{ user.team.mascot }}</b> on 3</span></a>
         {% else %}
         <a class="brand" href="/">We on Three</a>
         {% endif %}
@@ -88,7 +88,6 @@
                 <li>
                   <a href="/help">Help</a>
                   </li>
-                  <li class="divider-vertical"></li>
                 <li>
                   <a href="/logout" class="">Logout</a>
                 </li>
@@ -121,7 +120,7 @@
 
       {% block footer %}
       {% if user.is_authenticated %}
-      <footer class="footer primary-{{ request.user.team.color }} secondary-{{ request.user.team.secondary_color }}" id="page-footer">
+      <footer class="footer {{ request.user.team.color }} {{ request.user.team.secondary_color }}" id="page-footer">
           <ul class="nav nav-tabs nav-stacked">
             <li><a  href="/teams/">Teams</a></li>
             <li><a  href="/teams/mine">My Teem</a></li>

@@ -49,13 +49,7 @@ div.navbar-inner {
   &.red {
     border-top: 2px solid red;
   }
-  &.gold {
-    border-top: 2px solid gold;
-  }
   background-image: -moz-linear-gradient(center top , #444, #222);
-  .nav > li > a {
-    color: #DDD;
-  }
   &.home {
     background-image: -moz-linear-gradient(center top , #FFF, #DDD);
     .nav > li > a {

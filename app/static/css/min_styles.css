@@ -1,9 +1,21 @@
 #body,body{font-size:16px;position:relative;}
 #body form{margin-bottom:0;}
+input.order{width:25px;}
 #main-row{margin:0 auto;}
 #notes{font-size:15px;padding:5px;}
 #messages{list-style:none;margin:0;}
 #topbar a{color:white;}
+#body .blue{color:blue;}
+#body .red{color:red;}
+#body .gold,#body .yellow{color:gold;}
+div.navbar-inner{border-radius:0;background-image:-moz-linear-gradient(center top, #444444, #222222);}div.navbar-inner.blue{border-top:2px solid blue;}
+div.navbar-inner.red{border-top:2px solid red;}
+div.navbar-inner.gold{border-top:2px solid gold;}
+div.navbar-inner .nav>li>a{color:#DDD;}
+div.navbar-inner.home{background-image:-moz-linear-gradient(center top, #ffffff, #dddddd);}div.navbar-inner.home .nav>li>a{color:#444;text-shadow:0 0px 0px rgba(0, 0, 0, 0.25);}div.navbar-inner.home .nav>li>a:hover{color:#000;}
+div.navbar-inner.home .nav .dropdown-toggle .caret,div.navbar-inner.home .navbar .nav .open.dropdown .caret{border-top-color:#333;opacitcy:.4;}
+div.navbar-inner.home .dropdown.open .dropdown-toggle{color:#444;}
+div.navbar-inner.home .divider-vertical{background-color:#EEE;border-right:1px solid #FFF;height:40px;}
 .blue-bg{background-color:blue;background-image:-moz-linear-gradient(center top, #0064cd, #000080);}
 .red-bg{background-color:red;background-image:-moz-linear-gradient(center top, #ff0000, darkRed);}
 #calendar .date{border-top:1px dotted #CCC;padding:5px 0 0 2px;}
