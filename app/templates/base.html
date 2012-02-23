@@ -25,7 +25,7 @@
   {% block base-styles %}
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
-  {% if MODE == "prod" %}
+  {% if MODE != "prod" %}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}min_styles.css"> 
   {% else %} 
   <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}style.less">
@@ -44,7 +44,7 @@
 </head>
 {% endblock head %}
 {% block body %}
-<body id="body" class="row primary-{{ request.user.team.color }} secondary-{{ request.user.team.secondary_color }}" >
+<body id="body" class="primary-{{ request.user.team.color }} secondary-{{ request.user.team.secondary_color }}" >
     {% block header %}
     <div class="navbar" id="navbar">
       {% if user.is_authenticated %}
@@ -141,15 +141,15 @@
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
   {% block js-libs %}
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}jquery-1.7.1.min.js">\x3C/script>')</script>
   <script>
   Modernizr.load({
     test: Modernizr.date,
     nope: ['http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js', '{{ STATIC_URL }}dates.js'],
     complete: function(){ my_dates.init(); }
   });
-/*
 $(function(){
-var href = $("a[data-embed='true']").attr('href').split('v=')[1];
+/*var href = $("a[data-embed='true']").attr('href').split('v=')[1];
 console.log(href);
 $("a[data-embed='true']").click(function(e){
 	console.log(this);
@@ -206,9 +206,8 @@ $.ajax({
       function stopVideo() {
         player.stopVideo();
       }
-	*/
+      */});
   </script>
-  <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-1.7.0.min.js">\x3C/script>')</script>
   {% endblock js-libs %}
 
 

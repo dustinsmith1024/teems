@@ -40,6 +40,10 @@ class TeamForm(ModelForm):
     class Meta:
         model = Team
 
+# def __init__(self, *args, **kwargs):
+#             super(PhotoForm, self).__init__(*args, **kwargs)
+#                     self.fields['name'].widget.attrs['onClick'] = "this.value
+#                     =;"
 class Member(models.Model):
     user = models.ForeignKey(User, unique=True, null=True)
     team = models.ForeignKey(Team, null=True)

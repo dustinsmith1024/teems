@@ -16,12 +16,14 @@
 {% endblock %}
 {% block extra-js %}
 <script>
+  $(function(){
+    console.log('run');
   var $input = $("[name='color']");
   var colors = ['red', 'orange', 'gold', 'green', 'blue', 'purple'];
   var l = colors.length + 1;
   var divs = '';
   for(l >= 0; l = l - 1;){
-    divs = divs + '<div class="' + colors[l - 1] + '-bg"></div>';
+    divs = divs + '<div class="' + colors[l - 1] + '-bg color" data-color="' + colors[l - 1] + '"></div>';
   }
   divs = '<div class="color-picker" >' + divs + '</div>';
   var $template = $(divs).hide();
@@ -31,8 +33,17 @@
   })
   );
   $input.click(function(){
+    console.log('click');
     $(".color-picker").show();
   });
+  $(document).delegate('div.color', 'click', function(e){
+    console.log('clicked');
+    val = $(this).data('color');
+    console.log(val);
+    $input.val(val.split('-')[0]);
+    $('.color-picker').hide();
+  });
+});
 </script>
 {% endblock %}
 
