@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.contrib.localflavor.us.models import PhoneNumberField
+import floppyforms as forms
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
@@ -39,6 +40,11 @@ class Team(models.Model):
 class TeamForm(ModelForm):
     class Meta:
         model = Team
+        widgets = {
+                'color': forms.TextInput(attrs={'data-color-picker':'true'}),
+                'secondary_color': forms.TextInput(
+                    attrs={'data-color-picker':'true'}),
+                }
 
 # def __init__(self, *args, **kwargs):
 #             super(PhotoForm, self).__init__(*args, **kwargs)

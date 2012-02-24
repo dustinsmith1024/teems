@@ -17,32 +17,43 @@
 {% block extra-js %}
 <script>
   $(function(){
-    console.log('run');
-  var $input = $("[name='color']");
-  var colors = ['red', 'orange', 'gold', 'green', 'blue', 'purple'];
-  var l = colors.length + 1;
-  var divs = '';
-  for(l >= 0; l = l - 1;){
-    divs = divs + '<div class="' + colors[l - 1] + '-bg color" data-color="' + colors[l - 1] + '"></div>';
-  }
-  divs = '<div class="color-picker" >' + divs + '</div>';
-  var $template = $(divs).hide();
-  $input.after($template.css({ 
-    'width': $input.width(),
-    'margin-left': '2px'
-  })
-  );
-  $input.click(function(){
-    console.log('click');
-    $(".color-picker").show();
-  });
-  $(document).delegate('div.color', 'click', function(e){
-    console.log('clicked');
-    val = $(this).data('color');
-    console.log(val);
-    $input.val(val.split('-')[0]);
-    $('.color-picker').hide();
-  });
+    function buildDivs(id){
+      var colors = ['red', 'orange', 'gold', 'green', 'blue', 'purple'];
+      var l = colors.length + 1;
+      var divs = '';
+      for(l >= 0; l = l - 1;){
+        divs = divs + '<div class="' + colors[l - 1] + '-bg color" data-color="' + colors[l - 1] + '"></div>';
+      }
+      divs = '<div class="color-picker" data-color-picker-id="'+id+'">' + divs + '</div>';
+      return $(divs).hide();
+    }
+
+    function showPicker(el){
+      var id = el.attr('id');
+      var $template = buildDivs(id);
+      el.after($template.css({ 
+        'width': el.width(),
+        'margin-left': '2px'
+      })
+      );
+      $template.show();
+    }
+
+    $(document).delegate("[data-color-picker]", 'click', function(e){
+      $this = $(this);
+      console.log($this.attr('id'));
+      showPicker($(this));
+    });
+
+    $(document).delegate('div.color', 'click', function(e){
+      console.log('clicked');
+      var $this = $(this);
+      var val = $this.data('color');
+      var $parent = $this.parent();
+      var input_id = $parent.data('color-picker-id'); 
+      $('#' + input_id).val(val.split('-')[0]);
+      $($parent).hide();
+    });
 });
 </script>
 {% endblock %}
