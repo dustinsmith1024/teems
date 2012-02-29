@@ -28,7 +28,13 @@
       return $(divs).hide();
     }
 
+    function removePicker(el){
+      var id = el.attr('id');
+      $('[data-color-picker-id="' + id + '"]').remove();
+    }
+
     function showPicker(el){
+      removePicker(el);
       var id = el.attr('id');
       var $template = buildDivs(id);
       el.after($template.css({ 
@@ -41,18 +47,16 @@
 
     $(document).delegate("[data-color-picker]", 'click', function(e){
       $this = $(this);
-      console.log($this.attr('id'));
       showPicker($(this));
     });
 
     $(document).delegate('div.color', 'click', function(e){
-      console.log('clicked');
       var $this = $(this);
       var val = $this.data('color');
       var $parent = $this.parent();
       var input_id = $parent.data('color-picker-id'); 
       $('#' + input_id).val(val.split('-')[0]);
-      $($parent).hide();
+      $($parent).remove();
     });
 });
 </script>

@@ -1,3 +1,6 @@
+@import "/static/variables.less";
+@import "/static/mixins.less";
+
 #body, body {
   font-size: 16px;
   position: relative;
@@ -31,26 +34,50 @@ input.order {
 
 #body {
   .blue {
-    color: #0088CC;
+    color: @blue;
   }
   .red {
-    color: red;
+    color: @red;
   }
   .gold, .yellow {
-    color: gold;
+    color: @gold;
+  }
+  .green {
+    color: @green;
+  }
+  &.primary-green {
+    .dropdown-toggle:hover {
+      background-color: @green;
+    }
+    .dropdown-menu {
+      a:hover {
+        background-color: @green;
+      }
+    }
+    #main {
+      a:not(.btn) {
+        color: @green;
+      }
+    }
+  }
+  a.brand:hover {
+    background-color: inherit;
   }
 }
 
 div.navbar-inner {
   border-radius: 0;
   &.blue {
-    border-top: 2px solid #0088CC;
+    .color-top(@blue);
   }
   &.red {
-    border-top: 2px solid red;
+    .color-top(@red);
   }
   &.gold {
-    border-top: 2px solid gold;
+    .color-top(@gold);
+  }
+  &.green {
+    .color-top(@green);
   }
   background-image: -moz-linear-gradient(center top , #444, #222);
   .nav > li > a {
@@ -79,6 +106,7 @@ div.navbar-inner {
     }
   }
 }
+
 .color-picker {
   border: 1px dotted gray;
   height: 100px;
@@ -87,7 +115,11 @@ div.navbar-inner {
     border: 1px solid white;
     float: left;
     height: 30px;
+    opacity: .8;
     width: 30px;
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 

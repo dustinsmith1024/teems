@@ -25,7 +25,7 @@
   {% block base-styles %}
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
-  {% if MODE != "prod" %}
+  {% if MODE == "prod" %}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}min_styles.css"> 
   {% else %} 
   <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}style.less">
