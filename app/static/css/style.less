@@ -32,12 +32,13 @@ input.order {
   color: white;
 }
 
+@import "/static/custom_team.less";
 #body {
   .blue {
     color: @blue;
   }
   .red {
-    color: @red;
+    color: lighten(@red, 5%);
   }
   .gold, .yellow {
     color: @gold;
@@ -46,22 +47,22 @@ input.order {
     color: @green;
   }
   &.primary-green {
-    .dropdown-toggle:hover {
-      background-color: @green;
-    }
-    .dropdown-menu {
-      a:hover {
-        background-color: @green;
-      }
-    }
-    #main {
-      a:not(.btn) {
-        color: @green;
-      }
-    }
+    #body (@green);
   }
-  a.brand:hover {
-    background-color: inherit;
+  &.primary-blue {
+    #body (@blue);
+  }
+  &.primary-gold, &.primary-yellow {
+    #body (@gold);
+  }
+  &.primary-red {
+    #body (@red);
+  }
+  a.brand {
+    color: white;
+    &:hover {
+      span { color: white; }
+    }
   }
 }
 
@@ -81,7 +82,7 @@ div.navbar-inner {
   }
   background-image: -moz-linear-gradient(center top , #444, #222);
   .nav > li > a {
-    color: #DDD;
+    color: #FFF;
   }
   &.home {
     background-image: -moz-linear-gradient(center top , #FFF, #DDD);
@@ -133,8 +134,7 @@ div.navbar-inner {
     background-image: -moz-linear-gradient(center top , red, darkRed);
 }
 .green-bg {
-    background-color: green;
-    background-image: -moz-linear-gradient(center top , green, darkGreen);
+    .bg-color(green, darkGreen);
 }
 
 .gold-bg {

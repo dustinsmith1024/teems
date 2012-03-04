@@ -3,6 +3,11 @@
   Not sure how best to do this
   Option 1: Name a bunch of CSS files and pull them in like secondatBlue.css and primaryWhite.css
   Option 2: Inline some styles from DB stored colors
+  Option 3: just but all the mixins here and include them all in the long css file
+
+  Option 3 winner for now, should be hard to switch to smaller files later,
+   This allows for a team to switch colors and still not need to download new css
+
 */
 #roster {
   ul {
@@ -17,6 +22,64 @@
   }
   .thumbnail:hover {
     border-color: red;
+  }
+}
+
+#body (@color) {
+  .dropdown-toggle:hover {
+    .bg-color(@color);
+  }
+  .dropdown-menu {
+    a:hover {
+      .bg-color(@color);
+    }
+  }
+  #main {
+    a:not(.btn) {
+      color: @color;
+    }
+  }
+  a.brand {
+    &:hover {
+      .bg-color(@color);
+    }
+  }
+}
+
+.blue-bg {
+    background-color: #0088CC;
+    background-image: -moz-linear-gradient(center top , #0064CD, navy);
+}
+
+.red-bg {
+    background-color: red;
+    background-image: -moz-linear-gradient(center top , red, darkRed);
+}
+.green-bg {
+    .bg-color(green, darkGreen);
+}
+
+.gold-bg {
+    background-color: red;
+    background-image: -moz-linear-gradient(center top , yellow, gold);
+}
+.purple-bg {
+    background-color: purple;
+    background-image: -moz-linear-gradient(center top , #FF00FF, purple);
+}
+
+.orange-bg {
+    background-color: #FF9900;
+    background-image: -moz-linear-gradient(center top , #FF9900, #FF6633);
+}
+
+#roster {
+  li {
+    a {
+      &:active {
+        color: #005580;
+      }
+    }
   }
 }
 
