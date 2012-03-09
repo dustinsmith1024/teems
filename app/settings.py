@@ -144,7 +144,6 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
@@ -158,7 +157,7 @@ INSTALLED_APPS = (
 )
 
 LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/workouts/'
+LOGIN_REDIRECT_URL = '/workouts'
 AUTH_PROFILE_MODULE = 'teams.Member'
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -6,7 +6,6 @@ from django.conf import settings
 #admin.autodiscover()
 
 urlpatterns = patterns('',
-    #url(r'^$', direct_to_template, {'template': 'index.html'}),
     url(r'^teams/', include('teams.urls')),
     url(r'^workouts/', include('workouts.urls')),
     url(r'^users/', include('users.urls')),
@@ -14,8 +13,8 @@ urlpatterns = patterns('',
     url(r'^$', 'views.index', name='index'),
     url(r'^learn/$', 'views.learn', name='learn'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
     url(r'^signup/$', 'views.signup', name='signup'),
+    url(r'^$', 'views.index', name='index'),
     url(r'^robots\.txt$', direct_to_template,
              {'template': 'robots.txt', 'mimetype': 'text/plain'}),
 )

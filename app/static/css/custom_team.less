@@ -16,12 +16,12 @@
   li {
     a {
       &:active {
-        color: #005580;
+        color: #333;
       }
     }
   }
   .thumbnail:hover {
-    border-color: red;
+    border-color: #333;
   }
 }
 
@@ -34,9 +34,14 @@
       .bg-color(@color);
     }
   }
-  #main {
+  #main, footer {
     a:not(.btn) {
       color: @color;
+    }
+  }
+  #page-footer {
+    a {
+      color: #333;
     }
   }
   a.brand {
