@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}New Workout{% endblock %}
+{% block title %}Edit Workout{% endblock %}
 
 {% block main-content %}
     <h2>New Workout</a>
-    <form action="{% url new_workout %}" class="form-horizontal" method="post">
+    <form action="{% url edit_workout workout_id %}" class="form-horizontal" method="post">
         {% csrf_token %}
         {{ form.management_form }}
 

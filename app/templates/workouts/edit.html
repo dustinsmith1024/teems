@@ -8,12 +8,21 @@
 {% csrf_token %}
 <fieldset>
   {% include "fragments/fields.html" with form=workout_form %}
+
+  <div class="control-group">
+    <label class="controls-label">
+      Activities:
+    </label>
+  </div>
     {% for s in steps %}
-    <div class="control-group">
-    <label class="controls-label" for="id_{{ forloop.counter }}-activities">Activities:</label>
+    <div class="control-group activity">
+      <label class="controls-label" for="id_{{ forloop.counter }}-activities">
+        <a href="#up" data-action="up">Up</a>&nbsp;
+        <a href="#down" data-action="down">Down</a>
+      </label>
       <input name="{{ forloop.counter }}-step_id" type="hidden" value="{{ s.id }}" />
       <div class="controls">
-        <input type="text" name="{{ forloop.counter }}-position" value="{{ s.position }}" id="id_{{ forloop.counter }}-position" class="order" />
+        <input type="hidden" name="{{ forloop.counter }}-position" value="{{ s.position }}" id="id_{{ forloop.counter }}-position" class="order position" />
         <select name="{{ forloop.counter }}-activities" id="id_{{ forloop.counter }}-activities">
           <option value="">---------</option>
           {% for a in activities %}
@@ -21,24 +30,26 @@
           {% endfor %}
         </select>
         <input class="order" type="text" name="{{ forloop.counter }}-duration" value="{{ s.duration }}" id="id_{{ forloop.counter }}-duration" />
-        <span class="help-inline">minutes</span>
+        <span class="help-inline">minutes <a href"#remove" data-action="remove">Remove</a></span>
       </div>
     </div>
     {% endfor %}
 
-    <div class="control-group">
-      <label class="controls-label" for="id_{{ next_step }}-activities">Activities:</label>
+    <div class="control-group ">
+      <label class="controls-label" for="id_{{ next_step }}-activities">
+        <a href="#new" id="add-new">Add New</a>
+        <a href="#up" data-action="up" class="hide">Up</a>&nbsp;<a class="hide" href="#down" data-action="down">Down</a>
+      </label>
       <input name="{{ next_step }}-step_id" type="hidden" value="new" />
-      <div class="controls">
-        <input class="order" type="text" name="{{ next_step }}-position" value="{{ next_step }}" id="id_{{ next_step }}-position" />
+      <div class="controls hide">
+        <input class="order position" type="hidden" name="{{ next_step }}-position" value="{{ next_step }}" id="id_{{ next_step }}-position" />
         <select name="{{ next_step }}-activities" id="id_{{ next_step }}-activities">
-          <option value="">---------</option>
           {% for a in activities %} {{ s }}
             <option value="{{ a.id }}" {% if s.activity == a %}selected="selected"{% endif %}>{{ a.name }}</option>
           {% endfor %}
         </select>
-        <input class="order" type="text" name="{{ next_step }}-duration" value="{{ next_step }}" id="id_{{ next_step }}-duration" />
-        <span class="help-inline">minutes</span>
+        <input class="order" type="text" name="{{ next_step }}-duration" value="15" id="id_{{ next_step }}-duration" />
+        <span class="help-inline">minutes <a href="#remove" data-action="remove">Remove</a></span>
       </div>
     </div>
 
@@ -53,3 +64,60 @@
 
 {% endblock %}
 
+{% block extra-js %}
+<script>
+$(function(){
+
+  $(document).delegate("[data-action]", "click", function(e){
+    console.log(this);
+    var $this = $(this);
+    var $activity = $this.parents(".activity");
+    console.log($this, $activity);
+    var action = $this.data('action');
+    if (action==='up') {
+      console.log($(".activity:first"), $activity);
+      if ($(".activity").index($activity)===0) {
+        return false;
+      }
+      $activity.insertBefore($activity.prev());
+      var pf = $activity.find(".position");
+      pf.val(Number(pf.val())-1);
+      pf = $activity.next().find(".position");
+      pf.val(Number(pf.val())+1);
+    }
+    if (action==='down') {
+      if ($(".activity").index($activity)===($(".activity").size()-1)) {
+        return false;
+      }
+      $activity.insertAfter($activity.next());
+      var pf = $activity.find(".position");
+      pf.val(Number(pf.val())+1);
+      pf = $activity.prev().find(".position");
+      pf.val(Number(pf.val())-1);
+    }
+    if (action==='remove') {
+      index = $(".activity").index($activity);
+      length = $(".activity").size();
+      var i=0;
+      var act;
+      console.log(index, length);
+      for (i=index;i<length;i++)
+      {
+        act = $($(".activity")[i]);
+        act.find(".position").val(Number(act.find(".position").val())-1);
+        console.log(i);
+      }
+      //$activity.find("
+      $activity.remove();
+    }
+  });
+
+  $("#add-new").click(function(){
+    $(".hide").removeClass("hide");
+    $(this).parent().parent().addClass("activity");
+    $(this).hide();
+  });
+
+});
+</script>
+{% endblock %}

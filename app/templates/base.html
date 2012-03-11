@@ -69,27 +69,27 @@
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user.first_name }}
                   <b class="caret"></b></a>
                   <ul class="dropdown-menu {{ user.team.color }} ">
-                    <li><a href="/teams/mine">My Team</a></li>
-                    <li><a href="/workouts/mine">My Workouts</a></li>
-                    <li><a href="/users/{{ user.username }}">My Settings</a></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="{% url my_team %}">My Team</a></li>
+                    <li><a href="{% url workouts %}">My Workouts</a></li>
+                    <li><a href="{% url user_details user.username %}">My Settings</a></li>
+                    <li><a href="{% url logout %}">Logout</a></li>
                   </ul>
                 </li>
                 <li class="dropdown" >
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">Team<b class="caret"></b></a>
                   <ul class="dropdown-menu {{ user.team.color }} ">
-                    <li><a href="/teams/">Teams</a></li>
-                    <li><a href="/workouts">Workouts</a></li>
-                    <li><a href="/workouts/activities">Activities</a></li>
+                    <li><a href="{% url teams %}">Teams</a></li>
+                    <li><a href="{% url workouts %}">Workouts</a></li>
+                    <li><a href="{% url activities %}">Activities</a></li>
                   </ul>
                 </li>
               </ul>
               <ul class="nav pull-right">
                 <li>
-                  <a href="/help">Help</a>
+                <a href="/help %}">Help</a>
                   </li>
                 <li>
-                  <a href="/logout" class="">Logout</a>
+                <a href="{% url logout %}" class="">Logout</a>
                 </li>
               </ul>
             </nav>

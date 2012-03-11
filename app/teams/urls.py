@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 
 urlpatterns = patterns('teams.views',
-    url(r'^mine/$', 'mine'),
+    url(r'^mine/$', 'mine', name="my_team"),
     url(r'^new/$', 'new', name='new_team'),
     url(r'^join/$', 'join', name='join_team'),
     url(r'^create/$', 'create_and_join', name='create_and_join_team'),

@@ -73,7 +73,6 @@ class StepForm(ModelForm):
     class Meta:
         model = Step
 
-
 class Practice(models.Model):
     """
      Team related workouts

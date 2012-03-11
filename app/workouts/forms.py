@@ -19,8 +19,18 @@ def make_step_form(team):
     class StepsForm(forms.Form):
         activities = forms.ModelChoiceField(
                  queryset=Activity.objects.filter(team=team))
-        position = forms.IntegerField()
+        position = forms.IntegerField(required=False)
     return StepsForm
+
+
+def make_model_step_form(team):
+    class StepModelForm(ModelForm):
+        activity = forms.ModelChoiceField(
+                queryset = Activity.objects.filter(team=team), required=False)
+        class Meta: 
+            model = Step
+    return StepModelForm
+
 
 class IndividualAssignForm(forms.Form):
     date_suggested = forms.DateField(initial=datetime.date.today, required=True, widget=forms.DateInput(attrs={'data-js-widget':'datepicker'}))
