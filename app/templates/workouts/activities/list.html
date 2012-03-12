@@ -9,6 +9,9 @@
         {% if activity.start_time %}
         {{ activity.start_time }} - {{ activity.end_time }}
         {% endif %}
+        {% if activity.duration %}
+        ({{ activity.duration }} mins)
+        {% endif %}
         </li>
     {% endfor %}
 </ol>

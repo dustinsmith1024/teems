@@ -1,0 +1,21 @@
+.js-show {
+    visibility: hidden;
+}
+
+html.js .js-hide {
+    display: none;
+}
+
+html.js .js-show {
+    visibility: visible;
+}
+
+.clear, .clear-fix {
+  clear: both;
+}
+
+.strong, .bold {
+  font-weight: bold;
+}
+
+

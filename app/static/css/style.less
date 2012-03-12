@@ -1,6 +1,18 @@
 @import "/static/variables.less";
 @import "/static/mixins.less";
 
+.js-show {
+    visibility: hidden;
+}
+
+html.js {
+  .js-hide {
+    display: none;
+  }
+  .js-show {
+    visibility: visible;
+  }
+}
 #body, body {
   font-size: 16px;
   position: relative;
@@ -10,7 +22,7 @@
   margin-bottom: 0;
 }
 
-input.order {
+input.order, span.order {
   width: 25px;
 }
 

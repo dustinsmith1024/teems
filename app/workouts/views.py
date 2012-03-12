@@ -127,7 +127,8 @@ def new_workout(request):
 @login_required
 @csrf_protect
 def edit_workout(request, workout_id):
-    c = {} 
+    c = {}
+    print request.POST
     c.update(csrf(request))
     workout = get_object_or_404(Workout, pk=workout_id)
     team = Member.objects.get(user=request.user).team
@@ -136,8 +137,9 @@ def edit_workout(request, workout_id):
         if workoutForm.is_valid():
             workout.name = workoutForm.cleaned_data['name']
             workout.kind = workoutForm.cleaned_data['kind']
-            formset_cls = modelformset_factory(Step, fields=('activity',),
-                    form=make_model_step_form(team), can_delete=True, can_order=True)
+            formset_cls = modelformset_factory(Step, fields=('activity',
+                    'duration'),
+                    form = make_model_step_form(team), can_delete=True, can_order=True)
             formset = formset_cls(request.POST)
             if formset.is_valid():
                 # DELETE ALL STEPS then recreate in order -> Helps with ordering
@@ -152,7 +154,8 @@ def edit_workout(request, workout_id):
                 for form in formset.ordered_forms:
                     step = Step(workout=workout,
                             activity=form.cleaned_data['activity'],
-                                        position = i)
+                            position = i,
+                            duration = form.cleaned_data['duration'])
                     i = i + 1
                     step.save()
                 
@@ -161,13 +164,22 @@ def edit_workout(request, workout_id):
             else:
                 print formset.errors
     else:
-        workoutForm = WorkoutForm(instance=workout)
-        Formset = modelformset_factory(Step, extra=2, fields=('activity',),
+        extra = 0
+        if request.GET.get('extra'):
+            extra = 1
+            workoutForm = WorkoutForm(instance=workout)
+            Formset = modelformset_factory(Step, extra=extra,
+            fields=('activity','duration'),
                         can_order=True, can_delete=True,
                         form=make_model_step_form(team))
-        print Step.objects.filter(workout=workout)
-        print Formset.form
-        formset = Formset(queryset=Step.objects.filter(workout=workout))
+            formset = Formset(queryset=Step.objects.none())
+        else:
+            workoutForm = WorkoutForm(instance=workout)
+            Formset = modelformset_factory(Step, extra=2,
+            fields=('activity','duration'),
+                        can_order=True, can_delete=True,
+                        form=make_model_step_form(team))
+            formset = Formset(queryset=Step.objects.filter(workout=workout))
     return render_to_response("workouts/edit2.html", 
             {'workout': workoutForm, 'form': formset, 
                 'workout_id': workout.id, 'c':c},

@@ -26,7 +26,11 @@ def make_step_form(team):
 def make_model_step_form(team):
     class StepModelForm(ModelForm):
         activity = forms.ModelChoiceField(
-                queryset = Activity.objects.filter(team=team), required=False)
+                queryset = Activity.objects.filter(team=team), required=True)
+        duration = forms.IntegerField(
+                required=False, 
+                widget=forms.TextInput(attrs={
+                    'class':'order'}))
         class Meta: 
             model = Step
     return StepModelForm

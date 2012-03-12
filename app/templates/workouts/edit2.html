@@ -3,16 +3,115 @@
 {% block title %}Edit Workout{% endblock %}
 
 {% block main-content %}
-    <h2>New Workout</a>
+<h2>New Workout</h2>
     <form action="{% url edit_workout workout_id %}" class="form-horizontal" method="post">
         {% csrf_token %}
         {{ form.management_form }}
 
+
         {% include "fragments/fields.html" with form=workout %}
-        {% include "fragments/fields.html" %}
+  <div class="control-group">
+    <label class="controls-label">
+      Activities:
+    </label>
+  <div class="controls">
+    <p class="help-block">
+    Edit the workouts activities and durations. Use Up and Down to change the order or remove activities with the Remove checkbox.</p>
+  </div>
+</div>
+  {% for f in form %}
+  <div class="control-group activity {% if f.errors %}error{% endif %}">
+    <label class="controls-label js-show" for="">
+      <a href="#up" data-action="up">Up</a>&nbsp;
+      <a href="#down" data-action="down">Down</a>
+    </label>
+      {{ f.id }}
+      <div class="controls">
+      <span class="js-hide2 order">{{ f.ORDER }}</span>
+      {{ f.activity }}
+      <label class="help-inline">
+      {{ f.duration }}
+      minutes</label>
+      <label class="help-inline js-hide2" data-action="remove">{{ f.DELETE }} Remove?</label>
+      {% if f.errors %}<p class="help-block">{{ f.errors }}</p>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+  <div class="control-group">
+    <div class="controls">
+    <label class="controls-label">
+      Add Another
+    </label>
+  </div>
+  </div>
 
         <div id="actions" class="form-actions">
             <button class="btn btn-primary" type="submit" >Save</button>
         </div>
     </form>
+{% endblock %}
+
+{% block extra-js %}
+<script>
+$(function(){
+  
+  $(document).delegate("[data-action]", "click", function(e){
+    console.log(this);
+    var $this = $(this);
+    var $activity = $this.parents(".activity");
+    console.log($this, $activity);
+    var action = $this.data('action');
+    if (action==='up') {
+      console.log($(".activity:first"), $activity);
+      if ($(".activity").index($activity)===0) {
+        return false;
+      }
+      $activity.insertBefore($activity.prev());
+      var order = $activity.find(".order > input");
+      var order_next = $activity.next().find(".order > input");
+      if (order.val()) {
+        order.val(Number(order.val())-1);
+      } else {
+        order.val(order_next.val());
+      }
+      order_next.val(Number(order_next.val())+1);
+    }
+    if (action==='down') {
+      if ($(".activity").index($activity)===($(".activity").size()-1)) {
+        return false;
+      }
+      $activity.insertAfter($activity.next());
+      var order = $activity.find(".order > input");
+      var order_prev = $activity.prev().find(".order > input");
+      if (order.val()) {
+        order.val(Number(order.val())+1);
+      } else {
+        order.val(order_prev.val());
+      }
+      order_prev.val(Number(order.val())-1);
+    }
+    if (action==='remove') {
+      index = $(".activity").index($activity);
+      length = $(".activity").size();
+      var i=0;
+      var act;
+      console.log(index, length);
+      for (i=index;i<length;i++)
+      {
+        act = $($(".activity")[i]);
+        act.find(".order input").val(Number(act.find(".order > input").val())-1);
+        console.log(i);
+      }
+      $activity.remove();
+    }
+  });
+
+  $("#add-new").click(function(){
+    $(".hide").removeClass("hide");
+    $(this).parent().parent().addClass("activity");
+    $(this).hide();
+  });
+
+});
+</script>
 {% endblock %}
