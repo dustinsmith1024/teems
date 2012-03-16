@@ -149,7 +149,8 @@
     nope: ['http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js', '{{ STATIC_URL }}dates.js'],
     complete: function(){ my_dates.init(); }
   });
-$(function(){
+
+
 /*var href = $("a[data-embed='true']").attr('href').split('v=')[1];
 console.log(href);
 $("a[data-embed='true']").click(function(e){
@@ -165,7 +166,7 @@ $.ajax({
 });
 */
       // 2. This code loads the IFrame Player API code asynchronously.
-      if($("a[data-embed='true']")[0]){
+     
       var tag = document.createElement('script');
       tag.src = "http://www.youtube.com/player_api";
       var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -175,18 +176,19 @@ $.ajax({
       //    after the API code downloads.
       var player;
       function onYouTubePlayerAPIReady() {
-	      var id = $("a[data-embed='true']").attr('href').split('v=')[1];
+        if($("a[data-embed='true']").size()>0){
+        var id = $("a[data-embed='true']").attr('href').split('v=')[1];
         player = new YT.Player('player', {
           height: '290',
           width: '440',
           videoId: id,
           /*events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
+            'onReady': onPlayerReady
           }*/
         });
+        }
       }
-      }
+    
       // 4. The API will call this function when the video player is ready.
       /*
       function onPlayerReady(event) {
@@ -207,7 +209,7 @@ $.ajax({
       function stopVideo() {
         player.stopVideo();
       }
-      */});
+      */
   </script>
   {% endblock js-libs %}
 
