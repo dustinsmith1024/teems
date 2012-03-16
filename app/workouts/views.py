@@ -95,31 +95,40 @@ def public_workouts(request):
 def new_workout(request):
     c = {} 
     c.update(csrf(request))
-    w = Workout()
+    workout = Workout()
     team = Member.objects.get(user=request.user).team
     if request.method == 'POST': # If the form has been submitted...
         workoutForm = WorkoutPlanForm(request.POST) #for update pass in instance=w
         if workoutForm.is_valid():
-          workout = Workout(name=workoutForm.cleaned_data['name'], 
+            workout = Workout(name=workoutForm.cleaned_data['name'], 
                       kind=workoutForm.cleaned_data['kind'],)
-          formset_cls = formset_factory(make_step_form(team), can_order=True)
-          formset = formset_cls(request.POST)
-          for form in formset.ordered_forms:
-              print form
-          if formset.is_valid():
-              workout.save()
-              i = 0
-              for f in formset:
-                  if f.cleaned_data.get('activities'):
-                      step = Step(workout=workout, activity=f.cleaned_data['activities'],
-                                  position = i)
-                      step.save()
-                      i = i + 1
-              messages.add_message(request, messages.SUCCESS, 'Workout Created!')
-              return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
+            Formset = modelformset_factory(Step, extra=5,
+                fields=('activity','duration'),
+                    can_order=True, can_delete=True,
+                    form=make_model_step_form(team))
+            formset = Formset(request.POST)
+            if formset.is_valid():
+                workout.save()
+                i = 0
+                for form in formset.ordered_forms:
+                    step = Step(workout=workout,
+                            activity=form.cleaned_data['activity'],
+                            position = i,
+                            duration = form.cleaned_data['duration'])
+                    i = i + 1
+                    step.save()
+                messages.add_message(request, messages.SUCCESS, 'Workout Created!')
+                return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
+            else:
+                print formset.errors
     else:
         workoutForm = WorkoutPlanForm()
-        formset = formset_factory(make_step_form(team), can_order=True,  extra=5)
+        Formset = modelformset_factory(Step, extra=5,
+        fields=('activity','duration'),
+                    can_order=True, can_delete=True,
+                    form=make_model_step_form(team))
+        formset = Formset(queryset=Step.objects.filter(workout=workout))
+
     return render_to_response("workouts/new.html", {'action': 'new', 'workout':
         workoutForm, 'form': formset, 'c':c},
                                context_instance=RequestContext(request))
@@ -164,77 +173,15 @@ def edit_workout(request, workout_id):
             else:
                 print formset.errors
     else:
-        extra = 0
-        if request.GET.get('extra'):
-            extra = 1
-            workoutForm = WorkoutForm(instance=workout)
-            Formset = modelformset_factory(Step, extra=extra,
-            fields=('activity','duration'),
-                        can_order=True, can_delete=True,
-                        form=make_model_step_form(team))
-            formset = Formset(queryset=Step.objects.none())
-        else:
-            workoutForm = WorkoutForm(instance=workout)
-            Formset = modelformset_factory(Step, extra=2,
-            fields=('activity','duration'),
-                        can_order=True, can_delete=True,
-                        form=make_model_step_form(team))
-            formset = Formset(queryset=Step.objects.filter(workout=workout))
-    return render_to_response("workouts/edit2.html", 
+        workoutForm = WorkoutForm(instance=workout)
+        Formset = modelformset_factory(Step, extra=1,
+        fields=('activity','duration'),
+                    can_order=True, can_delete=True,
+                    form=make_model_step_form(team))
+        formset = Formset(queryset=Step.objects.filter(workout=workout))
+    return render_to_response("workouts/edit.html", 
             {'workout': workoutForm, 'form': formset, 
                 'workout_id': workout.id, 'c':c},
-                               context_instance=RequestContext(request))
-
-
-@login_required
-@csrf_protect
-def edit_workout2(request, workout_id):
-    """
-      Allows updating a workout and adding new activities on the fly
-    """
-    c = {}
-    c.update(csrf(request))
-    workout = get_object_or_404(Workout, pk=workout_id)
-    team = Member.objects.get(user=request.user).team
-    if request.method == 'POST': # If the form has been submitted...
-        if request.POST.get('delete'):
-          workout.delete()
-          messages.add_message(request, messages.SUCCESS, 'Workout Deleted!')
-          return HttpResponseRedirect(reverse('workouts'))
-        workoutForm = WorkoutForm(request.POST) #for update pass in instance=w
-        if workoutForm.is_valid():
-          workout.name = workoutForm.cleaned_data['name']
-          workout.kind = workoutForm.cleaned_data['kind']
-          workout.save()
-          for k in request.POST:
-              print k
-              if k.find("step_id") > 0:
-                  if request.POST[k] != 'new': # just searching for step_id in the name - if not found then -1
-                      num = k.split('-')[0]
-                      step = Step.objects.get(pk=request.POST[k])
-                      step.position = request.POST[num + '-position']
-                      step.activity = Activity.objects.get(pk=request.POST[num + '-activities'])
-                      step.duration = request.POST[num + '-duration']
-                      step.save()
-                  else:
-                      num = k.split('-')[0]
-                      if request.POST[num + '-activities']:
-                          step = Step(workout=workout, activity=Activity.objects.get(pk=request.POST[num + '-activities']),
-                                      position=request.POST[num + '-position'])
-                          step.save()
-          messages.add_message(request, messages.SUCCESS, 'Workout Updated!')
-          if request.POST['save'] == 'add_another':
-              return HttpResponseRedirect(reverse('edit_workout', args=(workout.id,)))
-          else:
-              return HttpResponseRedirect(reverse('workout_details', args=(workout.id,)))
-    else:
-        workoutForm = WorkoutForm(instance=workout)
-        steps = Step.objects.filter(workout=workout)
-        possible_activities = Activity.objects.filter(team=team)
-    return render_to_response("workouts/edit.html", 
-                              {'workout': workout,
-                               'workout_form': workoutForm, 'activities': possible_activities, 
-                               'steps':steps, 'c':c, 'current_step': len(steps), 'next_step': len(steps) + 1},
                                context_instance=RequestContext(request))
 
 

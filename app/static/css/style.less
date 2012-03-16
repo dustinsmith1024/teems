@@ -1,5 +1,6 @@
-@import "/static/variables.less";
-@import "/static/mixins.less";
+@import "variables.less";
+@import "mixins.less";
+@import "custom_team.less";
 
 .js-show {
     visibility: hidden;
@@ -22,8 +23,18 @@ html.js {
   margin-bottom: 0;
 }
 
-input.order, span.order {
+input.order, span.order input {
   width: 25px;
+}
+
+.control-group.dither {
+  input, select, label {
+    opacity: .2;
+  }
+  [data-action="remove"] {
+    opacity: .9;  
+    text-decoration: line-through;
+  }
 }
 
 #main-row {
@@ -44,7 +55,6 @@ input.order, span.order {
   color: white;
 }
 
-@import "/static/custom_team.less";
 #body {
   .blue {
     color: @blue;

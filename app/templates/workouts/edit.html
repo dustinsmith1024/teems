@@ -3,70 +3,61 @@
 {% block title %}Edit Workout{% endblock %}
 
 {% block main-content %}
-<h2>Edit Workout Plan</h2>
-<form action="{% url edit_workout workout.id %}" class="form-horizontal" method="post">
-{% csrf_token %}
-<fieldset>
-  {% include "fragments/fields.html" with form=workout_form %}
+<h2>New Workout</h2>
+    <form action="{% url edit_workout workout_id %}" class="form-horizontal" method="post">
+        {% csrf_token %}
+        {{ form.management_form }}
 
+
+        {% include "fragments/fields.html" with form=workout %}
   <div class="control-group">
     <label class="controls-label">
       Activities:
     </label>
+  <div class="controls">
+    <p class="help-block">
+    Edit the workouts activities and durations. Use Up and Down to change the order or remove activities with the Remove checkbox.</p>
   </div>
-    {% for s in steps %}
-    <div class="control-group activity">
-      <label class="controls-label" for="id_{{ forloop.counter }}-activities">
-        <a href="#up" data-action="up">Up</a>&nbsp;
-        <a href="#down" data-action="down">Down</a>
-      </label>
-      <input name="{{ forloop.counter }}-step_id" type="hidden" value="{{ s.id }}" />
+</div>
+  {% for f in form %}
+  <div class="control-group activity {% if f.errors %}error{% endif %}">
+    <label class="controls-label js-show" for="">
+      <a href="#up" data-action="up">Up</a>&nbsp;
+      <a href="#down" data-action="down">Down</a>
+    </label>
+      {{ f.id }}
       <div class="controls">
-        <input type="hidden" name="{{ forloop.counter }}-position" value="{{ s.position }}" id="id_{{ forloop.counter }}-position" class="order position" />
-        <select name="{{ forloop.counter }}-activities" id="id_{{ forloop.counter }}-activities">
-          <option value="">---------</option>
-          {% for a in activities %}
-            <option value="{{ a.id }}" {% if s.activity == a %}selected="selected"{% endif %}>{{ a.name }}</option>
-          {% endfor %}
-        </select>
-        <input class="order" type="text" name="{{ forloop.counter }}-duration" value="{{ s.duration }}" id="id_{{ forloop.counter }}-duration" />
-        <span class="help-inline">minutes <a href"#remove" data-action="remove">Remove</a></span>
-      </div>
+      <span class="js-hide order">{{ f.ORDER }}</span>
+      {{ f.activity }}
+      <label class="help-inline">
+      {{ f.duration }}
+      minutes</label>
+    <label class="help-inline" data-action="remove" for="{{ f.DELETE.auto_id }}">{{ f.DELETE }} Remove?</label>
+      {% if f.errors %}<p class="help-block">{{ f.errors }}</p>{% endif %}
     </div>
-    {% endfor %}
+  </div>
+  {% endfor %}
+  <div class="control-group">
+    <div class="controls">
+    <label class="controls-label">
+      <a href="#add-new" id="add-new">Add Another</a>
+    </label>
+  </div>
+  </div>
 
-    <div class="control-group ">
-      <label class="controls-label" for="id_{{ next_step }}-activities">
-        <a href="#new" id="add-new">Add New</a>
-        <a href="#up" data-action="up" class="hide">Up</a>&nbsp;<a class="hide" href="#down" data-action="down">Down</a>
-      </label>
-      <input name="{{ next_step }}-step_id" type="hidden" value="new" />
-      <div class="controls hide">
-        <input class="order position" type="hidden" name="{{ next_step }}-position" value="{{ next_step }}" id="id_{{ next_step }}-position" />
-        <select name="{{ next_step }}-activities" id="id_{{ next_step }}-activities">
-          {% for a in activities %} {{ s }}
-            <option value="{{ a.id }}" {% if s.activity == a %}selected="selected"{% endif %}>{{ a.name }}</option>
-          {% endfor %}
-        </select>
-        <input class="order" type="text" name="{{ next_step }}-duration" value="15" id="id_{{ next_step }}-duration" />
-        <span class="help-inline">minutes <a href="#remove" data-action="remove">Remove</a></span>
-      </div>
-    </div>
-
-
-</fieldset>
-    <div id="actions" class="form-actions">
-    <button class="btn btn-primary" type="submit" name="save">Save</button>
-    <button class="btn btn-primary" type="submit" name="save" value="add_another">Save and Add More</button>
-    <button class="btn btn-danger" type="submit" name="delete" value="delete">Delete</button>
-    </div>
-</form>
-
+        <div id="actions" class="form-actions">
+            <button class="btn btn-primary" type="submit" >Save</button>
+        </div>
+    </form>
 {% endblock %}
 
 {% block extra-js %}
 <script>
 $(function(){
+
+  $(document).delegate("[data-action='remove']", "change", function(e) {
+      $(this).parents(".control-group").toggleClass("dither");
+  });
 
   $(document).delegate("[data-action]", "click", function(e){
     console.log(this);
@@ -80,43 +71,49 @@ $(function(){
         return false;
       }
       $activity.insertBefore($activity.prev());
-      var pf = $activity.find(".position");
-      pf.val(Number(pf.val())-1);
-      pf = $activity.next().find(".position");
-      pf.val(Number(pf.val())+1);
+      var order = $activity.find(".order > input");
+      var order_next = $activity.next().find(".order > input");
+      if (order.val()) {
+        order.val(Number(order.val())-1);
+      } else {
+        order.val(order_next.val());
+      }
+      order_next.val(Number(order_next.val())+1);
     }
     if (action==='down') {
       if ($(".activity").index($activity)===($(".activity").size()-1)) {
         return false;
       }
       $activity.insertAfter($activity.next());
-      var pf = $activity.find(".position");
-      pf.val(Number(pf.val())+1);
-      pf = $activity.prev().find(".position");
-      pf.val(Number(pf.val())-1);
-    }
-    if (action==='remove') {
-      index = $(".activity").index($activity);
-      length = $(".activity").size();
-      var i=0;
-      var act;
-      console.log(index, length);
-      for (i=index;i<length;i++)
-      {
-        act = $($(".activity")[i]);
-        act.find(".position").val(Number(act.find(".position").val())-1);
-        console.log(i);
+      var order = $activity.find(".order > input");
+      var order_prev = $activity.prev().find(".order > input");
+      if (order.val()) {
+        order.val(Number(order.val())+1);
+      } else {
+        order.val(order_prev.val());
       }
-      //$activity.find("
-      $activity.remove();
+      order_prev.val(Number(order.val())-1);
     }
   });
 
-  $("#add-new").click(function(){
-    $(".hide").removeClass("hide");
-    $(this).parent().parent().addClass("activity");
-    $(this).hide();
+
+  $("#add-new").click(function(e){
+    $activity = $(".activity:hidden");
+    //$activity.fadeIn();
+    var index = Number($(".activity").index($activity));
+    var next = Number(index) + 1;
+    var clone = $(".activity").last().clone();
+    var re = new RegExp("-" + index,"g");
+    clone.html(clone.html().replace(re,"-" + next));
+    var new_a = $activity.after(clone);
+    new_a.find("select").find("option:first").remove();
+    new_a.find("input[name$='duration']").val(15);
+    new_a.find("input[name$='ORDER']").val(next);
+    new_a.fadeIn();
+    e.preventDefault();
   });
+
+  $(".activity").last().hide();
 
 });
 </script>

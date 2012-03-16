@@ -32,7 +32,7 @@
       <label class="help-inline">
       {{ f.duration }}
       minutes</label>
-      <label class="help-inline js-hide2" data-action="remove">{{ f.DELETE }} Remove?</label>
+    <label class="help-inline js-hide2" data-action="remove" for="{{ f.DELETE.auto_id }}">{{ f.DELETE }} Remove?</label>
       {% if f.errors %}<p class="help-block">{{ f.errors }}</p>{% endif %}
     </div>
   </div>
@@ -40,7 +40,7 @@
   <div class="control-group">
     <div class="controls">
     <label class="controls-label">
-      Add Another
+      <a href="#add-new" id="add-new">Add Another</a>
     </label>
   </div>
   </div>
@@ -54,7 +54,11 @@
 {% block extra-js %}
 <script>
 $(function(){
-  
+
+  $(document).delegate("[data-action='remove']", "change", function(e) {
+      $(this).parents(".control-group").toggleClass("dither");
+  });
+
   $(document).delegate("[data-action]", "click", function(e){
     console.log(this);
     var $this = $(this);
@@ -90,27 +94,26 @@ $(function(){
       }
       order_prev.val(Number(order.val())-1);
     }
-    if (action==='remove') {
-      index = $(".activity").index($activity);
-      length = $(".activity").size();
-      var i=0;
-      var act;
-      console.log(index, length);
-      for (i=index;i<length;i++)
-      {
-        act = $($(".activity")[i]);
-        act.find(".order input").val(Number(act.find(".order > input").val())-1);
-        console.log(i);
-      }
-      $activity.remove();
-    }
   });
 
-  $("#add-new").click(function(){
-    $(".hide").removeClass("hide");
-    $(this).parent().parent().addClass("activity");
-    $(this).hide();
+
+  $("#add-new").click(function(e){
+    $activity = $(".activity:hidden");
+    //$activity.fadeIn();
+    var index = Number($(".activity").index($activity));
+    var next = Number(index) + 1;
+    var clone = $(".activity").last().clone();
+    var re = new RegExp("-" + index,"g");
+    clone.html(clone.html().replace(re,"-" + next));
+    var new_a = $activity.after(clone);
+    new_a.find("select").find("option:first").remove();
+    new_a.find("input[name$='duration']").val(15);
+    new_a.find("input[name$='ORDER']").val(next);
+    new_a.fadeIn();
+    e.preventDefault();
   });
+
+  $(".activity").last().hide();
 
 });
 </script>
