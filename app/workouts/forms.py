@@ -4,6 +4,7 @@ from workouts.models import *
 import floppyforms as forms
 from django.forms.models import inlineformset_factory
 import datetime
+from django.db.models import Q
 
 class WorkoutPlanForm(forms.Form):
     name = forms.CharField(max_length=50, required=True)
@@ -26,7 +27,8 @@ def make_step_form(team):
 def make_model_step_form(team):
     class StepModelForm(ModelForm):
         activity = forms.ModelChoiceField(
-                queryset = Activity.objects.filter(team=team), required=True)
+                queryset = Activity.objects.filter(Q(public=True) |
+                    Q(public=False, team=team)).order_by('team'), required=True)
         duration = forms.IntegerField(
                 required=False, 
                 widget=forms.TextInput(attrs={

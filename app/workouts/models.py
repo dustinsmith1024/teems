@@ -21,7 +21,10 @@ class Activity(models.Model):
     duration = models.IntegerField(blank=True, null=True, default=15)
 
     def __unicode__(self):
-      return self.name
+        return self.name_and_team()
+
+    def name_and_team(self):
+        return self.team.name + ' - ' + self.name
 
 class ActivityForm(ModelForm):
     class Meta:
