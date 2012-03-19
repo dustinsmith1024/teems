@@ -174,18 +174,28 @@ $.ajax({
 
       // 3. This function creates an <iframe> (and YouTube player)
       //    after the API code downloads.
-      var player;
+      var player, id, $el, $player;
       function onYouTubePlayerAPIReady() {
         if($("a[data-embed='true']").size()>0){
-        var id = $("a[data-embed='true']").attr('href').split('v=')[1];
-        player = new YT.Player('player', {
-          height: '290',
-          width: '440',
-          videoId: id,
-          /*events: {
-            'onReady': onPlayerReady
-          }*/
-        });
+          $.each($("a[data-embed='true']"), function(index, value){
+            console.log(index, value);
+            $el = $(value);
+            $player = $('<div><div id="player-' + index + '"></div></div>');
+            console.log($el, $player);
+            $el.after($player);
+            id = $el.attr('href').split('v=')[1];
+            if (id) {
+              console.log(id);
+              player = new YT.Player('player-' + index, {
+                height: '290',
+                width: '440',
+                videoId: id,
+                /*events: {
+                  'onReady': onPlayerReady
+              }*/
+              });
+            }
+          });
         }
       }
     

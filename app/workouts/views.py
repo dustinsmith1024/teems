@@ -280,6 +280,17 @@ def edit_practice(request, workout_id, practice_id):
                                context_instance=RequestContext(request))
 
 
+def community_activities(request):
+    activities = Activity.objects.filter(public=True).all()
+    return render_to_response("workouts/activities/community_list.html", {'activities_list':activities},
+                               context_instance=RequestContext(request))
+
+def community_workouts(request):
+    activities = Workout.objects.filter(public=True).all()
+    return render_to_response(
+        "workouts/activities/workouts_community_list.html",
+        {'workouts_list':activities},
+                               context_instance=RequestContext(request))
 
 
 @login_required
